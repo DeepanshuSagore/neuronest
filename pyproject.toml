@@ -5,6 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "neuronest"
 description = "A retrieval-augmented generation service that answers only from retrieved context."
+readme = "README.md"
 license = "MIT"
 authors = [{ name = "Deepanshu Sagore", email = "deepanshusagore@gmail.com" }]
 requires-python = ">=3.12,<3.13"
