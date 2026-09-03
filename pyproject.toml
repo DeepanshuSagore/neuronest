@@ -12,7 +12,10 @@ requires-python = ">=3.12,<3.13"
 dynamic = ["version"]
 # Runtime dependencies land in the phase that first needs them, so that a
 # checkout at any commit installs exactly what that commit uses and no more.
-dependencies = []
+dependencies = [
+    "pydantic>=2.10",
+    "pydantic-settings>=2.7",
+]
 
 [project.urls]
 Repository = "https://github.com/DeepanshuSagore/neuronest"
@@ -69,6 +72,10 @@ files = ["src", "tests"]
 strict = true
 warn_unreachable = true
 extra_checks = true
+# Without this, mypy reads a pydantic model as a bare class and misses both the
+# generated __init__ signature and the field types — which is most of what
+# there is to check in a settings module.
+plugins = ["pydantic.mypy"]
 
 # --- pytest -----------------------------------------------------------------
 
