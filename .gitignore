@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+
+# Tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Env / secrets — the example file is the only one that ships
+.env
+.env.local
+.env*.local
+!.env.example
+
+# Local data the service generates. The vector index and the embedding cache are
+# both derived from the corpus; regenerating them is a command, not a recovery.
+.chroma/
+.embedding_cache/
+
+# Testing / coverage
+.coverage
+coverage.xml
+htmlcov/
+
+# Node / frontend
+node_modules/
+**/node_modules/
+.next/
+out/
+.vercel
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Agent scratch and the private build spec — planning notes, not the project
+.omo/
+.claude/
+.agents/
+.playwright-mcp/
+instructions.md
+
+# Misc
+*.log
+*.pem
