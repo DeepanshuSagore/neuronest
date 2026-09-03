@@ -1,0 +1,87 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "neuronest"
+description = "A retrieval-augmented generation service that answers only from retrieved context."
+license = "MIT"
+authors = [{ name = "Deepanshu Sagore", email = "deepanshusagore@gmail.com" }]
+requires-python = ">=3.12,<3.13"
+dynamic = ["version"]
+# Runtime dependencies land in the phase that first needs them, so that a
+# checkout at any commit installs exactly what that commit uses and no more.
+dependencies = []
+
+[project.urls]
+Repository = "https://github.com/DeepanshuSagore/neuronest"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.14",
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "ruff>=0.9",
+]
+
+[tool.hatch.version]
+# One source of truth for the version: the package itself.
+path = "src/neuronest/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/neuronest"]
+
+# --- ruff -------------------------------------------------------------------
+# Same rule set as the sibling Ethara backend, so the two repos read as one
+# person's work rather than two unrelated experiments.
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # import ordering
+    "UP",   # pyupgrade — keep syntax current with the pinned Python
+    "B",    # bugbear — real bug patterns, not style
+    "C4",   # comprehension clarity
+    "SIM",  # simplifications
+    "RUF",  # ruff's own checks
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests assert on behaviour, not on line width.
+"tests/*" = ["E501"]
+
+# --- mypy -------------------------------------------------------------------
+# Strict everywhere, including tests: a test that lies about its types is not
+# evidence of anything. Untyped third-party libraries get a narrow, named
+# override as they arrive rather than a blanket ignore_missing_imports, so the
+# file stays an honest record of which dependencies ship no stubs.
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src", "tests"]
+strict = true
+warn_unreachable = true
+extra_checks = true
+
+# --- pytest -----------------------------------------------------------------
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers --strict-config"
+
+[tool.coverage.run]
+source = ["src/neuronest"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = [
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
