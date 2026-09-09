@@ -36,6 +36,9 @@ dependencies = [
     # 2.x because the client moved to mistralai.client there and 1.x exported it
     # from the package root, so a resolver free to pick 1.x breaks the import.
     "mistralai>=2.9",
+    # The vector store. Persistent and local: no account, no server to run, and
+    # the index is a directory you can delete and rebuild.
+    "chromadb>=1.0",
 ]
 
 [project.urls]
