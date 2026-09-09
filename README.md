@@ -48,6 +48,80 @@ bun dev          # http://localhost:3000
 - **Not a general chatbot.** It has no memory between questions and no knowledge outside the corpus.
   Asking it something the documents do not cover gets you a refusal, by design, not a best guess.
 
+## Run the service
+
+```bash
+uv sync
+uv run uvicorn neuronest.api.app:app --reload
+```
+
+Interactive docs at [localhost:8000/docs](http://localhost:8000/docs).
+
+### Ingest and query, end to end
+
+```bash
+# one document, uploaded
+curl -X POST localhost:8000/ingest -F "file=@paper.pdf"
+# {"documents_ingested":1,"chunks_written":14,"failures":[]}
+
+# or a whole folder already on the server
+curl -X POST localhost:8000/ingest/local \
+  -H 'Content-Type: application/json' \
+  -d '{"path":"./corpus"}'
+```
+
+Re-ingesting the same document updates it rather than duplicating it, and files that cannot be
+indexed come back described rather than silently skipped:
+
+```json
+{"documents_ingested": 39, "chunks_written": 512,
+ "failures": [{"source": "corpus/scan.pdf", "code": "no_text_layer",
+               "message": "No extractable text across 12 page(s) — it is almost certainly a scan..."}]}
+```
+
+Ask a question:
+
+```bash
+curl -X POST localhost:8000/query \
+  -H 'Content-Type: application/json' \
+  -d '{"question":"What does the paper claim about scaling laws?"}'
+```
+
+```json
+{"question": "What does the paper claim about scaling laws?",
+ "passages": [{"chunk_id": "5d87034c...-0000-210c6428", "source_path": "corpus/scaling-laws.md",
+               "char_start": 0, "char_end": 310, "score": 0.53, "rank": 1,
+               "text": "Loss scales as a power law with model size, dataset size and compute..."}],
+ "refused": false, "score_threshold": 0.25}
+```
+
+Ask something the corpus does not cover and you get an empty result, not the least-bad passage:
+
+```json
+{"question": "What was the training run's electricity bill?",
+ "passages": [], "refused": true, "score_threshold": 0.25}
+```
+
+That is a `200`, not an error. Refusing is the behaviour this service exists to demonstrate — phase 10
+never calls the language model on a refusal, so it cannot invent an answer out of unrelated text.
+
+### Operations
+
+```bash
+curl localhost:8000/health    # checks Chroma and the loaded model, not a hardcoded ok
+curl localhost:8000/stats     # corpus size and the configuration that produced it
+curl -X DELETE localhost:8000/corpus
+```
+
+`/health` reports what it actually read, and goes `unhealthy` with a reason when the store or the
+model is not there:
+
+```json
+{"status": "ok", "store_reachable": true,
+ "embedding_model": "sentence-transformers/all-MiniLM-L6-v2", "embedding_dimensions": 384,
+ "collection": "nn-sentence-transformers-all-minilm-l6-v2-e9e2c881", "chunks_indexed": 512}
+```
+
 ## Development
 
 Requires [uv](https://docs.astral.sh/uv/). Python 3.12 is installed automatically from
