@@ -22,7 +22,6 @@ into every id so two configurations can coexist and be compared.
 import hashlib
 from typing import Protocol, runtime_checkable
 
-from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pydantic import BaseModel, ConfigDict
 
 from neuronest.config import settings
@@ -104,7 +103,12 @@ class FixedSizeChunker:
             )
             raise ValueError(msg)
 
-        self._splitter = RecursiveCharacterTextSplitter(
+        # Imported here rather than at module scope: langchain-core costs about
+        # four seconds to import, and paying that to read a config value, serve
+        # /health or run the CLI would be four seconds of cold start for nothing.
+        from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+        self._splitter: RecursiveCharacterTextSplitter = RecursiveCharacterTextSplitter(
             chunk_size=self.chunk_size,
             chunk_overlap=self.chunk_overlap,
             # The offsets are read back off the splitter rather than recovered
