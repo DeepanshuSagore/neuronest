@@ -66,6 +66,7 @@ class Settings(BaseSettings):
     # --- retrieval ---
     top_k: int = Field(default=5, gt=0)
 
+
     # --- logging ---
     log_level: LogLevel = "INFO"
 
