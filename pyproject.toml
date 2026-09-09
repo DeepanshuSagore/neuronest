@@ -15,6 +15,9 @@ dynamic = ["version"]
 dependencies = [
     "pydantic>=2.10",
     "pydantic-settings>=2.7",
+    # Pure Python, so the runtime image needs no system libraries for PDFs, and
+    # it exposes encryption state rather than only raising on it.
+    "pypdf>=5.1",
 ]
 
 [project.urls]
