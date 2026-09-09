@@ -49,6 +49,12 @@ Thumbs.db
 .agents/
 .playwright-mcp/
 instructions.md
+AGENTS.md
+CLAUDE.md
+
+# Design reference material collected while designing. Third-party work, kept
+# locally for inspiration and not ours to redistribute.
+references/
 
 # Misc
 *.log

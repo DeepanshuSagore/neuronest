@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/* Deliberately close to empty. The landing page owns its entire surface —
+   palette, type, motion — under a single `.press` scope, so anything defined
+   globally here would be a hidden dependency sitting outside that system.
+   Only the font bindings and the reduced-motion guarantee are shared. */
+
+@theme inline {
+  --font-grotesk: var(--font-grotesk);
+  --font-jetbrains: var(--font-jetbrains);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+}
+
+/* anime.js writes inline transforms that a CSS transition override cannot
+   reach, so the page also checks this query in JS before building timelines.
+   This block is the backstop for CSS-driven motion only. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
