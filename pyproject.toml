@@ -39,6 +39,14 @@ dependencies = [
     # The vector store. Persistent and local: no account, no server to run, and
     # the index is a directory you can delete and rebuild.
     "chromadb>=1.0",
+    "fastapi>=0.115",
+    # The ASGI server the container runs. Standard extras bring the production
+    # HTTP stack rather than uvicorn's minimal pure-Python fallback.
+    "uvicorn[standard]>=0.34",
+    # Required by FastAPI to parse multipart bodies; without it a file upload
+    # fails at request time rather than at import, which is a confusing way to
+    # discover a missing dependency.
+    "python-multipart>=0.0.20",
 ]
 
 [project.urls]

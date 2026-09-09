@@ -187,6 +187,17 @@ class ChromaStore:
     def count(self) -> int:
         return self._open().count()
 
+    def document_count(self) -> int:
+        """How many distinct documents the collection holds.
+
+        Chroma indexes chunks, not documents, so this reads every chunk's
+        metadata and counts distinct ids — linear in corpus size. Fine for a
+        stats endpoint over tens of thousands of chunks, and worth replacing
+        with a maintained counter before it is ever on a hot path.
+        """
+        result = self._open().get(include=["metadatas"])
+        return len({(item or {}).get("doc_id") for item in result.get("metadatas") or []})
+
     def get(self, chunk_ids: Sequence[str]) -> list[StoredChunk]:
         if not chunk_ids:
             return []
