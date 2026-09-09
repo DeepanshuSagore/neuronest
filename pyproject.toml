@@ -18,6 +18,11 @@ dependencies = [
     # Pure Python, so the runtime image needs no system libraries for PDFs, and
     # it exposes encryption state rather than only raising on it.
     "pypdf>=5.1",
+    # The splitters alone, not the langchain metapackage: this is the only part
+    # of LangChain the service uses. It still pulls langchain-core, so it is not
+    # free — but the metapackage would add the agent framework and a long tail
+    # of optional provider clients on top of it.
+    "langchain-text-splitters>=0.3",
 ]
 
 [project.urls]
