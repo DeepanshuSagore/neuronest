@@ -19,8 +19,22 @@ configuration.
 
 ## Stack
 
-Python 3.12 · FastAPI · pydantic v2 · LangChain · ChromaDB · sentence-transformers · Groq · Docker ·
-pytest · ruff + mypy (strict)
+**Service** — Python 3.12 · FastAPI · pydantic v2 · LangChain · ChromaDB · sentence-transformers ·
+Groq · Docker · pytest · ruff + mypy (strict)
+
+**Web** — Next.js · Tailwind · anime.js, in [`frontend/`](frontend)
+
+## Web
+
+A landing page for the service lives in `frontend/`. It renders one content model, so the copy in
+the hero, the demo transcript and the results table cannot drift apart, and every published figure
+is gated behind a placeholder flag until the evaluation in phases 12–15 actually produces it.
+
+```bash
+cd frontend
+bun install
+bun dev          # http://localhost:3000
+```
 
 ## What it is not
 
