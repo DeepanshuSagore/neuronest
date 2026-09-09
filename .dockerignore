@@ -1,0 +1,18 @@
+# Deny everything, then admit only what the image is built from.
+#
+# An allow-list rather than a deny-list because the two failure modes are not
+# symmetric. A gap in a deny-list ships .env.local — real API keys — into an
+# image that gets pushed to a public registry, and nothing fails. A gap here
+# fails the build loudly on the next line.
+
+*
+
+!pyproject.toml
+!uv.lock
+!README.md
+!src
+
+# Re-admitting src/ brings whatever is sitting in it, and a host __pycache__
+# holds macOS-built bytecode that would shadow the image's own.
+**/__pycache__
+**/*.pyc

@@ -31,6 +31,14 @@ dependencies = [
     # get_embedding_dimension there, and a resolver free to pick an older
     # release would call a method that does not exist yet.
     "sentence-transformers>=6.0",
+    # Declared directly only to control where it comes from. torch already
+    # arrives as a dependency of sentence-transformers, but on Linux its PyPI
+    # wheel declares the entire CUDA runtime — cuda-toolkit, cudnn, nccl,
+    # triton — for a GPU no container here will ever have. uv applies
+    # [tool.uv.sources] to direct dependencies only, so redirecting torch to the
+    # CPU index means naming it. Deliberately unpinned: the version is
+    # sentence-transformers' business, the index is ours.
+    "torch",
     # The hosted embedder that phase 15 measures the local one against. Optional
     # at runtime: a blank key disables it and nothing else changes. Pinned to
     # 2.x because the client moved to mistralai.client there and 1.x exported it
@@ -66,6 +74,26 @@ path = "src/neuronest/__init__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/neuronest"]
+
+# --- uv ---------------------------------------------------------------------
+# The CPU build of torch is the same library with the CUDA runtime left out. It
+# is what the container runs and what phase 20 deploys, and choosing it is the
+# single biggest lever on image size — larger than every other optimisation in
+# phase 9 combined.
+#
+# explicit = true confines this index to the packages that name it below. The
+# PyTorch index mirrors a handful of unrelated packages, and left open it could
+# answer for one of them, making a resolution depend on which index replied.
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+# Scoped to Linux: macOS wheels on PyPI are already CPU-only, so local
+# development keeps the ordinary wheel and only the image changes.
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
 
 # --- ruff -------------------------------------------------------------------
 # Same rule set as the sibling Ethara backend, so the two repos read as one
