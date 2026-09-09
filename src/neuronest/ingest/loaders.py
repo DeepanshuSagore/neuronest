@@ -25,6 +25,12 @@ TEXT_SUFFIXES = frozenset({".txt", ".md"})
 PDF_SUFFIX = ".pdf"
 SUPPORTED_SUFFIXES = frozenset({PDF_SUFFIX}) | TEXT_SUFFIXES
 
+# Below this many characters per page, a PDF is treated as having no text layer.
+# Deliberately tiny: a scan yields zero, so the threshold only has to separate
+# "nothing" from "something", and anything higher would start rejecting real
+# documents that happen to have sparse pages.
+MIN_CHARS_PER_PAGE = 8
+
 
 class LoadErrorCode(StrEnum):
     """Why a file did not become a document.
@@ -39,6 +45,7 @@ class LoadErrorCode(StrEnum):
     UNSUPPORTED_TYPE = "unsupported_type"
     EMPTY_FILE = "empty_file"
     ENCRYPTED = "encrypted"
+    NO_TEXT_LAYER = "no_text_layer"
     UNREADABLE = "unreadable"
 
 
@@ -129,7 +136,22 @@ def _load_pdf(path: Path) -> str | LoadError:
     except (PdfReadError, ValueError) as exc:
         return _error(path, LoadErrorCode.UNREADABLE, f"Text extraction failed: {exc}.")
 
-    return "\n\n".join(pages)
+    text = "\n\n".join(pages)
+
+    # The trap this whole function exists to avoid. A scanned PDF is a stack of
+    # images: extraction succeeds, returns empty strings, and raises nothing. It
+    # would index as a document with no content, and then read as a retrieval
+    # bug three phases later rather than as an ingest problem now.
+    page_count = len(pages)
+    if page_count > 0 and len(text.strip()) < MIN_CHARS_PER_PAGE * page_count:
+        return _error(
+            path,
+            LoadErrorCode.NO_TEXT_LAYER,
+            f"No extractable text across {page_count} page(s) — it is almost certainly a scan. "
+            "Run OCR over it and ingest the result.",
+        )
+
+    return text
 
 
 def load_document(path: Path, *, identity: str | None = None) -> LoadResult:
