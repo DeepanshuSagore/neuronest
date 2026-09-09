@@ -46,6 +46,14 @@ class KeywordEmbedder:
         return vectors
 
 
+class BrokenEmbedder(KeywordEmbedder):
+    """Loads, then fails when asked for its width — a model that is not really there."""
+
+    @property
+    def dimensions(self) -> int:
+        raise RuntimeError("model weights unavailable")
+
+
 @pytest.fixture
 def client(tmp_path: Path) -> Iterator[TestClient]:
     services = Services(
@@ -174,6 +182,37 @@ def test_invalid_queries_are_rejected(client: TestClient, body: dict[str, object
     assert client.post("/query", json=body).status_code == 422
 
 
+# --- health, which must be real ---------------------------------------------
+
+
+def test_health_reports_state_it_actually_checked(client: TestClient) -> None:
+    upload(client, "alpha.md", "alpha alpha")
+
+    payload = client.get("/health").json()
+
+    assert payload["status"] == "ok"
+    assert payload["store_reachable"] is True
+    assert payload["embedding_model"] == "keyword-v1"
+    assert payload["embedding_dimensions"] == 3
+    assert payload["chunks_indexed"] == 1
+    assert payload["collection"].startswith("nn-")
+
+
+def test_health_turns_unhealthy_when_the_model_is_not_there(tmp_path: Path) -> None:
+    """A hardcoded ok would pass this. That is the whole point of the test."""
+    services = Services(embedder=BrokenEmbedder(), chroma_path=tmp_path / "chroma")
+
+    with TestClient(create_app(services)) as broken:
+        response = broken.get("/health")
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "unhealthy"
+    assert payload["store_reachable"] is False
+    assert payload["embedding_dimensions"] is None
+    assert "model weights unavailable" in (payload["detail"] or "")
+
+
 # --- stats ------------------------------------------------------------------
 
 
@@ -222,7 +261,7 @@ def test_openapi_describes_every_endpoint(client: TestClient) -> None:
     """/docs renders from this, so a missing path here is a missing page there."""
     paths = client.get("/openapi.json").json()["paths"]
 
-    assert {"/ingest", "/ingest/local", "/query", "/stats", "/corpus"} <= set(paths)
+    assert {"/ingest", "/ingest/local", "/query", "/health", "/stats", "/corpus"} <= set(paths)
 
 
 def test_docs_page_renders(client: TestClient) -> None:

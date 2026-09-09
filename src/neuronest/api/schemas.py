@@ -54,6 +54,23 @@ class QueryResponse(BaseModel):
     score_threshold: float
 
 
+class HealthResponse(BaseModel):
+    """Real state, checked on every call.
+
+    A hard-coded ``{"status": "ok"}`` proves only that the process is running,
+    which is the one thing you already knew because it answered. Each field
+    below is read from the thing it describes.
+    """
+
+    status: str
+    store_reachable: bool
+    embedding_model: str
+    embedding_dimensions: int | None
+    collection: str
+    chunks_indexed: int | None
+    detail: str | None = None
+
+
 class StatsResponse(BaseModel):
     documents: int
     chunks: int

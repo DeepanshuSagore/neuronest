@@ -14,6 +14,7 @@ from fastapi import Depends, FastAPI, File, UploadFile
 
 from neuronest.api.dependencies import Services
 from neuronest.api.schemas import (
+    HealthResponse,
     IngestFailure,
     IngestResponse,
     LocalIngestRequest,
@@ -149,6 +150,41 @@ def create_app(services: Services | None = None) -> FastAPI:
             ],
             refused=not results,
             score_threshold=retriever.score_threshold,
+        )
+
+    @app.get("/health", response_model=HealthResponse, tags=["operations"])
+    async def health(services: Injected) -> HealthResponse:
+        """Report state that was actually checked.
+
+        Opens the collection and counts it, and asks the embedder for the width
+        it really produces — which loads the model if it is not loaded yet. Both
+        can fail, and when they do this says so and reports unhealthy rather
+        than returning ok because the process happens to be answering.
+        """
+        store = services.store
+        model_name = services.embedder.model_name
+
+        try:
+            chunks = store.count()
+            dimensions = services.embedder.dimensions
+        except Exception as exc:
+            return HealthResponse(
+                status="unhealthy",
+                store_reachable=False,
+                embedding_model=model_name,
+                embedding_dimensions=None,
+                collection=store.collection_name,
+                chunks_indexed=None,
+                detail=f"{type(exc).__name__}: {exc}",
+            )
+
+        return HealthResponse(
+            status="ok",
+            store_reachable=True,
+            embedding_model=model_name,
+            embedding_dimensions=dimensions,
+            collection=store.collection_name,
+            chunks_indexed=chunks,
         )
 
     @app.get("/stats", response_model=StatsResponse, tags=["operations"])
