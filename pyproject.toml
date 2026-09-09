@@ -23,6 +23,19 @@ dependencies = [
     # free — but the metapackage would add the agent framework and a long tail
     # of optional provider clients on top of it.
     "langchain-text-splitters>=0.3",
+    # The default embedder, and by far the heaviest thing here: it pulls torch,
+    # which is most of the runtime image phase 9 has to build. Local is the
+    # default anyway because it keeps the eval sweeps in phases 12-15 free to
+    # re-run and keeps the test suite offline and secret-free.
+    # Floor is 6.x: get_sentence_embedding_dimension was renamed to
+    # get_embedding_dimension there, and a resolver free to pick an older
+    # release would call a method that does not exist yet.
+    "sentence-transformers>=6.0",
+    # The hosted embedder that phase 15 measures the local one against. Optional
+    # at runtime: a blank key disables it and nothing else changes. Pinned to
+    # 2.x because the client moved to mistralai.client there and 1.x exported it
+    # from the package root, so a resolver free to pick 1.x breaks the import.
+    "mistralai>=2.9",
 ]
 
 [project.urls]
@@ -89,7 +102,14 @@ plugins = ["pydantic.mypy"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q --strict-markers --strict-config"
+# Slow tests are excluded by default rather than merely labelled. They need
+# model weights on disk or a live API key, so a default run stays offline,
+# secret-free and fast — which is what lets phase 18 put the whole suite on
+# every push. Run them deliberately with: uv run pytest -m slow
+addopts = "-q --strict-markers --strict-config -m 'not slow'"
+markers = [
+    "slow: downloads model weights or calls a hosted API; excluded unless -m slow",
+]
 
 [tool.coverage.run]
 source = ["src/neuronest"]

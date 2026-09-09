@@ -36,6 +36,20 @@ class Settings(BaseSettings):
     # for two others and compares recall against index size and query latency.
     embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
 
+    # Where the content-addressed embedding cache lives. Like the index, it is
+    # derived: deleting it costs time on the next run, not data.
+    embedding_cache_path: Path = Path(".embedding_cache")
+
+    # Texts sent to the model per forward pass. Large enough to keep batching
+    # worthwhile, small enough that a long document does not blow up memory.
+    embedding_batch_size: int = Field(default=64, gt=0)
+
+    # The hosted embedder phase 15 measures the local default against. Blank is
+    # the supported default: nothing in the service requires it, and the test
+    # suite never touches it.
+    mistral_api_key: str = ""
+    mistral_embedding_model: str = "mistral-embed"
+
     # --- generation ---
     # Blank is a valid, supported state: everything up to retrieval works
     # without a key, and the service starts and serves /health regardless.
