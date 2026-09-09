@@ -4,7 +4,11 @@ A retrieval-augmented generation service: you give it documents, it indexes them
 questions **only** from the passages it retrieved — refusing outright when the corpus does not contain
 the answer.
 
+**Live:** [nestneuroai.vercel.app](https://nestneuroai.vercel.app)
+
 > Early build. The sections below describe the target; commit history shows how far it has got.
+> The site is the landing page — the service behind it is still being built, and every figure it
+> shows is marked as not yet measured until the evaluation in phases 12-15 produces one.
 
 ## Why this one is different
 
