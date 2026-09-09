@@ -1,7 +1,14 @@
-"""Finding the passages that answer a question.
+"""Finding the passages that answer a question, or deciding that none do.
 
-Results carry a similarity score, a rank and the document and offsets they came
-from, because phase 10 has to cite its evidence rather than merely quote it.
+The second half of that sentence is the point. A vector index always returns
+something: ask it about a subject the corpus has never heard of and it will
+hand back its nearest neighbours anyway, at whatever distance, with no signal
+that they are irrelevant. Pass those to a language model and it will write a
+confident answer out of unrelated text, because that is what it was given.
+
+So an empty result is a value here, not an error and not a failure. Retrieval
+returns what cleared the bar; when nothing clears it, that is the honest answer
+and phase 10 refuses on it without ever calling the model.
 """
 
 from pydantic import BaseModel, ConfigDict
@@ -45,14 +52,26 @@ def similarity_from_distance(distance: float) -> float:
 
 
 class Retriever:
-    """Top-k retrieval over a store."""
+    """Top-k retrieval over a store, filtered by a relevance floor."""
 
-    def __init__(self, store: ChromaStore, top_k: int | None = None) -> None:
+    def __init__(
+        self,
+        store: ChromaStore,
+        top_k: int | None = None,
+        score_threshold: float | None = None,
+    ) -> None:
         self._store = store
         self.top_k = top_k if top_k is not None else settings.top_k
+        self.score_threshold = (
+            score_threshold if score_threshold is not None else settings.score_threshold
+        )
 
     def retrieve(self, query: str, k: int | None = None) -> list[RetrievedChunk]:
-        """Return the nearest passages to ``query``, closest first."""
+        """Return the passages relevant to ``query``, closest first.
+
+        An empty list means nothing in the corpus was relevant enough — not that
+        something went wrong.
+        """
         # A blank query has no direction to search in. Embedding it would still
         # produce a vector and still return the corpus's nearest neighbours to
         # nothing in particular, which is worse than answering honestly.
@@ -68,6 +87,10 @@ class Retriever:
         results: list[RetrievedChunk] = []
         for hit in hits:
             score = similarity_from_distance(hit.distance)
+            if score < self.score_threshold:
+                # Hits arrive sorted by distance, so the first one to fall below
+                # the floor means every hit after it does too.
+                break
             results.append(
                 RetrievedChunk(
                     chunk_id=hit.chunk.chunk_id,

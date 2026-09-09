@@ -66,6 +66,22 @@ class Settings(BaseSettings):
     # --- retrieval ---
     top_k: int = Field(default=5, gt=0)
 
+    # Cosine similarity a passage must reach to be considered relevant at all.
+    # Below it, retrieval returns nothing rather than the least-bad chunk, which
+    # is what lets the service refuse instead of inventing an answer from
+    # whatever happened to be nearest.
+    #
+    # Measured, not guessed. Over a sample corpus with all-MiniLM-L6-v2,
+    # answerable questions scored 0.311 to 0.711 and questions about absent
+    # subjects scored 0.004 to 0.180. This sits near the midpoint of that gap,
+    # roughly 0.06 clear of both sides.
+    #
+    # The margin is what matters, not the number: 0.30 would clear every absent
+    # question but sit above the weakest answerable one, refusing questions the
+    # corpus can actually answer. Re-measure whenever the embedding model
+    # changes, because the scale is the model's, not ours. Phase 13 scores
+    # refusal accuracy directly against this and phases 12-15 sweep it.
+    score_threshold: float = Field(default=0.25, ge=-1.0, le=1.0)
 
     # --- logging ---
     log_level: LogLevel = "INFO"
