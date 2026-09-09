@@ -37,6 +37,23 @@ COPY src ./src
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev --no-editable
 
+# Fetch the weights now, so no request ever waits on a download.
+#
+# Loaded through SentenceTransformer rather than fetched with a snapshot
+# download, for two reasons. The repository also carries ONNX, OpenVINO and
+# TensorFlow copies of the same weights, and a blind snapshot takes all of
+# them; loading through the library takes only the files this service reads.
+# And it fails the build if the model cannot be loaded, rather than at the
+# first query.
+#
+# The model id comes from the settings module so the baked weights cannot drift
+# from the configured default. No .env reaches the build context, so this
+# resolves to the documented default.
+ENV HF_HOME=/opt/models
+RUN /opt/venv/bin/python -c "from neuronest.config import settings; \
+from sentence_transformers import SentenceTransformer; \
+SentenceTransformer(settings.embedding_model)"
+
 
 FROM python:3.12-slim-bookworm AS runtime
 
@@ -52,9 +69,17 @@ RUN groupadd --system --gid 1001 neuronest \
 
 COPY --from=builder /opt/venv /opt/venv
 
+# Owned by the runtime user rather than root. The weights are read-only in
+# practice, but huggingface_hub takes a lock file inside the cache when it
+# resolves a model, and it cannot do that in a directory it may not write.
+# Keeping the cache writable also means overriding EMBEDDING_MODEL still works
+# — it downloads, the way an unbaked model has to.
+COPY --from=builder --chown=neuronest:neuronest /opt/models /opt/models
+
 ENV PATH="/opt/venv/bin:${PATH}" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
+    HF_HOME=/opt/models \
     CHROMA_PATH=/data/chroma \
     EMBEDDING_CACHE_PATH=/data/embedding-cache
 
