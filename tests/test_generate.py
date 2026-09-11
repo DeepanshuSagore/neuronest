@@ -210,3 +210,55 @@ def test_without_a_key_it_says_so_instead_of_answering() -> None:
     assert result.answer is None
     assert result.refused is False
     assert "GROQ_API_KEY" in (result.note or "")
+
+
+# --- when the provider fails -------------------------------------------------
+
+
+def unreachable(_request: httpx.Request) -> httpx.Response:
+    raise httpx.ConnectError("connection refused")
+
+
+def test_a_provider_outage_returns_a_note_rather_than_raising() -> None:
+    """The passages are the expensive half of the work and they are still correct."""
+    generator = generator_over(unreachable)
+
+    result = generator.generate("How long can it run?", [passage("94 minutes")])
+
+    assert result.answer is None
+    assert "Could not generate" in (result.note or "")
+
+
+def test_a_provider_failure_is_not_recorded_as_a_refusal() -> None:
+    """Phase 13 scores refusal accuracy, and an outage counted as a refusal inflates it.
+
+    Declining and failing are different events. The service declines when the
+    evidence does not support an answer; it fails when it could not ask. Folding
+    the second into the first would make an unreliable provider look like good
+    judgement.
+    """
+    generator = generator_over(unreachable)
+
+    assert generator.generate("How long?", [passage("94 minutes")]).refused is False
+
+
+def erroring(status: int) -> Handler:
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(status, json={"error": {"message": "upstream is having a day"}})
+
+    return handler
+
+
+def test_a_server_error_degrades_the_same_way() -> None:
+    generator = generator_over(erroring(500))
+
+    result = generator.generate("How long?", [passage("94 minutes")])
+
+    assert result.answer is None
+    assert result.note is not None
+
+
+def test_a_rate_limit_degrades_the_same_way() -> None:
+    generator = generator_over(erroring(429))
+
+    assert generator.generate("How long?", [passage("94 minutes")]).answer is None

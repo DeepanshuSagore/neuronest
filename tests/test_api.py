@@ -8,7 +8,7 @@ coverage of its own contract.
 """
 
 import math
-from collections.abc import Iterator, Sequence
+from collections.abc import Callable, Iterator, Sequence
 from pathlib import Path
 
 import httpx
@@ -102,6 +102,11 @@ def answering_client(
             },
         )
 
+    return client_over(tmp_path, handler)
+
+
+def client_over(tmp_path: Path, handler: Callable[[httpx.Request], httpx.Response]) -> TestClient:
+    """A client whose generator talks to ``handler`` instead of to Groq."""
     groq = Groq(
         api_key="test-key",
         max_retries=0,
@@ -269,6 +274,25 @@ def test_an_absent_topic_never_reaches_the_model(tmp_path: Path) -> None:
     assert payload["refused"] is True
     assert payload["passages"] == []
     assert payload["answer"] is None
+
+
+def test_a_provider_failure_still_returns_the_evidence(tmp_path: Path) -> None:
+    """A provider outage is a 200 with the passages, not a 500."""
+
+    def unreachable(_request: httpx.Request) -> httpx.Response:
+        raise httpx.ConnectError("connection refused")
+
+    with client_over(tmp_path, unreachable) as broken:
+        upload(broken, "alpha.md", "alpha alpha alpha")
+
+        response = broken.post("/query", json={"question": "alpha"})
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["answer"] is None
+    assert payload["refused"] is False
+    assert "Could not generate" in payload["note"]
+    assert payload["passages"][0]["text"] == "alpha alpha alpha"
 
 
 def test_without_a_key_the_passages_still_come_back(client: TestClient) -> None:
