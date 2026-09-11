@@ -1,0 +1,1814 @@
+{
+ "version": 1,
+ "corpus": "eval/corpus",
+ "reference_chunking": {
+  "strategy": "fixed",
+  "chunk_size": 1000,
+  "chunk_overlap": 200,
+  "fingerprint": "fixed-1000-200"
+ },
+ "counts": {
+  "answerable": 70,
+  "multi_chunk": 10,
+  "unanswerable": 20,
+  "total": 100
+ },
+ "questions": [
+  {
+   "id": "q001",
+   "question": "What does a 408 status code tell the client?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9110.txt",
+     "doc_id": "3f9054029f235d46",
+     "char_start": 359180,
+     "char_end": 359362,
+     "quote": "408 Request Timeout The 408 (Request Timeout) status code indicates that the server did not receive a complete request message within the time that it was prepared to wait.",
+     "chunk_ids": [
+      "3f9054029f235d46-0473-103643e9",
+      "3f9054029f235d46-0474-3c53a38c"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q002",
+   "question": "What does a 410 (Gone) response say about the target resource?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9110.txt",
+     "doc_id": "3f9054029f235d46",
+     "char_start": 360530,
+     "char_end": 360715,
+     "quote": "410 Gone The 410 (Gone) status code indicates that access to the target resource is no longer available at the origin server and that this condition is likely to be permanent.",
+     "chunk_ids": [
+      "3f9054029f235d46-0475-9519bc93"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q003",
+   "question": "When does a server send 411 Length Required?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9110.txt",
+     "doc_id": "3f9054029f235d46",
+     "char_start": 361673,
+     "char_end": 361844,
+     "quote": "411 Length Required The 411 (Length Required) status code indicates that the server refuses to accept the request without a defined Content-Length (Section 8.6).",
+     "chunk_ids": [
+      "3f9054029f235d46-0476-6ab76412",
+      "3f9054029f235d46-0477-039ecbfc"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q004",
+   "question": "What must a cache do with a delta-seconds value larger than it can represent?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9111.txt",
+     "doc_id": "d153254831786b97",
+     "char_start": 8877,
+     "char_end": 9156,
+     "quote": "If a cache receives a delta-seconds value greater than the greatest integer it can represent, or if any of its subsequent calculations overflows, the cache MUST consider the value to be 2147483648 (2^31) or the greatest positive integer it can conveniently represent.",
+     "chunk_ids": [
+      "d153254831786b97-0011-6e92a257"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q005",
+   "question": "What does the no-store response directive forbid a cache from doing?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9111.txt",
+     "doc_id": "d153254831786b97",
+     "char_start": 58405,
+     "char_end": 58610,
+     "quote": "no-store The no-store response directive indicates that a cache MUST NOT store any part of either the immediate request or the response and MUST NOT use the response to satisfy any other request.",
+     "chunk_ids": [
+      "d153254831786b97-0072-46e684ae",
+      "d153254831786b97-0073-5e1ee1f1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q006",
+   "question": "How must a cache treat an Expires header value of 0?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9111.txt",
+     "doc_id": "d153254831786b97",
+     "char_start": 66487,
+     "char_end": 66718,
+     "quote": "Expires = HTTP-date For example Expires: Thu, 01 Dec 1994 16:00:00 GMT A cache recipient MUST interpret invalid date formats, especially the value \"0\", as representing a time in the past (i.e., \"already expired\").",
+     "chunk_ids": [
+      "d153254831786b97-0083-73171cd3",
+      "d153254831786b97-0084-59c22e81"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q007",
+   "question": "What should a server return when a request method is longer than any it implements?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9112.txt",
+     "doc_id": "641b8bddae767be2",
+     "char_start": 17156,
+     "char_end": 17285,
+     "quote": "A server that receives a method longer than any that it implements SHOULD respond with a 501 (Not Implemented) status code.",
+     "chunk_ids": [
+      "641b8bddae767be2-0022-e937b21c"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q008",
+   "question": "May a server send Transfer-Encoding in a 2xx response to a CONNECT request?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9112.txt",
+     "doc_id": "641b8bddae767be2",
+     "char_start": 37846,
+     "char_end": 37988,
+     "quote": "A server MUST NOT send a Transfer-Encoding header field in any 2xx (Successful) response to a CONNECT request (Section 9.3.6 of [HTTP]).",
+     "chunk_ids": [
+      "641b8bddae767be2-0046-96514c37"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q009",
+   "question": "What must a recipient do with a bare CR inside a protocol element?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9112.txt",
+     "doc_id": "641b8bddae767be2",
+     "char_start": 11735,
+     "char_end": 11900,
+     "quote": "A recipient of such a bare CR MUST consider that element to be invalid or replace each bare CR with SP before processing the element or forwarding the message.",
+     "chunk_ids": [
+      "641b8bddae767be2-0015-83dc657a"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q010",
+   "question": "What is the maximum flow-control window size in HTTP/2?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9113.txt",
+     "doc_id": "ee54c341ef60ca93",
+     "char_start": 76197,
+     "char_end": 76350,
+     "quote": "Values above the maximum flow-control window size of 2^31-1 MUST be treated as a connection error (Section 5.4.1) of type FLOW_CONTROL_ERROR.",
+     "chunk_ids": [
+      "ee54c341ef60ca93-0096-f8526d4d",
+      "ee54c341ef60ca93-0097-dc59779f"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q011",
+   "question": "How is the h2 protocol identifier serialized for ALPN?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9113.txt",
+     "doc_id": "ee54c341ef60ca93",
+     "char_start": 13878,
+     "char_end": 13985,
+     "quote": "The \"h2\" string is serialized into an ALPN protocol identifier as the two-octet sequence: 0x68, 0x32.",
+     "chunk_ids": [
+      "ee54c341ef60ca93-0017-4cd77a40"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q012",
+   "question": "How many octets does the HTTP/2 client connection preface begin with?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9113.txt",
+     "doc_id": "ee54c341ef60ca93",
+     "char_start": 16137,
+     "char_end": 16387,
+     "quote": "The client connection preface starts with a sequence of 24 octets, which in hex notation is: 0x505249202a20485454502f322e300d0a0d0a534d0d0a0d0a That is, the connection preface starts with the string \"PRI * HTTP/2.0\\r\\n\\r\\nSM\\r\\n\\r\\n\".",
+     "chunk_ids": [
+      "ee54c341ef60ca93-0020-32e72c08"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q013",
+   "question": "Which HTTP/2 error code is 0x03 and what does it mean?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9113.txt",
+     "doc_id": "ee54c341ef60ca93",
+     "char_start": 104075,
+     "char_end": 104180,
+     "quote": "FLOW_CONTROL_ERROR (0x03): The endpoint detected that its peer violated the flow-control protocol.",
+     "chunk_ids": [
+      "ee54c341ef60ca93-0134-371b9f8f"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q014",
+   "question": "What must a recipient do with a HEADERS frame whose stream identifier is 0x00?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9113.txt",
+     "doc_id": "ee54c341ef60ca93",
+     "char_start": 66012,
+     "char_end": 66181,
+     "quote": "If a HEADERS frame is received whose Stream Identifier field is 0x00, the recipient MUST respond with a connection error (Section 5.4.1) of type PROTOCOL_ERROR.",
+     "chunk_ids": [
+      "ee54c341ef60ca93-0083-1ba25f48"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q015",
+   "question": "What minimum per-cookie size should a general-use user agent support?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc6265.txt",
+     "doc_id": "9ed1f3082fb3496d",
+     "char_start": 52692,
+     "char_end": 52905,
+     "quote": "General-use user agents SHOULD provide each of the following minimum capabilities: o At least 4096 bytes per cookie (as measured by the sum of the length of the cookie's name, value, and attributes).",
+     "chunk_ids": [
+      "9ed1f3082fb3496d-0067-27a27650"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q016",
+   "question": "Which year value makes a cookie expiry date fail to parse?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc6265.txt",
+     "doc_id": "9ed1f3082fb3496d",
+     "char_start": 31520,
+     "char_end": 31953,
+     "quote": "Abort these steps and fail to parse the cookie-date if: * at least one of the found-day-of-month, found-month, found- year, or found-time flags is not set, * the day-of-month-value is less than 1 or greater than 31, * the year-value is less than 1601, * the hour-value is greater than 23, * the minute-value is greater than 59, or * the second-value is greater than 59.",
+     "chunk_ids": [
+      "9ed1f3082fb3496d-0040-7a0c31f1",
+      "9ed1f3082fb3496d-0041-576f4a6c"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q017",
+   "question": "What must a server do if a patch document cannot be applied in full?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc5789.txt",
+     "doc_id": "fdd0f95d2dcc65e6",
+     "char_start": 6477,
+     "char_end": 6594,
+     "quote": "If the entire patch document cannot be successfully applied, then the server MUST NOT apply any of the changes.",
+     "chunk_ids": [
+      "fdd0f95d2dcc65e6-0009-481fddea"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q018",
+   "question": "What status code should a server send for a malformed patch document?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc5789.txt",
+     "doc_id": "fdd0f95d2dcc65e6",
+     "char_start": 10422,
+     "char_end": 10608,
+     "quote": "Malformed patch document: When the server determines that the patch document provided by the client is not properly formatted, it SHOULD return a 400 (Bad Request) response.",
+     "chunk_ids": [
+      "fdd0f95d2dcc65e6-0014-2b9a3c87"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q019",
+   "question": "Which status code signals a conflicting modification to a patched resource?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc5789.txt",
+     "doc_id": "fdd0f95d2dcc65e6",
+     "char_start": 12818,
+     "char_end": 13001,
+     "quote": "In cases when the server detects a possible conflicting modification and no precondition was defined in the request, the server can return a 409 (Conflict) response.",
+     "chunk_ids": [
+      "fdd0f95d2dcc65e6-0017-d8592a9b"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q020",
+   "question": "How do the Content-Disposition filename and filename* parameters differ?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc6266.txt",
+     "doc_id": "01f6fbcd04f419d7",
+     "char_start": 9154,
+     "char_end": 9367,
+     "quote": "The parameters \"filename\" and \"filename*\" differ only in that \"filename*\" uses the encoding defined in [RFC5987], allowing the use of characters not present in the ISO-8859-1 character set ([ISO-8859-1]).",
+     "chunk_ids": [
+      "01f6fbcd04f419d7-0012-63996ef1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q021",
+   "question": "What does the Forwarded header's \"for\" parameter disclose?",
+   "kind": "answerable",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc7239.txt",
+     "doc_id": "9b56892f0c82cdbe",
+     "char_start": 12670,
+     "char_end": 12835,
+     "quote": "Forwarded For The \"for\" parameter is used to disclose information about the client that initiated the request and subsequent proxies in a chain of proxies.",
+     "chunk_ids": [
+      "9b56892f0c82cdbe-0017-bcc802c8"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q022",
+   "question": "How does a client form the Basic authentication credential?",
+   "kind": "answerable",
+   "topic": "auth",
+   "answers": [
+    {
+     "source": "rfc7617.txt",
+     "doc_id": "49bd4921349c9c5c",
+     "char_start": 7694,
+     "char_end": 7812,
+     "quote": "constructs the user-pass by concatenating the user-id, a single colon (\":\") character, and the password, 3.",
+     "chunk_ids": [
+      "49bd4921349c9c5c-0009-1b4b2703"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q023",
+   "question": "Which hash algorithms does HTTP Digest add alongside MD5?",
+   "kind": "answerable",
+   "topic": "auth",
+   "answers": [
+    {
+     "source": "rfc7616.txt",
+     "doc_id": "32edc8ea6147c119",
+     "char_start": 8896,
+     "char_end": 8953,
+     "quote": "This document adds SHA-256 and SHA-512/256 algorithms.",
+     "chunk_ids": [
+      "32edc8ea6147c119-0012-c2dd9d1e"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q024",
+   "question": "How many roles does OAuth 2.0 define?",
+   "kind": "answerable",
+   "topic": "auth",
+   "answers": [
+    {
+     "source": "rfc6749.txt",
+     "doc_id": "fc938047bdb0c70e",
+     "char_start": 13898,
+     "char_end": 14020,
+     "quote": "Roles OAuth defines four roles: resource owner An entity capable of granting access to a protected resource.",
+     "chunk_ids": [
+      "fc938047bdb0c70e-0017-778def04",
+      "fc938047bdb0c70e-0018-1ef59895"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q025",
+   "question": "What maximum lifetime does OAuth 2.0 recommend for an authorization code?",
+   "kind": "answerable",
+   "topic": "auth",
+   "answers": [
+    {
+     "source": "rfc6749.txt",
+     "doc_id": "fc938047bdb0c70e",
+     "char_start": 58628,
+     "char_end": 58713,
+     "quote": "A maximum authorization code lifetime of 10 minutes is RECOMMENDED.",
+     "chunk_ids": [
+      "fc938047bdb0c70e-0078-d1a3f301"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q026",
+   "question": "How is a bearer credential formed in the Authorization header?",
+   "kind": "answerable",
+   "topic": "auth",
+   "answers": [
+    {
+     "source": "rfc6750.txt",
+     "doc_id": "be5b6931e42f2de0",
+     "char_start": 10500,
+     "char_end": 10859,
+     "quote": "The syntax for Bearer credentials is as follows: b64token = 1*( ALPHA / DIGIT / \"-\" / \".\" / \"_\" / \"~\" / \"+\" / \"/\" ) *\"=\" credentials = \"Bearer\" 1*SP b64token Clients SHOULD make authenticated requests with a bearer token using the \"Authorization\" request header field with the \"Bearer\" HTTP authorization scheme.",
+     "chunk_ids": [
+      "be5b6931e42f2de0-0014-88230ac3",
+      "be5b6931e42f2de0-0015-1d334145"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q027",
+   "question": "Which key exchange cipher suites were removed in TLS 1.3?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc8446.txt",
+     "doc_id": "d6212bf18f983699",
+     "char_start": 17005,
+     "char_end": 17156,
+     "quote": "- Static RSA and Diffie-Hellman cipher suites have been removed; all public-key based key exchange mechanisms now provide forward secrecy.",
+     "chunk_ids": [
+      "d6212bf18f983699-0022-c707c687"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q028",
+   "question": "What is the maximum length of a TLSPlaintext fragment in TLS 1.3?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc8446.txt",
+     "doc_id": "d6212bf18f983699",
+     "char_start": 158986,
+     "char_end": 159024,
+     "quote": "The length MUST NOT exceed 2^14 bytes.",
+     "chunk_ids": [
+      "d6212bf18f983699-0212-317a1314"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q029",
+   "question": "What random value does a server use to signal HelloRetryRequest?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc8446.txt",
+     "doc_id": "d6212bf18f983699",
+     "char_start": 59785,
+     "char_end": 60314,
+     "quote": "For reasons of backward compatibility with middleboxes (see Appendix D.4), the HelloRetryRequest message uses the same structure as the ServerHello, but with Random set to the special value of the SHA-256 of \"HelloRetryRequest\": CF 21 AD 74 E5 9A 61 11 BE 1D 8C 02 1E 65 B8 91 C2 A2 11 16 7A BB 8C 5E 07 9E 09 E2 C8 A8 33 9C Upon receiving a message with type server_hello, implementations MUST first examine the Random value and, if it matches this value, process it as described in Section 4.1.4).",
+     "chunk_ids": [
+      "d6212bf18f983699-0078-c4760967",
+      "d6212bf18f983699-0079-442f0e66"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q030",
+   "question": "What does the ProtocolNameList in the ALPN extension contain?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc7301.txt",
+     "doc_id": "06bc235e1f479fb4",
+     "char_start": 5652,
+     "char_end": 5886,
+     "quote": "opaque ProtocolName<1..2^8-1>; struct { ProtocolName protocol_name_list<2..2^16-1> } ProtocolNameList; \"ProtocolNameList\" contains the list of protocols advertised by the client, in descending order of preference.",
+     "chunk_ids": [
+      "06bc235e1f479fb4-0006-53d221ea",
+      "06bc235e1f479fb4-0007-46ec8cfd"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q031",
+   "question": "What is the maximum length of a single DNS label?",
+   "kind": "answerable",
+   "topic": "DNS",
+   "answers": [
+    {
+     "source": "rfc1035.txt",
+     "doc_id": "00a6eaeedf8251c3",
+     "char_start": 63257,
+     "char_end": 63410,
+     "quote": "This allows a pointer to be distinguished from a label, since the label must begin with two zero bits because labels are restricted to 63 octets or less.",
+     "chunk_ids": [
+      "00a6eaeedf8251c3-0086-eef78950"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q032",
+   "question": "What is the maximum total length of a domain name?",
+   "kind": "answerable",
+   "topic": "DNS",
+   "answers": [
+    {
+     "source": "rfc1035.txt",
+     "doc_id": "00a6eaeedf8251c3",
+     "char_start": 24489,
+     "char_end": 24633,
+     "quote": "To simplify implementations, the total length of a domain name (i.e., label octets and label length octets) is restricted to 255 octets or less.",
+     "chunk_ids": [
+      "00a6eaeedf8251c3-0034-ea1f195e",
+      "00a6eaeedf8251c3-0035-11e78135"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q033",
+   "question": "What size limit applies to DNS messages carried over UDP?",
+   "kind": "answerable",
+   "topic": "DNS",
+   "answers": [
+    {
+     "source": "rfc1035.txt",
+     "doc_id": "00a6eaeedf8251c3",
+     "char_start": 23957,
+     "char_end": 23995,
+     "quote": "UDP messages 512 octets or less 3.",
+     "chunk_ids": [
+      "00a6eaeedf8251c3-0033-b2348f02",
+      "00a6eaeedf8251c3-0034-ea1f195e"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q034",
+   "question": "Which TCP port must a DNS-over-TLS server accept connections on?",
+   "kind": "answerable",
+   "topic": "DNS",
+   "answers": [
+    {
+     "source": "rfc7858.txt",
+     "doc_id": "e78ae3ad02690f01",
+     "char_start": 7966,
+     "char_end": 8200,
+     "quote": "Session Initiation By default, a DNS server that supports DNS over TLS MUST listen for and accept TCP connections on port 853, unless it has mutual agreement with its clients to use a port other than 853 for DNS over TLS.",
+     "chunk_ids": [
+      "e78ae3ad02690f01-0011-54f2d71a",
+      "e78ae3ad02690f01-0012-ec2bb229"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q035",
+   "question": "Which media type must DNS-over-HTTPS clients and servers support?",
+   "kind": "answerable",
+   "topic": "DNS",
+   "answers": [
+    {
+     "source": "rfc8484.txt",
+     "doc_id": "b7f4744ef39cc3ea",
+     "char_start": 20250,
+     "char_end": 20398,
+     "quote": "Content Negotiation In order to maximize interoperability, DoH clients and DoH servers MUST support the \"application/dns-message\" media type.",
+     "chunk_ids": [
+      "b7f4744ef39cc3ea-0027-ce7be92c",
+      "b7f4744ef39cc3ea-0028-60105cf3"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q036",
+   "question": "What is a stub resolver?",
+   "kind": "answerable",
+   "topic": "DNS",
+   "answers": [
+    {
+     "source": "rfc8499.txt",
+     "doc_id": "a0ab2e516a90669c",
+     "char_start": 39545,
+     "char_end": 39614,
+     "quote": "Stub resolver: A resolver that cannot perform all resolution itself.",
+     "chunk_ids": [
+      "a0ab2e516a90669c-0053-273e0a76"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q037",
+   "question": "What does the TTL field of a resource record specify?",
+   "kind": "answerable",
+   "topic": "DNS",
+   "answers": [
+    {
+     "source": "rfc1034.txt",
+     "doc_id": "8b4a5bbf84433dad",
+     "char_start": 26618,
+     "char_end": 26812,
+     "quote": "This memo uses the following classes: IN the Internet system CH the Chaos system TTL which is the time to live of the RR.",
+     "chunk_ids": [
+      "8b4a5bbf84433dad-0035-51ea4042"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q038",
+   "question": "Why does a 512-octet UDP payload imply a 576-octet buffer?",
+   "kind": "answerable",
+   "topic": "DNS",
+   "answers": [
+    {
+     "source": "rfc6891.txt",
+     "doc_id": "233a6afb03b6c8e1",
+     "char_start": 19484,
+     "char_end": 19563,
+     "quote": "Note that a 512-octet UDP payload requires a 576-octet IP reassembly buffer.",
+     "chunk_ids": [
+      "233a6afb03b6c8e1-0025-983ab7db"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q039",
+   "question": "May a middlebox clamp DNS-over-UDP messages to 512 bytes?",
+   "kind": "answerable",
+   "topic": "DNS",
+   "answers": [
+    {
+     "source": "rfc6891.txt",
+     "doc_id": "233a6afb03b6c8e1",
+     "char_start": 22271,
+     "char_end": 22347,
+     "quote": "Conformant middleboxes MUST NOT limit DNS messages over UDP to 512 bytes.",
+     "chunk_ids": [
+      "233a6afb03b6c8e1-0028-78397948"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q040",
+   "question": "What does EDNS allow DNS clients and servers to do?",
+   "kind": "answerable",
+   "topic": "DNS",
+   "answers": [
+    {
+     "source": "rfc8499.txt",
+     "doc_id": "a0ab2e516a90669c",
+     "char_start": 33645,
+     "char_end": 33872,
+     "quote": "EDNS allows DNS clients and servers to specify message sizes larger than the original 512 octet limit, to expand the response code space and to carry additional options that affect the handling of a DNS query.",
+     "chunk_ids": [
+      "a0ab2e516a90669c-0044-417c5f9a"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q041",
+   "question": "How is the payload encoded when a DoH client uses POST?",
+   "kind": "answerable",
+   "topic": "DNS",
+   "answers": [
+    {
+     "source": "rfc8484.txt",
+     "doc_id": "b7f4744ef39cc3ea",
+     "char_start": 21954,
+     "char_end": 22088,
+     "quote": "When using the POST method, the data payload for this media type MUST NOT be encoded and is used directly as the HTTP message body.",
+     "chunk_ids": [
+      "b7f4744ef39cc3ea-0030-55cd5e63"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q042",
+   "question": "What is the URL and filename safe base64 encoding called?",
+   "kind": "answerable",
+   "topic": "encoding",
+   "answers": [
+    {
+     "source": "rfc4648.txt",
+     "doc_id": "26aff4e81fc48a6f",
+     "char_start": 13258,
+     "char_end": 13306,
+     "quote": "This encoding may be referred to as \"base64url\".",
+     "chunk_ids": [
+      "26aff4e81fc48a6f-0019-1b75b2eb"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q043",
+   "question": "What characters may a URI scheme name begin with?",
+   "kind": "answerable",
+   "topic": "encoding",
+   "answers": [
+    {
+     "source": "rfc3986.txt",
+     "doc_id": "535d7547ee08a225",
+     "char_start": 39474,
+     "char_end": 39647,
+     "quote": "Scheme names consist of a sequence of characters beginning with a letter and followed by any combination of letters, digits, plus (\"+\"), period (\".\"), or hyphen (\"-\").",
+     "chunk_ids": [
+      "535d7547ee08a225-0052-7ebd42fe"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q044",
+   "question": "What is percent-encoding used for in a URI?",
+   "kind": "answerable",
+   "topic": "encoding",
+   "answers": [
+    {
+     "source": "rfc3986.txt",
+     "doc_id": "535d7547ee08a225",
+     "char_start": 27415,
+     "char_end": 27653,
+     "quote": "Percent-Encoding A percent-encoding mechanism is used to represent a data octet in a component when that octet's corresponding character is outside the allowed set or is being used as a delimiter of, or within, the component.",
+     "chunk_ids": [
+      "535d7547ee08a225-0034-c91db2c9",
+      "535d7547ee08a225-0035-b6083e77"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q045",
+   "question": "What range of code points does UTF-8 encode?",
+   "kind": "answerable",
+   "topic": "encoding",
+   "answers": [
+    {
+     "source": "rfc3629.txt",
+     "doc_id": "3bc553e6cf0f80c2",
+     "char_start": 6944,
+     "char_end": 7168,
+     "quote": "Descriptions and formulae can also be found in Annex D of ISO/IEC 10646-1 [ISO.10646] In UTF-8, characters from the U+0000..U+10FFFF range (the UTF-16 accessible range) are encoded using sequences of 1 to 4 octets.",
+     "chunk_ids": [
+      "3bc553e6cf0f80c2-0009-15940bc2",
+      "3bc553e6cf0f80c2-0010-0c5ed242"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q046",
+   "question": "Where is the MIME-Version header field required?",
+   "kind": "answerable",
+   "topic": "encoding",
+   "answers": [
+    {
+     "source": "rfc2045.txt",
+     "doc_id": "3c4b79e7f4b1dce4",
+     "char_start": 19550,
+     "char_end": 19635,
+     "quote": "Note that the MIME-Version header field is required at the top level of a message.",
+     "chunk_ids": [
+      "3c4b79e7f4b1dce4-0025-92ffbd7b"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q047",
+   "question": "What do the quoted-printable and base64 encodings do?",
+   "kind": "answerable",
+   "topic": "encoding",
+   "answers": [
+    {
+     "source": "rfc2045.txt",
+     "doc_id": "3c4b79e7f4b1dce4",
+     "char_start": 33443,
+     "char_end": 33629,
+     "quote": "The quoted-printable and base64 encodings transform their input from an arbitrary domain into material in the \"7bit\" range, thus making it safe to carry over restricted transports.",
+     "chunk_ids": [
+      "3c4b79e7f4b1dce4-0043-a7938439"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q048",
+   "question": "What is the maximum length of a multipart boundary?",
+   "kind": "answerable",
+   "topic": "encoding",
+   "answers": [
+    {
+     "source": "rfc2046.txt",
+     "doc_id": "db3d38cb895ad237",
+     "char_start": 49271,
+     "char_end": 49426,
+     "quote": "Boundary delimiters must not appear within the encapsulated material, and must be no longer than 70 characters, not counting the two leading hyphens.",
+     "chunk_ids": [
+      "db3d38cb895ad237-0070-611aa6a9"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q049",
+   "question": "What is the standards tree used for in media type registration?",
+   "kind": "answerable",
+   "topic": "encoding",
+   "answers": [
+    {
+     "source": "rfc6838.txt",
+     "doc_id": "61ae8f26e0fe341f",
+     "char_start": 9843,
+     "char_end": 9952,
+     "quote": "Standards Tree The standards tree is intended for types of general interest to the Internet community.",
+     "chunk_ids": [
+      "61ae8f26e0fe341f-0012-430c52c7",
+      "61ae8f26e0fe341f-0013-4c615378"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q050",
+   "question": "How many structural characters does JSON define?",
+   "kind": "answerable",
+   "topic": "JSON",
+   "answers": [
+    {
+     "source": "rfc8259.txt",
+     "doc_id": "89cef398235d81af",
+     "char_start": 8615,
+     "char_end": 9119,
+     "quote": "JSON-text = ws value ws These are the six structural characters: begin-array = ws %x5B ws ; [ left square bracket begin-object = ws %x7B ws ; { left curly bracket end-array = ws %x5D ws ; ] right square bracket end-object = ws %x7D ws ; } right curly bracket name-separator = ws %x3A ws ; : colon value-separator = ws %x2C ws ; , comma Insignificant whitespace is allowed before or after any of the six structural characters.",
+     "chunk_ids": [
+      "89cef398235d81af-0011-e1347a51",
+      "89cef398235d81af-0012-ff68beeb"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q051",
+   "question": "Which characters count as insignificant whitespace in JSON?",
+   "kind": "answerable",
+   "topic": "JSON",
+   "answers": [
+    {
+     "source": "rfc8259.txt",
+     "doc_id": "89cef398235d81af",
+     "char_start": 9127,
+     "char_end": 9341,
+     "quote": "ws = *( %x20 / ; Space %x09 / ; Horizontal tab %x0A / ; Line feed or New line %x0D ) ; Carriage return 3.",
+     "chunk_ids": [
+      "89cef398235d81af-0012-ff68beeb"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q052",
+   "question": "What does the exp claim in a JWT identify?",
+   "kind": "answerable",
+   "topic": "JSON",
+   "answers": [
+    {
+     "source": "rfc7519.txt",
+     "doc_id": "7b6ded9670bd4836",
+     "char_start": 18137,
+     "char_end": 18301,
+     "quote": "\"exp\" (Expiration Time) Claim The \"exp\" (expiration time) claim identifies the expiration time on or after which the JWT MUST NOT be accepted for processing.",
+     "chunk_ids": [
+      "7b6ded9670bd4836-0023-c0c0c09a",
+      "7b6ded9670bd4836-0024-7329dd7d"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q053",
+   "question": "What does the JWS alg header parameter identify?",
+   "kind": "answerable",
+   "topic": "JSON",
+   "answers": [
+    {
+     "source": "rfc7515.txt",
+     "doc_id": "05e44eba8528e2b1",
+     "char_start": 20953,
+     "char_end": 21096,
+     "quote": "\"alg\" (Algorithm) Header Parameter The \"alg\" (algorithm) Header Parameter identifies the cryptographic algorithm used to secure the JWS.",
+     "chunk_ids": [
+      "05e44eba8528e2b1-0027-96556ab8",
+      "05e44eba8528e2b1-0028-3d36626a"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q054",
+   "question": "What minimum key size does HMAC with SHA-256 require?",
+   "kind": "answerable",
+   "topic": "JSON",
+   "answers": [
+    {
+     "source": "rfc7518.txt",
+     "doc_id": "2a8b39091ca9b743",
+     "char_start": 16588,
+     "char_end": 16713,
+     "quote": "A key of the same size as the hash output (for instance, 256 bits for \"HS256\") or larger MUST be used with this algorithm.",
+     "chunk_ids": [
+      "2a8b39091ca9b743-0022-fc5b42f3"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q055",
+   "question": "What default send MSS must a TCP assume for IPv4 when no MSS option arrives?",
+   "kind": "answerable",
+   "topic": "transport",
+   "answers": [
+    {
+     "source": "rfc9293.txt",
+     "doc_id": "33f144791046a49f",
+     "char_start": 82483,
+     "char_end": 82660,
+     "quote": "If an MSS Option is not received at connection setup, TCP implementations MUST assume a default send MSS of 536 (576 - 40) for IPv4 or 1220 (1280 - 60) for IPv6 (MUST-15).",
+     "chunk_ids": [
+      "33f144791046a49f-0113-b5a03d89",
+      "33f144791046a49f-0114-f8d83f42"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q056",
+   "question": "What minimum effective MTU to receive must an IP host support?",
+   "kind": "answerable",
+   "topic": "transport",
+   "answers": [
+    {
+     "source": "rfc1122.txt",
+     "doc_id": "d47504ce429bd618",
+     "char_start": 135775,
+     "char_end": 135967,
+     "quote": "EMTU_R MUST be greater than or equal to 576, SHOULD be either configurable or indefinite, and SHOULD be greater than or equal to the MTU of the connected network(s).",
+     "chunk_ids": [
+      "d47504ce429bd618-0181-a07afca6"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q057",
+   "question": "How is TCP's initial congestion window set?",
+   "kind": "answerable",
+   "topic": "transport",
+   "answers": [
+    {
+     "source": "rfc5681.txt",
+     "doc_id": "70382eb2504ca1d2",
+     "char_start": 10138,
+     "char_end": 10233,
+     "quote": "IW, the initial value of cwnd, MUST be set using the following guidelines as an upper bound.",
+     "chunk_ids": [
+      "70382eb2504ca1d2-0013-9901467f"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q058",
+   "question": "Which IPv4 address blocks are reserved for private internets?",
+   "kind": "answerable",
+   "topic": "transport",
+   "answers": [
+    {
+     "source": "rfc1918.txt",
+     "doc_id": "232abe62ef8627c2",
+     "char_start": 7361,
+     "char_end": 7825,
+     "quote": "Private Address Space The Internet Assigned Numbers Authority (IANA) has reserved the following three blocks of the IP address space for private internets: 10.0.0.0 - 10.255.255.255 (10/8 prefix) 172.16.0.0 - 172.31.255.255 (172.16/12 prefix) 192.168.0.0 - 192.168.255.255 (192.168/16 prefix) We will refer to the first block as \"24-bit block\", the second as \"20-bit block\", and to the third as \"16-bit\" block.",
+     "chunk_ids": [
+      "232abe62ef8627c2-0008-7166686b",
+      "232abe62ef8627c2-0009-f860e42a"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q059",
+   "question": "Which DHCP message does a client broadcast to locate servers?",
+   "kind": "answerable",
+   "topic": "transport",
+   "answers": [
+    {
+     "source": "rfc2131.txt",
+     "doc_id": "670d32a46fc40141",
+     "char_start": 31803,
+     "char_end": 31911,
+     "quote": "Message Use ------- --- DHCPDISCOVER - Client broadcast to locate available servers.",
+     "chunk_ids": [
+      "670d32a46fc40141-0042-3abebdef",
+      "670d32a46fc40141-0043-5dd1e67d"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q060",
+   "question": "May an HSTS host send the STS header field over plain HTTP?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc6797.txt",
+     "doc_id": "be7384fd8164e0d3",
+     "char_start": 38098,
+     "char_end": 38205,
+     "quote": "An HSTS Host MUST NOT include the STS header field in HTTP responses conveyed over non-secure transport.",
+     "chunk_ids": [
+      "be7384fd8164e0d3-0046-f12b2567",
+      "be7384fd8164e0d3-0047-37223415"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q061",
+   "question": "What must a user agent do if a TLS error occurs with a known HSTS host?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc6797.txt",
+     "doc_id": "be7384fd8164e0d3",
+     "char_start": 46599,
+     "char_end": 46904,
+     "quote": "Errors in Secure Transport Establishment When connecting to a Known HSTS Host, the UA MUST terminate the connection (see also Section 12 (\"User Agent Implementation Advice\")) if there are any errors, whether \"warning\" or \"fatal\" or any other error level, with the underlying secure transport.",
+     "chunk_ids": [
+      "be7384fd8164e0d3-0056-712a241d",
+      "be7384fd8164e0d3-0057-c0723d44"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q062",
+   "question": "Which string types must a conforming CA not use for explicitText?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc5280.txt",
+     "doc_id": "113d4fa04e1c0b24",
+     "char_start": 80419,
+     "char_end": 80499,
+     "quote": "Conforming CAs MUST NOT encode explicitText as VisibleString or BMPString.",
+     "chunk_ids": [
+      "113d4fa04e1c0b24-0109-5a472ceb"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q063",
+   "question": "When may a DistributionPointName not use nameRelativeToCRLIssuer?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc5280.txt",
+     "doc_id": "113d4fa04e1c0b24",
+     "char_start": 113032,
+     "char_end": 113174,
+     "quote": "The DistributionPointName MUST NOT use the nameRelativeToCRLIssuer alternative when cRLIssuer contains more than one distinguished name.",
+     "chunk_ids": [
+      "113d4fa04e1c0b24-0151-72434cd0"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q064",
+   "question": "How is an OCSP archive cutoff date computed?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc6960.txt",
+     "doc_id": "294018104b0ce268",
+     "char_start": 39894,
+     "char_end": 40056,
+     "quote": "The date obtained by subtracting this retention interval value from the producedAt time in a response is defined as the certificate's \"archive cutoff\" date.",
+     "chunk_ids": [
+      "294018104b0ce268-0051-0492716d"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q065",
+   "question": "When should an OCSP request be sent with POST rather than GET?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc6960.txt",
+     "doc_id": "294018104b0ce268",
+     "char_start": 57496,
+     "char_end": 57620,
+     "quote": "If HTTP caching is not important or if the request is greater than 255 bytes, the request SHOULD be submitted using POST.",
+     "chunk_ids": [
+      "294018104b0ce268-0073-f0a4a324"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q066",
+   "question": "How much expansion may a TLS 1.2 AEAD cipher produce?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc5246.txt",
+     "doc_id": "34c3cee32c3972ca",
+     "char_start": 51446,
+     "char_end": 51523,
+     "quote": "Each AEAD cipher MUST NOT produce an expansion of greater than 1024 bytes.",
+     "chunk_ids": [
+      "34c3cee32c3972ca-0069-8723b4b3"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q067",
+   "question": "When may an extension type appear in the ServerHello?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc5246.txt",
+     "doc_id": "34c3cee32c3972ca",
+     "char_start": 90964,
+     "char_end": 91093,
+     "quote": "An extension type MUST NOT appear in the ServerHello unless the same extension type appeared in the corresponding ClientHello.",
+     "chunk_ids": [
+      "34c3cee32c3972ca-0125-3fba6598"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q068",
+   "question": "How long was verify_data in TLS versions before 1.2?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc5246.txt",
+     "doc_id": "34c3cee32c3972ca",
+     "char_start": 129772,
+     "char_end": 129849,
+     "quote": "In previous versions of TLS, the verify_data was always 12 octets long.",
+     "chunk_ids": [
+      "34c3cee32c3972ca-0174-670b3fe7"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q069",
+   "question": "May a server resume a session when the server_name differs?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc6066.txt",
+     "doc_id": "5bda7f7c0b790e80",
+     "char_start": 15090,
+     "char_end": 15241,
+     "quote": "A server that implements this extension MUST NOT accept the request to resume the session if the server_name extension contains a different name.",
+     "chunk_ids": [
+      "5bda7f7c0b790e80-0021-9e5ddcbb"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q070",
+   "question": "How many bytes of HMAC output does the truncated HMAC extension send?",
+   "kind": "answerable",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc6066.txt",
+     "doc_id": "5bda7f7c0b790e80",
+     "char_start": 29069,
+     "char_end": 29202,
+     "quote": "That is, SecurityParameters.mac_length is 10 bytes, and only the first 10 bytes of the HMAC output are transmitted and checked.",
+     "chunk_ids": [
+      "5bda7f7c0b790e80-0039-90dcb9e5"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q071",
+   "question": "What are the maximum lengths of a single DNS label and of a complete domain name?",
+   "kind": "multi_chunk",
+   "topic": "DNS",
+   "answers": [
+    {
+     "source": "rfc1035.txt",
+     "doc_id": "00a6eaeedf8251c3",
+     "char_start": 63257,
+     "char_end": 63410,
+     "quote": "This allows a pointer to be distinguished from a label, since the label must begin with two zero bits because labels are restricted to 63 octets or less.",
+     "chunk_ids": [
+      "00a6eaeedf8251c3-0086-eef78950"
+     ]
+    },
+    {
+     "source": "rfc1035.txt",
+     "doc_id": "00a6eaeedf8251c3",
+     "char_start": 24489,
+     "char_end": 24633,
+     "quote": "To simplify implementations, the total length of a domain name (i.e., label octets and label length octets) is restricted to 255 octets or less.",
+     "chunk_ids": [
+      "00a6eaeedf8251c3-0034-ea1f195e",
+      "00a6eaeedf8251c3-0035-11e78135"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q072",
+   "question": "Which status codes apply to a malformed patch document and to a conflicting modification?",
+   "kind": "multi_chunk",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc5789.txt",
+     "doc_id": "fdd0f95d2dcc65e6",
+     "char_start": 10422,
+     "char_end": 10608,
+     "quote": "Malformed patch document: When the server determines that the patch document provided by the client is not properly formatted, it SHOULD return a 400 (Bad Request) response.",
+     "chunk_ids": [
+      "fdd0f95d2dcc65e6-0014-2b9a3c87"
+     ]
+    },
+    {
+     "source": "rfc5789.txt",
+     "doc_id": "fdd0f95d2dcc65e6",
+     "char_start": 12818,
+     "char_end": 13001,
+     "quote": "In cases when the server detects a possible conflicting modification and no precondition was defined in the request, the server can return a 409 (Conflict) response.",
+     "chunk_ids": [
+      "fdd0f95d2dcc65e6-0017-d8592a9b"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q073",
+   "question": "What are the maximum lengths of a TLSPlaintext fragment and of a TLSCiphertext record?",
+   "kind": "multi_chunk",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc8446.txt",
+     "doc_id": "d6212bf18f983699",
+     "char_start": 158986,
+     "char_end": 159024,
+     "quote": "The length MUST NOT exceed 2^14 bytes.",
+     "chunk_ids": [
+      "d6212bf18f983699-0212-317a1314"
+     ]
+    },
+    {
+     "source": "rfc8446.txt",
+     "doc_id": "d6212bf18f983699",
+     "char_start": 162900,
+     "char_end": 162950,
+     "quote": "The length MUST NOT exceed 2^14 + 256 bytes.",
+     "chunk_ids": [
+      "d6212bf18f983699-0217-13307cb0"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q074",
+   "question": "What UDP buffer does a 512-octet DNS payload need, and may a middlebox enforce that 512-byte limit?",
+   "kind": "multi_chunk",
+   "topic": "DNS",
+   "answers": [
+    {
+     "source": "rfc6891.txt",
+     "doc_id": "233a6afb03b6c8e1",
+     "char_start": 19484,
+     "char_end": 19563,
+     "quote": "Note that a 512-octet UDP payload requires a 576-octet IP reassembly buffer.",
+     "chunk_ids": [
+      "233a6afb03b6c8e1-0025-983ab7db"
+     ]
+    },
+    {
+     "source": "rfc6891.txt",
+     "doc_id": "233a6afb03b6c8e1",
+     "char_start": 22271,
+     "char_end": 22347,
+     "quote": "Conformant middleboxes MUST NOT limit DNS messages over UDP to 512 bytes.",
+     "chunk_ids": [
+      "233a6afb03b6c8e1-0028-78397948"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q075",
+   "question": "What is HTTP/2's maximum flow-control window, and which error code signals a violation of it?",
+   "kind": "multi_chunk",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9113.txt",
+     "doc_id": "ee54c341ef60ca93",
+     "char_start": 76197,
+     "char_end": 76350,
+     "quote": "Values above the maximum flow-control window size of 2^31-1 MUST be treated as a connection error (Section 5.4.1) of type FLOW_CONTROL_ERROR.",
+     "chunk_ids": [
+      "ee54c341ef60ca93-0096-f8526d4d",
+      "ee54c341ef60ca93-0097-dc59779f"
+     ]
+    },
+    {
+     "source": "rfc9113.txt",
+     "doc_id": "ee54c341ef60ca93",
+     "char_start": 104075,
+     "char_end": 104180,
+     "quote": "FLOW_CONTROL_ERROR (0x03): The endpoint detected that its peer violated the flow-control protocol.",
+     "chunk_ids": [
+      "ee54c341ef60ca93-0134-371b9f8f"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q076",
+   "question": "How do DNS over TLS and DNS over HTTPS each identify themselves, by port and by media type?",
+   "kind": "multi_chunk",
+   "topic": "DNS",
+   "answers": [
+    {
+     "source": "rfc7858.txt",
+     "doc_id": "e78ae3ad02690f01",
+     "char_start": 7966,
+     "char_end": 8200,
+     "quote": "Session Initiation By default, a DNS server that supports DNS over TLS MUST listen for and accept TCP connections on port 853, unless it has mutual agreement with its clients to use a port other than 853 for DNS over TLS.",
+     "chunk_ids": [
+      "e78ae3ad02690f01-0011-54f2d71a",
+      "e78ae3ad02690f01-0012-ec2bb229"
+     ]
+    },
+    {
+     "source": "rfc8484.txt",
+     "doc_id": "b7f4744ef39cc3ea",
+     "char_start": 20250,
+     "char_end": 20398,
+     "quote": "Content Negotiation In order to maximize interoperability, DoH clients and DoH servers MUST support the \"application/dns-message\" media type.",
+     "chunk_ids": [
+      "b7f4744ef39cc3ea-0027-ce7be92c",
+      "b7f4744ef39cc3ea-0028-60105cf3"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q077",
+   "question": "How many roles does OAuth 2.0 define, and what authorization code lifetime does it recommend?",
+   "kind": "multi_chunk",
+   "topic": "auth",
+   "answers": [
+    {
+     "source": "rfc6749.txt",
+     "doc_id": "fc938047bdb0c70e",
+     "char_start": 13898,
+     "char_end": 14020,
+     "quote": "Roles OAuth defines four roles: resource owner An entity capable of granting access to a protected resource.",
+     "chunk_ids": [
+      "fc938047bdb0c70e-0017-778def04",
+      "fc938047bdb0c70e-0018-1ef59895"
+     ]
+    },
+    {
+     "source": "rfc6749.txt",
+     "doc_id": "fc938047bdb0c70e",
+     "char_start": 58628,
+     "char_end": 58713,
+     "quote": "A maximum authorization code lifetime of 10 minutes is RECOMMENDED.",
+     "chunk_ids": [
+      "fc938047bdb0c70e-0078-d1a3f301"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q078",
+   "question": "What do the 410 and 411 status codes each indicate?",
+   "kind": "multi_chunk",
+   "topic": "HTTP",
+   "answers": [
+    {
+     "source": "rfc9110.txt",
+     "doc_id": "3f9054029f235d46",
+     "char_start": 360530,
+     "char_end": 360715,
+     "quote": "410 Gone The 410 (Gone) status code indicates that access to the target resource is no longer available at the origin server and that this condition is likely to be permanent.",
+     "chunk_ids": [
+      "3f9054029f235d46-0475-9519bc93"
+     ]
+    },
+    {
+     "source": "rfc9110.txt",
+     "doc_id": "3f9054029f235d46",
+     "char_start": 361673,
+     "char_end": 361844,
+     "quote": "411 Length Required The 411 (Length Required) status code indicates that the server refuses to accept the request without a defined Content-Length (Section 8.6).",
+     "chunk_ids": [
+      "3f9054029f235d46-0476-6ab76412",
+      "3f9054029f235d46-0477-039ecbfc"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q079",
+   "question": "What default send MSS must a TCP assume for IPv4, and what minimum reassembly buffer must the host support?",
+   "kind": "multi_chunk",
+   "topic": "transport",
+   "answers": [
+    {
+     "source": "rfc9293.txt",
+     "doc_id": "33f144791046a49f",
+     "char_start": 82483,
+     "char_end": 82660,
+     "quote": "If an MSS Option is not received at connection setup, TCP implementations MUST assume a default send MSS of 536 (576 - 40) for IPv4 or 1220 (1280 - 60) for IPv6 (MUST-15).",
+     "chunk_ids": [
+      "33f144791046a49f-0113-b5a03d89",
+      "33f144791046a49f-0114-f8d83f42"
+     ]
+    },
+    {
+     "source": "rfc1122.txt",
+     "doc_id": "d47504ce429bd618",
+     "char_start": 135775,
+     "char_end": 135967,
+     "quote": "EMTU_R MUST be greater than or equal to 576, SHOULD be either configurable or indefinite, and SHOULD be greater than or equal to the MTU of the connected network(s).",
+     "chunk_ids": [
+      "d47504ce429bd618-0181-a07afca6"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q080",
+   "question": "What are the HSTS rules for sending the STS header and for handling TLS errors?",
+   "kind": "multi_chunk",
+   "topic": "TLS",
+   "answers": [
+    {
+     "source": "rfc6797.txt",
+     "doc_id": "be7384fd8164e0d3",
+     "char_start": 38098,
+     "char_end": 38205,
+     "quote": "An HSTS Host MUST NOT include the STS header field in HTTP responses conveyed over non-secure transport.",
+     "chunk_ids": [
+      "be7384fd8164e0d3-0046-f12b2567",
+      "be7384fd8164e0d3-0047-37223415"
+     ]
+    },
+    {
+     "source": "rfc6797.txt",
+     "doc_id": "be7384fd8164e0d3",
+     "char_start": 46599,
+     "char_end": 46904,
+     "quote": "Errors in Secure Transport Establishment When connecting to a Known HSTS Host, the UA MUST terminate the connection (see also Section 12 (\"User Agent Implementation Advice\")) if there are any errors, whether \"warning\" or \"fatal\" or any other error level, with the underlying secure transport.",
+     "chunk_ids": [
+      "be7384fd8164e0d3-0056-712a241d",
+      "be7384fd8164e0d3-0057-c0723d44"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "q081",
+   "question": "How does QUIC handle connection migration when a client's address changes?",
+   "kind": "unanswerable",
+   "topic": "QUIC",
+   "answers": [],
+   "absent_terms": [
+    "connection migration",
+    "preferred_address"
+   ]
+  },
+  {
+   "id": "q082",
+   "question": "Which algorithm does HTTP/3 use to compress header fields?",
+   "kind": "unanswerable",
+   "topic": "HTTP/3",
+   "answers": [],
+   "absent_terms": [
+    "QPACK"
+   ]
+  },
+  {
+   "id": "q083",
+   "question": "Why must a WebSocket client mask the frames it sends?",
+   "kind": "unanswerable",
+   "topic": "WebSocket",
+   "answers": [],
+   "absent_terms": [
+    "masking key",
+    "masking-key",
+    "mask the frame"
+   ]
+  },
+  {
+   "id": "q084",
+   "question": "How does IPv6 stateless address autoconfiguration build an address?",
+   "kind": "unanswerable",
+   "topic": "IPv6",
+   "answers": [],
+   "absent_terms": [
+    "stateless address autoconfiguration",
+    "SLAAC"
+   ]
+  },
+  {
+   "id": "q085",
+   "question": "What does an IPv6 Router Advertisement announce about a prefix?",
+   "kind": "unanswerable",
+   "topic": "IPv6",
+   "answers": [],
+   "absent_terms": [
+    "Router Advertisement",
+    "prefix information"
+   ]
+  },
+  {
+   "id": "q086",
+   "question": "What is the AS_PATH attribute used for in BGP?",
+   "kind": "unanswerable",
+   "topic": "BGP",
+   "answers": [],
+   "absent_terms": [
+    "AS_PATH",
+    "autonomous system path",
+    "BGP"
+   ]
+  },
+  {
+   "id": "q087",
+   "question": "How does OSPF flood link-state advertisements?",
+   "kind": "unanswerable",
+   "topic": "OSPF",
+   "answers": [],
+   "absent_terms": [
+    "OSPF",
+    "link-state",
+    "link state advertisement"
+   ]
+  },
+  {
+   "id": "q088",
+   "question": "Which default port does CoAP use?",
+   "kind": "unanswerable",
+   "topic": "CoAP",
+   "answers": [],
+   "absent_terms": [
+    "CoAP",
+    "Constrained Application Protocol"
+   ]
+  },
+  {
+   "id": "q089",
+   "question": "What quality-of-service levels does MQTT define?",
+   "kind": "unanswerable",
+   "topic": "MQTT",
+   "answers": [],
+   "absent_terms": [
+    "MQTT"
+   ]
+  },
+  {
+   "id": "q090",
+   "question": "How does gRPC frame messages on top of HTTP/2?",
+   "kind": "unanswerable",
+   "topic": "gRPC",
+   "answers": [],
+   "absent_terms": [
+    "gRPC"
+   ]
+  },
+  {
+   "id": "q091",
+   "question": "How does WebRTC gather ICE candidates?",
+   "kind": "unanswerable",
+   "topic": "WebRTC",
+   "answers": [],
+   "absent_terms": [
+    "WebRTC",
+    "ICE candidate",
+    "interactive connectivity"
+   ]
+  },
+  {
+   "id": "q092",
+   "question": "How does SCTP set up an association with a four-way handshake?",
+   "kind": "unanswerable",
+   "topic": "SCTP",
+   "answers": [],
+   "absent_terms": [
+    "INIT chunk",
+    "COOKIE ECHO",
+    "SCTP association"
+   ]
+  },
+  {
+   "id": "q093",
+   "question": "What is an IA_NA in DHCPv6?",
+   "kind": "unanswerable",
+   "topic": "DHCPv6",
+   "answers": [],
+   "absent_terms": [
+    "IA_NA",
+    "identity association"
+   ]
+  },
+  {
+   "id": "q094",
+   "question": "Which ICMPv6 message performs neighbour discovery?",
+   "kind": "unanswerable",
+   "topic": "ICMPv6",
+   "answers": [],
+   "absent_terms": [
+    "Neighbor Solicitation",
+    "neighbour solicitation"
+   ]
+  },
+  {
+   "id": "q095",
+   "question": "Which multicast address and port does mDNS use?",
+   "kind": "unanswerable",
+   "topic": "mDNS",
+   "answers": [],
+   "absent_terms": [
+    "224.0.0.251",
+    "5353"
+   ]
+  },
+  {
+   "id": "q096",
+   "question": "What does the IMAP IDLE command do?",
+   "kind": "unanswerable",
+   "topic": "IMAP",
+   "answers": [],
+   "absent_terms": [
+    "IMAP IDLE",
+    "IDLE command"
+   ]
+  },
+  {
+   "id": "q097",
+   "question": "How does an SSH client verify a server's host key?",
+   "kind": "unanswerable",
+   "topic": "SSH",
+   "answers": [],
+   "absent_terms": [
+    "host key",
+    "known_hosts"
+   ]
+  },
+  {
+   "id": "q098",
+   "question": "What does an NTP stratum number mean?",
+   "kind": "unanswerable",
+   "topic": "NTP",
+   "answers": [],
+   "absent_terms": [
+    "stratum"
+   ]
+  },
+  {
+   "id": "q099",
+   "question": "What does TLS Encrypted Client Hello conceal?",
+   "kind": "unanswerable",
+   "topic": "TLS",
+   "answers": [],
+   "absent_terms": [
+    "Encrypted Client Hello",
+    "encrypted_client_hello",
+    "ECHConfig"
+   ]
+  },
+  {
+   "id": "q100",
+   "question": "How does FTP passive mode open a data connection?",
+   "kind": "unanswerable",
+   "topic": "FTP",
+   "answers": [],
+   "absent_terms": [
+    "passive mode",
+    "PASV"
+   ]
+  }
+ ]
+}
