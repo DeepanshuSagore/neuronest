@@ -30,13 +30,17 @@ costs and what it buys are both visible.
 """
 
 import argparse
+import hashlib
 import json
+import subprocess
 import time
 from collections.abc import Sequence
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from neuronest import __version__
 from neuronest.config import settings
 from neuronest.embed.cache import CachingEmbedder, EmbeddingCache
 from neuronest.embed.local import LocalEmbedder
@@ -86,6 +90,119 @@ class Metrics:
     count: int
     recall: dict[int, float]
     mrr: float
+
+
+@dataclass(frozen=True)
+class RunConfig:
+    """Everything that decides the numbers in a result file.
+
+    A recall figure on its own is not a measurement of anything — Recall@5 of
+    0.73 is a different claim under a different model, a different chunk size or
+    a different corpus, and six months later nobody can tell which one produced
+    the number in the README. Every field here is an input the numbers depend
+    on, and the digests are what make "the same corpus" checkable rather than
+    assumed: change one byte of one document and the stamp no longer matches the
+    result that was published from it.
+    """
+
+    neuronest: str
+    git_commit: str | None
+    git_dirty: bool | None
+    embedding_model: str
+    embedding_dimensions: int
+    chunker: str
+    chunk_size: int
+    chunk_overlap: int
+    fingerprint: str
+    matches_labelled_reference: bool
+    top_k: int
+    score_threshold: float
+    collection: str
+    corpus_documents: int
+    corpus_chunks: int
+    corpus_sha256: str
+    questions_sha256: str
+    questions_counts: dict[str, int]
+
+    def as_json(self) -> dict[str, Any]:
+        return {
+            "neuronest": self.neuronest,
+            "git_commit": self.git_commit,
+            "git_dirty": self.git_dirty,
+            "embedding": {
+                "model": self.embedding_model,
+                "dimensions": self.embedding_dimensions,
+            },
+            "chunking": {
+                "strategy": self.chunker,
+                "chunk_size": self.chunk_size,
+                "chunk_overlap": self.chunk_overlap,
+                "fingerprint": self.fingerprint,
+                "matches_labelled_reference": self.matches_labelled_reference,
+            },
+            "retrieval": {
+                "top_k": self.top_k,
+                "score_threshold": self.score_threshold,
+                # Stated rather than implied: the metrics below are unfiltered,
+                # and a reader who assumed otherwise would misread every one.
+                "threshold_applied_to_metrics": False,
+                "collection": self.collection,
+            },
+            "corpus": {
+                "path": str(CORPUS.relative_to(EVAL.parent)),
+                "documents": self.corpus_documents,
+                "chunks": self.corpus_chunks,
+                "sha256": self.corpus_sha256,
+            },
+            "questions": {
+                "path": str(QUESTIONS.relative_to(EVAL.parent)),
+                "sha256": self.questions_sha256,
+                "counts": self.questions_counts,
+            },
+        }
+
+
+def digest_of(paths: Sequence[Path]) -> str:
+    """One sha256 over a set of files, stable across machines and orderings."""
+    running = hashlib.sha256()
+    for path in sorted(paths):
+        running.update(path.name.encode("utf-8"))
+        running.update(hashlib.sha256(path.read_bytes()).digest())
+    return running.hexdigest()
+
+
+def git_state() -> tuple[str | None, bool | None]:
+    """The commit this ran at, and whether the tree was dirty.
+
+    A dirty tree means the result cannot be reproduced from the recorded commit
+    alone, which is worth knowing later and impossible to reconstruct then.
+    """
+    def run(*command: str) -> str:
+        completed = subprocess.run(
+            command, capture_output=True, text=True, check=True, cwd=EVAL.parent
+        )
+        return completed.stdout.strip()
+
+    try:
+        # Tracked files only. Untracked ones do not change what the code did,
+        # and counting them would mark every run dirty for the result file it
+        # is about to write.
+        modified = run("git", "status", "--porcelain", "--untracked-files=no")
+        return run("git", "rev-parse", "HEAD"), bool(modified)
+    except (OSError, subprocess.CalledProcessError):
+        return None, None
+
+
+def write_result(path: Path, config: RunConfig, run: dict[str, Any], body: dict[str, Any]) -> None:
+    """Write a result file. ``config`` is required, and that is the whole point.
+
+    This is the only way a result gets written, so there is no path through the
+    program that produces an unstamped one — the omission is a type error rather
+    than something to remember.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {"config": config.as_json(), "run": run, **body}
+    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
 def load_questions(path: Path) -> tuple[dict[str, Any], list[Question]]:
@@ -278,39 +395,64 @@ def main() -> int:
         f"({query_seconds / len(questions) * 1000:.0f} ms each)\n"
     )
 
+    commit, dirty = git_state()
+    config = RunConfig(
+        neuronest=__version__,
+        git_commit=commit,
+        git_dirty=dirty,
+        embedding_model=embedder.model_name,
+        embedding_dimensions=embedder.dimensions,
+        chunker=chunker.fingerprint.split("-", 1)[0],
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+        fingerprint=chunker.fingerprint,
+        matches_labelled_reference=chunker.fingerprint == str(reference["fingerprint"]),
+        top_k=top_k,
+        score_threshold=threshold,
+        collection=store.collection_name,
+        corpus_documents=documents,
+        corpus_chunks=chunks,
+        corpus_sha256=digest_of(sorted(CORPUS.glob("*.txt"))),
+        questions_sha256=hashlib.sha256(QUESTIONS.read_bytes()).hexdigest(),
+        questions_counts={str(key): int(value) for key, value in data["counts"].items()},
+    )
+    run = {
+        "timestamp": datetime.now(UTC).isoformat(timespec="seconds"),
+        "index_build_seconds": round(index_seconds, 1),
+        "query_mean_ms": round(query_seconds / len(questions) * 1000, 1),
+        "embedding_cache_hit_rate": round(embedder.stats.hit_rate, 4),
+    }
+
     out: Path = args.out or RESULTS / (
         f"retrieval-{embedder.model_name.split('/')[-1].lower()}-{chunker.fingerprint}.json"
     )
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(
-        json.dumps(
-            {
-                "metrics": {name: as_json(metrics) for name, metrics in cohorts},
-                "threshold": {
-                    "value": threshold,
-                    "labelled_above": above,
-                    "labelled_total": len(labelled),
-                    "unanswerable_empty": empty,
-                    "unanswerable_total": len(unanswerable),
-                },
-                "questions": [
-                    {
-                        "id": outcome.question.id,
-                        "kind": outcome.question.kind,
-                        "topic": outcome.question.topic,
-                        "coverage_rank": outcome.coverage_rank,
-                        "top_score": (
-                            None if outcome.top_score is None else round(outcome.top_score, 4)
-                        ),
-                        "retrieved": list(outcome.retrieved),
-                    }
-                    for outcome in outcomes
-                ],
+    write_result(
+        out,
+        config,
+        run,
+        {
+            "metrics": {name: as_json(metrics) for name, metrics in cohorts},
+            "threshold": {
+                "value": threshold,
+                "labelled_above": above,
+                "labelled_total": len(labelled),
+                "unanswerable_empty": empty,
+                "unanswerable_total": len(unanswerable),
             },
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
+            "questions": [
+                {
+                    "id": outcome.question.id,
+                    "kind": outcome.question.kind,
+                    "topic": outcome.question.topic,
+                    "coverage_rank": outcome.coverage_rank,
+                    "top_score": (
+                        None if outcome.top_score is None else round(outcome.top_score, 4)
+                    ),
+                    "retrieved": list(outcome.retrieved),
+                }
+                for outcome in outcomes
+            ],
+        },
     )
     print(f"  written to {out.relative_to(Path.cwd()) if out.is_absolute() else out}\n")
 
