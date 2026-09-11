@@ -15,8 +15,9 @@ services:
     volumes:
       - index:/data
 
-    # Optional, and absent on a fresh clone. Nothing in this phase needs a key:
-    # ingestion and retrieval are local, and generation arrives in phase 10.
+    # Optional, and absent on a fresh clone. The service runs without it —
+    # ingestion, retrieval and refusal are all local. A GROQ_API_KEY here is
+    # what turns the retrieved passages into a written answer.
     env_file:
       - path: .env.local
         required: false

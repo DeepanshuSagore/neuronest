@@ -18,9 +18,9 @@ cd neuronest
 docker compose up
 ```
 
-That is all of it. No Python, no `uv`, no API key — ingestion and retrieval run locally, and the
-model weights ship inside the image, so the first request does not wait on a download. The API comes
-up on [localhost:8000](http://localhost:8000) with interactive docs at
+That is all of it. No Python, no `uv`, no account — ingestion, retrieval and refusal all run locally,
+and the model weights ship inside the image, so the first request does not wait on a download. The
+API comes up on [localhost:8000](http://localhost:8000) with interactive docs at
 [/docs](http://localhost:8000/docs).
 
 ```bash
@@ -28,6 +28,17 @@ curl -X POST localhost:8000/ingest -F "file=@paper.pdf"
 curl -X POST localhost:8000/query -H 'Content-Type: application/json' \
   -d '{"question":"What does the paper claim about scaling laws?"}'
 ```
+
+Writing an answer out of those passages is the one step that calls a hosted model. Put a free
+[Groq](https://console.groq.com) key in `.env.local` — which is gitignored, and which compose passes
+through — and `/query` comes back with a written, cited answer:
+
+```bash
+echo 'GROQ_API_KEY=your-key-here' >> .env.local
+```
+
+Without one, everything else still works: the service ingests, retrieves and refuses, and `/query`
+returns the passages with a note saying why there is no written answer.
 
 The index lives in a named volume, so it survives `docker compose down`. To throw it away, either
 empty the corpus through the API with `curl -X DELETE localhost:8000/corpus`, or take the volume
@@ -147,21 +158,46 @@ curl -X POST localhost:8000/query \
 
 ```json
 {"question": "What does the paper claim about scaling laws?",
+ "answer": "Loss falls as a power law in model size, dataset size and compute [1].",
  "passages": [{"chunk_id": "5d87034c...-0000-210c6428", "source_path": "corpus/scaling-laws.md",
                "char_start": 0, "char_end": 310, "score": 0.53, "rank": 1,
                "text": "Loss scales as a power law with model size, dataset size and compute..."}],
- "refused": false, "score_threshold": 0.25}
+ "refused": false, "note": null, "score_threshold": 0.25}
 ```
 
-Ask something the corpus does not cover and you get an empty result, not the least-bad passage:
+The bracketed numbers are passage ranks: `[1]` is the passage listed at rank 1, so every claim leads
+back to a chunk id you can go and read. The passages in the prompt are the model's only permitted
+source — it is not asked to answer the question, it is asked to answer it *from these*.
+
+There are two different ways to get no answer, and the response tells them apart.
+
+**Nothing was relevant enough.** No passage cleared the score threshold, so there was no evidence to
+reason over and the language model was never called at all:
+
+```json
+{"question": "Who won the 1998 World Cup final?",
+ "answer": null, "passages": [], "refused": true,
+ "note": "Nothing in the corpus was relevant enough to this question to answer from...",
+ "score_threshold": 0.25}
+```
+
+**Something was relevant, and it still did not contain the answer.** This is the harder case, and the
+one most services get wrong: the index finds passages on the right subject, because subject matter is
+all a vector search can see. Only the model can read them and notice the answer is not there.
 
 ```json
 {"question": "What was the training run's electricity bill?",
- "passages": [], "refused": true, "score_threshold": 0.25}
+ "answer": null, "passages": [{"score": 0.48, "rank": 1, "...": "..."}], "refused": true,
+ "note": "The retrieved passages do not contain an answer to this question...",
+ "score_threshold": 0.25}
 ```
 
-That is a `200`, not an error. Refusing is the behaviour this service exists to demonstrate — phase 10
-never calls the language model on a refusal, so it cannot invent an answer out of unrelated text.
+Both are a `200`, not an error. Refusing is the behaviour this service exists to demonstrate, and the
+passages come back either way because they are the evidence for the refusal.
+
+Add `"generate": false` to retrieve passages without answering. That is what the evaluation sweeps
+run: they measure retrieval over the whole question set many times, and generating an answer on every
+one would put a bill on a measurement that has to stay free to repeat.
 
 ### Operations
 
