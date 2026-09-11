@@ -7,8 +7,9 @@ the answer.
 **Live:** [nestneuroai.vercel.app](https://nestneuroai.vercel.app)
 
 > Early build. The sections below describe the target; commit history shows how far it has got.
-> The site is the landing page — the service behind it is still being built, and every figure it
-> shows is marked as not yet measured until the evaluation in phases 12-15 produces one.
+> Retrieval is measured — every figure in [Measured retrieval](#measured-retrieval) traces to a
+> checked-in result file. Faithfulness and refusal accuracy are not. The landing page marks
+> unmeasured figures rather than inventing them, and has not yet been filled in from this run.
 
 ## Quickstart
 
@@ -87,6 +88,78 @@ happened.
 Most RAG failures are retrieval failures that get blamed on the model. Telling those two apart
 requires numbers, and the numbers require a labelled set you did not write to flatter your current
 configuration.
+
+## Measured retrieval
+
+```bash
+uv run python eval/run_retrieval.py
+```
+
+`all-MiniLM-L6-v2`, fixed 1000/200 chunking, 40 documents, 5,810 chunks, k=10, no score threshold
+applied. Every figure below is read from
+[`eval/results/retrieval-all-minilm-l6-v2-fixed-1000-200.json`](eval/results/retrieval-all-minilm-l6-v2-fixed-1000-200.json),
+which carries the configuration and the corpus and question digests that produced it.
+
+| Cohort | n | Recall@1 | Recall@5 | Recall@10 | MRR |
+|---|---|---|---|---|---|
+| Answerable | 70 | 0.429 | 0.729 | 0.800 | 0.551 |
+| Answer needs two chunks | 10 | 0.000 | 0.200 | 0.400 | 0.112 |
+| All labelled | 80 | 0.375 | 0.662 | 0.750 | 0.496 |
+
+A question is scored correct when a retrieved passage **overlaps the labelled character span** — not
+when a chunk id matches, because chunk ids encode the chunker's settings and the chunking experiment
+changes them. For a two-chunk question the rank counted is the one at which *both* spans have been
+seen, which is why its Recall@1 is 0.000: that is arithmetic, not failure. One passage cannot cover
+two spans, so the earliest such a question can succeed is rank 2.
+
+Retrieval alone costs about 1 ms per query against a warm index. Building the index takes 42 s cold
+and 4.7 s once the embedding cache is populated, which is what makes re-running the sweep free.
+
+### The score threshold does nothing here, and that is the finding
+
+Out of 20 unanswerable questions, **0 retrieve nothing** at the configured threshold of 0.25. All 80
+labelled questions clear it too. The threshold is inert on this corpus:
+
+| | Weakest | Strongest |
+|---|---|---|
+| Top-1 score, labelled questions | **0.513** | 0.859 |
+| Top-1 score, unanswerable questions | 0.347 | **0.716** |
+
+The strongest unanswerable question scores well above the weakest answerable one, so **no threshold
+separates them**. 0.25 was not guessed — it was measured, but against a three-document sample where
+answerable questions scored 0.311–0.711 and absent subjects 0.004–0.180. On forty real documents that
+gap closes completely, because a question about QUIC still matches forty documents' worth of prose
+about HTTP over TCP.
+
+The practical consequence is that refusal currently rests entirely on the model declining to answer
+from passages that do not contain the answer, not on the score floor — which is the behaviour phase
+13 measures.
+
+### These numbers understate recall by a measured amount
+
+All 20 misses were read by hand, all ten retrieved passages each. In **6 of them retrieval returned
+the fact, from a location the label does not name**:
+
+- **q033** — "what size limit applies to DNS messages over UDP?" The label points at RFC 1035's
+  parameter table. Retrieval returned RFC 6891's prose, RFC 8484's quotation of the same rule, and
+  RFC 1035's own sentence stating it. Three correct answers, none of them the labelled one.
+- **q048** — "maximum length of a multipart boundary?" The label says *"no longer than 70
+  characters"*; retrieval returned *"consists of 1 to 70 characters"* from the same document.
+
+Counting those six as hits gives Recall@10 of 0.871 answerable and 0.825 overall. **The published
+numbers are the unadjusted ones.** The labels are not being edited to raise a score: the protocol in
+[`eval/README.md`](eval/README.md) says a question may be corrected for being *wrong*, not for being
+*hard*, and re-labelling only the questions that happened to miss would bias the set in exactly one
+direction. The bias is stated instead, and it is constant across the comparisons in phases 14 and 15,
+which score every configuration against these same labels.
+
+The other 14 are genuine retrieval failures — q001 asks what a 408 means and gets back the passage
+defining status-code *classes*; q022 asks how Basic auth builds its credential and gets OAuth client
+passwords from a different RFC entirely.
+
+Numbers reproduce: the index is rebuilt on every run, and four consecutive rebuilds produced
+identical metrics. Only the ordering of the retrieved tail for two *unanswerable* queries varies,
+because HNSW search is approximate; neither carries a label, so nothing above moves.
 
 ## Stack
 
@@ -226,6 +299,15 @@ uv sync          # create .venv and install dependencies
 uv run ruff check .
 uv run mypy
 uv run pytest
+```
+
+The evaluation set and its harness live in [`eval/`](eval), and neither needs an API key — the
+embedder runs locally and no answer is generated while scoring retrieval.
+
+```bash
+uv run python eval/validate_questions.py   # every label still points at the text it claims
+uv run python eval/run_retrieval.py        # Recall@k and MRR, table plus a stamped result file
+uv run python eval/build_corpus.py         # refetch the 40 documents from rfc-editor.org
 ```
 
 ## Licence
