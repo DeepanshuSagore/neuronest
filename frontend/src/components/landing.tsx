@@ -17,7 +17,13 @@ import { ArrowDownRight, ArrowRight, ArrowUpRight } from "lucide-react";
 import { Fragment, type ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
-import { METRICS_ARE_PLACEHOLDER, content, type Citation, type Metric } from "@/lib/content";
+import {
+  MEASURED_COUNT,
+  METRICS_ARE_PLACEHOLDER,
+  content,
+  type Citation,
+  type Metric,
+} from "@/lib/content";
 import { prefersReducedMotion, useAnimeScope } from "@/lib/motion";
 
 /**
@@ -1137,9 +1143,9 @@ function Refusal({ text }: { text: string }) {
  *
  * The column is fixed-width and tabular so `0.87`, `94%` and `412 ms` all
  * drop into the space the em dash is already holding open — no reflow when
- * the evaluation finally runs. Unmeasured cells are set in the blueline: on a
- * press a blue proof is what you pull *before* the real run, which is exactly
- * the status of every number here.
+ * each evaluation runs. Unmeasured cells are set in the blueline: on a press a
+ * blue proof is what you pull *before* the real run, which is the status of
+ * whichever figures have not been measured yet.
  */
 function MetricValue({ value }: { value: string }) {
   const measured = parseFigure(value) !== null;
@@ -1176,15 +1182,17 @@ function MetricBlock({
   title,
   question,
   rows,
+  note,
 }: {
   index: string;
   title: string;
   question: string;
   rows: readonly Metric[];
+  note: string;
 }) {
   return (
-    <Plate tone="flag" drop="md" className="h-full">
-      <figure className="m-0 h-full">
+    <Plate tone="flag" drop="md" className="h-full" sheetClassName="flex h-full flex-col">
+      <figure className="m-0 flex h-full flex-col">
         <figcaption className="pr-edge-b-2 bg-[var(--pr-ink)] px-5 py-4 text-[var(--pr-stock)] sm:px-7 sm:py-5">
           <div className="flex items-center gap-3">
             <span className={clsx(MONO, "text-[11px] font-bold tabular-nums")}>{index}</span>
@@ -1219,6 +1227,10 @@ function MetricBlock({
             </li>
           ))}
         </ul>
+
+        <p className="mt-auto px-5 pt-5 pb-6 text-[12px] leading-[1.55] text-[var(--pr-ink-2)] sm:px-7 sm:pb-7 sm:text-[12.5px]">
+          {note}
+        </p>
       </figure>
     </Plate>
   );
@@ -1244,11 +1256,12 @@ function ProofNotice() {
           Blueline proof
         </span>
         <p className="text-[13px] leading-[1.6] text-[var(--pr-ink-2)] sm:text-[13.5px]">
-          The evaluation run has not been executed. Every cell marked{" "}
+          Retrieval has been measured against the labelled set. The generation half has not, and
+          every cell still marked{" "}
           <span className={clsx(MONO, "font-bold text-[var(--pr-proof)]")}>PR</span> is empty on
           purpose rather than plausible — a placeholder number is the kind that survives review and
-          ends up in a README. Each column is already sized for the figure that will replace it, so
-          nothing on this page moves when the numbers land.
+          ends up in a README. Each column was already sized for the figure that replaces it, so
+          nothing on this page moved when the first numbers landed.
         </p>
       </div>
     </div>
@@ -1739,15 +1752,15 @@ export default function LandingPage() {
           id="results"
           number="03"
           slug="Results"
-          note={`${MEASURE_COUNT} measures · not yet run`}
+          note={`${MEASURED_COUNT} of ${MEASURE_COUNT} measures run`}
           title={content.results.heading}
           deck={content.results.blurb}
           asideLabel="Status"
           aside={
             <>
-              Not measured yet. These cells are deliberately empty rather than plausible, and the
-              notice below is driven by the same flag that fills them — so wiring the real results
-              in is what takes the disclaimer down.
+              Retrieval is measured; generation is not. The cells that have not been run stay empty
+              rather than plausible, and the notice below is driven by the cells themselves — so
+              filling the rest in is what takes the disclaimer down.
             </>
           }
         >
@@ -1760,12 +1773,14 @@ export default function LandingPage() {
                 title="Retrieval"
                 question="Does the right passage come back at all?"
                 rows={content.results.retrieval}
+                note={content.results.retrievalNote}
               />
               <MetricBlock
                 index="TABLE 3.2"
                 title="Generation"
                 question="Given the right passage, is the answer honest about it?"
                 rows={content.results.generation}
+                note={content.results.generationNote}
               />
             </div>
 

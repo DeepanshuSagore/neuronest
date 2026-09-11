@@ -31,14 +31,12 @@ export type Citation = {
 };
 
 /**
- * Placeholder until phases 12-15 actually run.
+ * The value a figure carries until it has actually been measured.
  *
- * The spec is explicit that every published number traces to a checked-in
- * result file, so these are deliberately flagged rather than plausible. Wiring
- * the real eval output here is what removes the banner in the UI — nobody
- * should have to remember to take fake numbers down.
+ * Named rather than an inline em dash because the placeholder flag below is
+ * derived from it: a cell is a proof exactly while it still holds this.
  */
-export const METRICS_ARE_PLACEHOLDER = true;
+const PROOF = "—";
 
 export const content = {
   brand: {
@@ -107,17 +105,21 @@ export const content = {
     blurb:
       "Retrieval quality and generation quality are scored separately against 100 hand-labelled questions written before any tuning happened. Most RAG failures are retrieval failures blamed on the model; these numbers tell the two apart.",
     retrieval: [
-      { label: "Recall@1", value: "—", caption: "correct chunk ranked first" },
-      { label: "Recall@5", value: "—", caption: "correct chunk in top five" },
-      { label: "Recall@10", value: "—", caption: "correct chunk in top ten" },
-      { label: "MRR", value: "—", caption: "mean reciprocal rank" },
+      { label: "Recall@1", value: "0.429", caption: "labelled passage ranked first" },
+      { label: "Recall@5", value: "0.729", caption: "labelled passage in the top five" },
+      { label: "Recall@10", value: "0.800", caption: "labelled passage in the top ten" },
+      { label: "MRR", value: "0.551", caption: "mean reciprocal rank" },
     ] satisfies Metric[],
+    retrievalNote:
+      "Over the 70 answerable questions: all-MiniLM-L6-v2, 1000/200 chunking, k=10, no threshold. The ten questions whose answer needs two separate passages score 0.400 at Recall@10, and a hand audit found six more where retrieval was right but the label named a different passage stating the same fact. Both are in the README, with the result file every figure is read from.",
     generation: [
-      { label: "Faithfulness", value: "—", caption: "claims supported by sources" },
-      { label: "Refusal accuracy", value: "—", caption: "on 20 unanswerable questions" },
-      { label: "Judge agreement", value: "—", caption: "LLM judge vs. hand-checked sample" },
-      { label: "p95 latency", value: "—", caption: "retrieval and generation, split" },
+      { label: "Faithfulness", value: PROOF, caption: "claims supported by sources" },
+      { label: "Refusal accuracy", value: PROOF, caption: "on 20 unanswerable questions" },
+      { label: "Judge agreement", value: PROOF, caption: "LLM judge vs. hand-checked sample" },
+      { label: "p95 latency", value: PROOF, caption: "retrieval and generation, split" },
     ] satisfies Metric[],
+    generationNote:
+      "Not run yet. These four stay empty rather than plausible until the judge has been written and checked against a hand-scored sample.",
   },
 
   evaluation: {
@@ -144,3 +146,20 @@ export const content = {
 } as const;
 
 export type Content = typeof content;
+
+/**
+ * True while any published figure is still a proof rather than a measurement.
+ *
+ * Derived from the table rather than set by hand. Retrieval has been measured
+ * and generation has not, and a boolean somebody has to remember to flip is
+ * exactly how a disclaimer outlives the thing it was disclaiming.
+ */
+export const METRICS_ARE_PLACEHOLDER = [
+  ...content.results.retrieval,
+  ...content.results.generation,
+].some((metric) => metric.value === PROOF);
+
+export const MEASURED_COUNT = [
+  ...content.results.retrieval,
+  ...content.results.generation,
+].filter((metric) => metric.value !== PROOF).length;
