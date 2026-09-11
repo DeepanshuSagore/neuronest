@@ -73,31 +73,39 @@ def client(tmp_path: Path) -> Iterator[TestClient]:
         yield test_client
 
 
-def answering_client(tmp_path: Path, content: str) -> TestClient:
-    """A client whose generator returns ``content``, without leaving the process."""
+def answering_client(
+    tmp_path: Path, content: str, seen: list[httpx.Request] | None = None
+) -> TestClient:
+    """A client whose generator returns ``content``, without leaving the process.
+
+    ``seen`` collects the requests that reached the transport, which is how a
+    test asserts that no call was made at all.
+    """
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if seen is not None:
+            seen.append(request)
+        return httpx.Response(
+            200,
+            json={
+                "id": "chatcmpl-test",
+                "object": "chat.completion",
+                "created": 0,
+                "model": "test-model",
+                "choices": [
+                    {
+                        "index": 0,
+                        "message": {"role": "assistant", "content": content},
+                        "finish_reason": "stop",
+                    }
+                ],
+            },
+        )
+
     groq = Groq(
         api_key="test-key",
         max_retries=0,
-        http_client=httpx.Client(
-            transport=httpx.MockTransport(
-                lambda _request: httpx.Response(
-                    200,
-                    json={
-                        "id": "chatcmpl-test",
-                        "object": "chat.completion",
-                        "created": 0,
-                        "model": "test-model",
-                        "choices": [
-                            {
-                                "index": 0,
-                                "message": {"role": "assistant", "content": content},
-                                "finish_reason": "stop",
-                            }
-                        ],
-                    },
-                )
-            )
-        ),
+        http_client=httpx.Client(transport=httpx.MockTransport(handler)),
     )
     services = Services(
         embedder=KeywordEmbedder(),
@@ -247,6 +255,20 @@ def test_retrieval_only_queries_do_not_generate(tmp_path: Path) -> None:
     assert payload["answer"] is None
     assert payload["note"] is None
     assert payload["passages"] != []
+
+
+def test_an_absent_topic_never_reaches_the_model(tmp_path: Path) -> None:
+    """A refusal costs nothing: the transport sees no request at all."""
+    seen: list[httpx.Request] = []
+    with answering_client(tmp_path, "This answer should never be produced.", seen) as answering:
+        upload(answering, "alpha.md", "alpha alpha alpha")
+
+        payload = answering.post("/query", json={"question": "gamma"}).json()
+
+    assert seen == []
+    assert payload["refused"] is True
+    assert payload["passages"] == []
+    assert payload["answer"] is None
 
 
 def test_without_a_key_the_passages_still_come_back(client: TestClient) -> None:

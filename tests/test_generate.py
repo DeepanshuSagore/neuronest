@@ -175,6 +175,31 @@ def test_an_empty_completion_is_not_an_answer() -> None:
     assert "length" in (result.note or "")
 
 
+def test_an_empty_retrieval_never_reaches_the_model(recorded: list[httpx.Request]) -> None:
+    """The refusal the whole service is built around, and it costs nothing.
+
+    Asserted on the transport: with no passages there is no HTTP request at
+    all, so the model cannot have invented an answer out of unrelated text
+    and no tokens were spent discovering that.
+    """
+    generator = generator_over(recording(recorded))
+
+    result = generator.generate("What is the relay operator payroll schedule?", [])
+
+    assert recorded == []
+    assert result.refused is True
+    assert result.answer is None
+    assert result.note is not None
+
+
+def test_refusing_needs_no_key_either(recorded: list[httpx.Request]) -> None:
+    """Retrieving nothing is a complete answer, so a missing key cannot mask it."""
+    result = Generator(api_key="").generate("What is the payroll schedule?", [])
+
+    assert result.refused is True
+    assert "corpus" in (result.note or "")
+
+
 def test_without_a_key_it_says_so_instead_of_answering() -> None:
     """A blank key is a supported state: everything but this step still works."""
     generator = Generator(api_key="", model_name="test-model")

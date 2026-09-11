@@ -141,7 +141,7 @@ def create_app(services: Services | None = None) -> FastAPI:
         note: str | None = None
         refused = not results
 
-        if request.generate and results:
+        if request.generate:
             generated = services.generator.generate(request.question, results)
             answer = generated.answer
             note = generated.note

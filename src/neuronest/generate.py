@@ -65,6 +65,10 @@ SYSTEM_PROMPT = (
     "- Answer in at most four sentences."
 )
 
+NO_EVIDENCE_NOTE = (
+    "Nothing in the corpus was relevant enough to this question to answer from, "
+    "so no answer was generated."
+)
 NO_KEY_NOTE = (
     "Generation is unavailable: GROQ_API_KEY is not configured. "
     "The retrieved passages are below."
@@ -133,7 +137,18 @@ class Generator:
         return self._client
 
     def generate(self, question: str, passages: Sequence[RetrievedChunk]) -> GeneratedAnswer:
-        """Answer ``question`` from ``passages`` and nothing else."""
+        """Answer ``question`` from ``passages`` and nothing else.
+
+        No passages means no call. The guarantee lives here rather than at the
+        call site because it is a property of answering only from retrieved
+        context: with nothing retrieved there is nothing this is permitted to
+        answer from, so there is no prompt worth building. A caller that
+        forgets the check does not get a bill and an invented answer — it gets
+        the refusal.
+        """
+        if not passages:
+            return GeneratedAnswer(answer=None, refused=True, note=NO_EVIDENCE_NOTE)
+
         if not self.available:
             return GeneratedAnswer(answer=None, refused=False, note=NO_KEY_NOTE)
 
