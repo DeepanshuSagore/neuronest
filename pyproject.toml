@@ -133,7 +133,7 @@ select = [
 
 [tool.mypy]
 python_version = "3.12"
-files = ["src", "tests"]
+files = ["src", "tests", "eval"]
 strict = true
 warn_unreachable = true
 extra_checks = true
