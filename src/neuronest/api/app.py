@@ -124,17 +124,33 @@ def create_app(services: Services | None = None) -> FastAPI:
 
     @app.post("/query", response_model=QueryResponse, tags=["query"])
     async def query(services: Injected, request: QueryRequest) -> QueryResponse:
-        """Retrieve the passages that support an answer, if any do.
+        """Answer from the retrieved passages, or say why there is no answer.
 
         An empty ``passages`` list with ``refused: true`` is a successful
         response, not a 404. The corpus genuinely does not cover the question,
         and saying so is the behaviour this service exists to demonstrate.
+
+        So is an answerless response with a ``note``: a provider outage still
+        returns the passages, because they are the evidence and they are still
+        correct.
         """
         retriever = services.retriever
         results = retriever.retrieve(request.question, k=request.k)
 
+        answer: str | None = None
+        note: str | None = None
+        refused = not results
+
+        if request.generate and results:
+            generated = services.generator.generate(request.question, results)
+            answer = generated.answer
+            note = generated.note
+            refused = generated.refused
+
         return QueryResponse(
             question=request.question,
+            answer=answer,
+            note=note,
             passages=[
                 Passage(
                     chunk_id=item.chunk_id,
@@ -148,7 +164,7 @@ def create_app(services: Services | None = None) -> FastAPI:
                 )
                 for item in results
             ],
-            refused=not results,
+            refused=refused,
             score_threshold=retriever.score_threshold,
         )
 
@@ -206,6 +222,8 @@ def create_app(services: Services | None = None) -> FastAPI:
             chunk_overlap=chunk_overlap,
             top_k=services.retriever.top_k,
             score_threshold=services.retriever.score_threshold,
+            generation_model=services.generator.model_name,
+            generation_available=services.generator.available,
         )
 
     @app.delete("/corpus", status_code=204, tags=["operations"])

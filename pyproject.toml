@@ -47,6 +47,11 @@ dependencies = [
     # The vector store. Persistent and local: no account, no server to run, and
     # the index is a directory you can delete and rebuild.
     "chromadb>=1.0",
+    # Generation. Optional the same way the hosted embedder is: a blank key
+    # leaves ingestion, retrieval and refusal working and disables only the
+    # answering step, which is what lets the test suite and the eval sweeps run
+    # without a secret.
+    "groq",
     "fastapi>=0.115",
     # The ASGI server the container runs. Standard extras bring the production
     # HTTP stack rather than uvicorn's minimal pure-Python fallback.

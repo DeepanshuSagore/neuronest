@@ -20,6 +20,7 @@ from pathlib import Path
 
 from neuronest.config import settings
 from neuronest.embed.base import Embedder
+from neuronest.generate import Generator
 from neuronest.ingest.chunking import Chunker
 from neuronest.retrieve import Retriever
 from neuronest.store.chroma import ChromaStore
@@ -34,11 +35,13 @@ class Services:
         chunker: Chunker | None = None,
         chroma_path: Path | None = None,
         cache_path: Path | None = None,
+        generator: Generator | None = None,
     ) -> None:
         self._embedder = embedder
         self._chunker = chunker
         self._chroma_path = chroma_path if chroma_path is not None else settings.chroma_path
         self._cache_path = cache_path
+        self._generator = generator
 
     @cached_property
     def embedder(self) -> Embedder:
@@ -67,3 +70,7 @@ class Services:
     @cached_property
     def retriever(self) -> Retriever:
         return Retriever(self.store)
+
+    @cached_property
+    def generator(self) -> Generator:
+        return self._generator if self._generator is not None else Generator()

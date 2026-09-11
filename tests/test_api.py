@@ -11,12 +11,15 @@ import math
 from collections.abc import Iterator, Sequence
 from pathlib import Path
 
+import httpx
 import pytest
 from fastapi.testclient import TestClient
+from groq import Groq
 
 from neuronest.api.app import create_app
 from neuronest.api.dependencies import Services
 from neuronest.embed.base import Vector
+from neuronest.generate import Generator
 from neuronest.ingest.chunking import FixedSizeChunker
 
 KEYWORDS = ("alpha", "beta", "gamma")
@@ -60,9 +63,49 @@ def client(tmp_path: Path) -> Iterator[TestClient]:
         embedder=KeywordEmbedder(),
         chunker=FixedSizeChunker(chunk_size=200, chunk_overlap=0),
         chroma_path=tmp_path / "chroma",
+        # Keyless on purpose. Left to build its own, the generator would read
+        # GROQ_API_KEY from the developer's .env.local and this suite would
+        # start billing a provider — and pass or fail differently than CI,
+        # which has no key at all.
+        generator=Generator(api_key=""),
     )
     with TestClient(create_app(services)) as test_client:
         yield test_client
+
+
+def answering_client(tmp_path: Path, content: str) -> TestClient:
+    """A client whose generator returns ``content``, without leaving the process."""
+    groq = Groq(
+        api_key="test-key",
+        max_retries=0,
+        http_client=httpx.Client(
+            transport=httpx.MockTransport(
+                lambda _request: httpx.Response(
+                    200,
+                    json={
+                        "id": "chatcmpl-test",
+                        "object": "chat.completion",
+                        "created": 0,
+                        "model": "test-model",
+                        "choices": [
+                            {
+                                "index": 0,
+                                "message": {"role": "assistant", "content": content},
+                                "finish_reason": "stop",
+                            }
+                        ],
+                    },
+                )
+            )
+        ),
+    )
+    services = Services(
+        embedder=KeywordEmbedder(),
+        chunker=FixedSizeChunker(chunk_size=200, chunk_overlap=0),
+        chroma_path=tmp_path / "chroma",
+        generator=Generator(model_name="test-model", client=groq),
+    )
+    return TestClient(create_app(services))
 
 
 def upload(client: TestClient, name: str, body: str) -> dict[str, object]:
@@ -177,6 +220,45 @@ def test_query_reports_the_threshold_it_applied(client: TestClient) -> None:
     assert isinstance(payload["score_threshold"], float)
 
 
+# --- generation -------------------------------------------------------------
+
+
+def test_an_answer_comes_back_with_the_passages_it_cites(tmp_path: Path) -> None:
+    with answering_client(tmp_path, "Alpha is the first letter [1].") as answering:
+        upload(answering, "alpha.md", "alpha alpha alpha")
+
+        payload = answering.post("/query", json={"question": "alpha"}).json()
+
+    assert payload["answer"] == "Alpha is the first letter [1]."
+    assert payload["refused"] is False
+    assert payload["note"] is None
+    assert payload["passages"][0]["rank"] == 1
+
+
+def test_retrieval_only_queries_do_not_generate(tmp_path: Path) -> None:
+    """What the phase 12 and 14-15 sweeps run, so measuring recall costs nothing."""
+    with answering_client(tmp_path, "This answer should never be produced.") as answering:
+        upload(answering, "alpha.md", "alpha alpha alpha")
+
+        payload = answering.post(
+            "/query", json={"question": "alpha", "generate": False}
+        ).json()
+
+    assert payload["answer"] is None
+    assert payload["note"] is None
+    assert payload["passages"] != []
+
+
+def test_without_a_key_the_passages_still_come_back(client: TestClient) -> None:
+    upload(client, "alpha.md", "alpha alpha alpha")
+
+    payload = client.post("/query", json={"question": "alpha"}).json()
+
+    assert payload["answer"] is None
+    assert "GROQ_API_KEY" in payload["note"]
+    assert payload["passages"][0]["text"] == "alpha alpha alpha"
+
+
 @pytest.mark.parametrize("body", [{"question": ""}, {}, {"question": "alpha", "k": 0}])
 def test_invalid_queries_are_rejected(client: TestClient, body: dict[str, object]) -> None:
     assert client.post("/query", json=body).status_code == 422
@@ -236,6 +318,8 @@ def test_stats_reports_the_active_configuration(client: TestClient) -> None:
     assert payload["chunk_overlap"] == 0
     assert isinstance(payload["top_k"], int)
     assert isinstance(payload["score_threshold"], float)
+    assert isinstance(payload["generation_model"], str)
+    assert payload["generation_available"] is False
 
 
 def test_stats_flags_metrics_as_placeholder(client: TestClient) -> None:
