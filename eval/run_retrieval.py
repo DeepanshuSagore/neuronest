@@ -454,7 +454,8 @@ def main() -> int:
             ],
         },
     )
-    print(f"  written to {out.relative_to(Path.cwd()) if out.is_absolute() else out}\n")
+    shown = out.relative_to(Path.cwd()) if out.is_relative_to(Path.cwd()) else out
+    print(f"  written to {shown}\n")
 
     cache.close()
     return 0
