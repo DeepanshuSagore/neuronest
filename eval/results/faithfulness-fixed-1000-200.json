@@ -1,0 +1,503 @@
+{
+  "config": {
+    "neuronest": "0.1.0",
+    "git_commit": "bffa7a7831509e98ef76d789ba2460269e62d3cf",
+    "git_dirty": true,
+    "generation_model": "openai/gpt-oss-120b",
+    "judge_model": "qwen/qwen3.8-27b",
+    "embedding": {
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "dimensions": 384
+    },
+    "chunking": {
+      "strategy": "fixed",
+      "chunk_size": 1000,
+      "chunk_overlap": 200,
+      "fingerprint": "fixed-1000-200"
+    },
+    "retrieval": {
+      "top_k": 5,
+      "score_threshold": 0.25,
+      "threshold_applied_to_metrics": true
+    },
+    "corpus": {
+      "documents": 40,
+      "chunks": 5810,
+      "sha256": "1a2d87ea2487e4b54815ca753322c6c06aa1c8b520584cc5f5630b9e96840c4d"
+    },
+    "questions": {
+      "sha256": "3ee65d8846c9938ebdd769e53226370c914e4432e7bcb10788c36b85f6dc6195"
+    },
+    "answers": {
+      "sha256": "6f9e20c5921c58e684435f5684eea25fe333963fb5dc4f6abefdbbb40cb61d60"
+    },
+    "rubric": "You check whether an answer is supported by the passages it was given.\n\nYou are judging support and nothing else. Do not judge whether the answer is true in the world, whether it is well written, or whether it is complete.\n\nMark the answer \"unsupported\" if any of the following is true:\n- it states a fact the passages do not state and that does not follow directly from them, even when that fact is correct in the world;\n- it cites a passage number that does not contain what it is cited for;\n- it contradicts a passage.\n\nMark the answer \"supported\" when every factual claim it makes is stated by the passages or follows directly from them. Connective language, hedging and restatement of the question are not claims.\n\nReply with exactly one line of JSON and nothing else:\n{\"verdict\": \"supported\" | \"unsupported\", \"reason\": \"<one short sentence>\"}"
+  },
+  "run": {
+    "timestamp": "2026-09-12T15:41:41+00:00",
+    "answer_seconds": 0.0,
+    "judge_seconds": 725.0,
+    "verdicts_carried": 69,
+    "verdicts_scored": 2
+  },
+  "metrics": {
+    "faithfulness": 0.9155,
+    "answers_judged": 71,
+    "answers_supported": 65,
+    "answers_unjudged": 0,
+    "refusal_accuracy": 0.9,
+    "refusal_subject_named": "12/14",
+    "refusal_subject_absent": "6/6",
+    "over_refusal": 0.125,
+    "over_refused_ids": [
+      "q013",
+      "q027",
+      "q029",
+      "q050",
+      "q051",
+      "q057",
+      "q061",
+      "q077",
+      "q078",
+      "q080"
+    ]
+  },
+  "judge_vs_human": {
+    "items": 20,
+    "raw_agreement": 0.95,
+    "cohens_kappa": 0.7727,
+    "human_supported": 0.9,
+    "judge_supported": 0.85,
+    "disagreements": [
+      "q047"
+    ]
+  },
+  "verdicts": [
+    {
+      "id": "q001",
+      "supported": true,
+      "reason": "The answer correctly identifies that a 408 status code falls into the 4xx class and accurately quotes the definition of the 4xx class from passage [1].",
+      "in_human_sample": false
+    },
+    {
+      "id": "q002",
+      "supported": true,
+      "reason": "The answer accurately reflects the content of passages [1] and [2] regarding the 410 status code, specifically that the resource is intentionally unavailable, no longer available at the origin server, likely permanent, and that remote links should be removed.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q003",
+      "supported": true,
+      "reason": "The answer accurately reflects the conditions and context for sending a 411 status code as described in passage [1].",
+      "in_human_sample": false
+    },
+    {
+      "id": "q004",
+      "supported": true,
+      "reason": "The answer accurately reflects the requirement stated in passage [1] that a cache MUST consider the value to be 2147483648 or the greatest positive integer it can conveniently represent if the received value exceeds its range or causes overflow.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q005",
+      "supported": true,
+      "reason": "The answer accurately reflects the content of passage [1], which states that the no-store response directive forbids storing any part of the request or response and using the response to satisfy other requests, while also detailing the requirements for non-volatile and volatile storage.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q006",
+      "supported": true,
+      "reason": "The passages explicitly state that a cache recipient MUST interpret the value \"0\" as representing a time in the past (already expired).",
+      "in_human_sample": false
+    },
+    {
+      "id": "q007",
+      "supported": true,
+      "reason": "The answer accurately reflects the statement in passage [1] that a server receiving a method longer than any it implements SHOULD respond with a 501 (Not Implemented) status code.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q008",
+      "supported": true,
+      "reason": "Passage [2] explicitly states that a server MUST NOT send a Transfer-Encoding header field in any 2xx (Successful) response to a CONNECT request.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q009",
+      "supported": true,
+      "reason": "The answer accurately reflects the requirement in passage [2] that a recipient must consider an element with a bare CR invalid or replace the bare CR with SP.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q010",
+      "supported": true,
+      "reason": "Passage [5] explicitly states that values above the maximum flow-control window size of 2^31-1 MUST be treated as a connection error, confirming the maximum size.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q011",
+      "supported": true,
+      "reason": "The answer accurately reflects the information in passage [1], which states that the \"h2\" string is serialized into an ALPN protocol identifier as the two-octet sequence: 0x68, 0x32.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q012",
+      "supported": true,
+      "reason": "Passage [1] explicitly states that the client connection preface starts with a sequence of 24 octets.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q014",
+      "supported": true,
+      "reason": "The answer accurately reflects the requirement in passage [1] that a recipient must respond with a connection error of type PROTOCOL_ERROR if a HEADERS frame with a Stream Identifier of 0x00 is received.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q015",
+      "supported": true,
+      "reason": "The answer correctly cites passage [1], which states that general-use user agents SHOULD provide at least 4096 bytes per cookie.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q016",
+      "supported": true,
+      "reason": "Passage [1] explicitly states that the parsing steps are aborted and the cookie-date fails to parse if the year-value is less than 1601.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q017",
+      "supported": true,
+      "reason": "The answer accurately reflects the requirement in passage [1] that if the entire patch document cannot be successfully applied, the server MUST NOT apply any of the changes.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q018",
+      "supported": true,
+      "reason": "Passage [1] explicitly states that when a server determines the patch document is not properly formatted, it SHOULD return a 400 (Bad Request) response.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q019",
+      "supported": true,
+      "reason": "Passage [5] explicitly states that when a server detects a possible conflicting modification and no precondition was defined, it can return a 409 (Conflict) response.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q020",
+      "supported": false,
+      "reason": "The answer claims the 'filename' parameter can be given as a 'token', but the passages only state that 'filename' and 'filename*' are matched case-insensitively and that 'filename*' uses ext-value syntax; they do not explicitly define the syntax of 'filename' as allowing tokens (Passage 4 mentions RFC 2616 allowed quoted-string, but the current spec's definition of 'filename' syntax is not provided in the text to support the 'token' claim).",
+      "in_human_sample": true
+    },
+    {
+      "id": "q021",
+      "supported": true,
+      "reason": "The answer accurately reflects the content of passages [1] and [4], which state that the 'for' parameter discloses information about the client and subsequent proxies, with the first value being the client and subsequent values being proxies.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q022",
+      "supported": true,
+      "reason": "The answer accurately describes the process of URL-encoding the client ID and password, concatenating them with a colon, base64-encoding the result, and placing it in the Authorization header, which is directly supported by the text and example in passage [1].",
+      "in_human_sample": false
+    },
+    {
+      "id": "q023",
+      "supported": true,
+      "reason": "Passage [1] explicitly states that the document adds SHA-256 and SHA-512/256 algorithms while keeping MD5 support.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q024",
+      "supported": true,
+      "reason": "Passage [2] explicitly states that OAuth defines four roles.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q025",
+      "supported": true,
+      "reason": "Passage [4] explicitly states that a maximum authorization code lifetime of 10 minutes is RECOMMENDED.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q026",
+      "supported": true,
+      "reason": "The answer accurately reflects the syntax and example provided in passage [1], which states the client uses the \"Bearer\" scheme and provides the specific example `Authorization: Bearer mF_9.B5f-4.1JqM`.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q028",
+      "supported": true,
+      "reason": "The passages explicitly state that the length of the TLSPlaintext fragment MUST NOT exceed 2^14 bytes.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q030",
+      "supported": true,
+      "reason": "The answer accurately reflects the content of passage [2], which defines the ProtocolNameList structure, its ordering, and the constraints on the protocol names.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q031",
+      "supported": true,
+      "reason": "Passage [1] explicitly states that the length of each label is between 0 and 63 octets inclusive.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q032",
+      "supported": true,
+      "reason": "The answer correctly states the 255 octet limit, which is explicitly mentioned in both passage [1] and passage [2].",
+      "in_human_sample": true
+    },
+    {
+      "id": "q033",
+      "supported": true,
+      "reason": "The passages explicitly state that traditional DNS messages over UDP are limited to 512 bytes (excluding headers) and that extensions like EDNS allow for larger sizes.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q034",
+      "supported": true,
+      "reason": "The answer correctly states that the server must listen on port 853 by default and cites passage [2] which explicitly contains this requirement and the exception for mutual agreement.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q035",
+      "supported": true,
+      "reason": "The answer correctly identifies the mandatory media type as 'application/dns-message' based on the explicit statement in passage [3].",
+      "in_human_sample": false
+    },
+    {
+      "id": "q036",
+      "supported": true,
+      "reason": "The answer accurately reflects the definition provided in passage [2], which states that a stub resolver cannot perform all resolution itself and depends on a recursive resolver.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q037",
+      "supported": true,
+      "reason": "The answer accurately reflects the definitions provided in passages [1] and [2], which state that TTL specifies the time interval in seconds a resource record may be cached before being discarded or before the source is consulted.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q038",
+      "supported": false,
+      "reason": "The answer invents a specific technical reason (IP header and reassembly overhead) that is not stated in the provided passages, which only note the requirement without explaining the cause.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q039",
+      "supported": true,
+      "reason": "The answer correctly cites passage [1], which explicitly states that conformant middleboxes MUST NOT limit DNS messages over UDP to 512 bytes.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q040",
+      "supported": true,
+      "reason": "The answer accurately reflects the hop-by-hop negotiation described in passage [1] and the specific capabilities regarding flag space, option codes, and UDP payload size mentioned in passage [4].",
+      "in_human_sample": false
+    },
+    {
+      "id": "q041",
+      "supported": true,
+      "reason": "The answer accurately reflects the statement in passage [4] that the data payload for the media type MUST NOT be encoded and is used directly as the HTTP message body when using the POST method.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q042",
+      "supported": true,
+      "reason": "Passage [1] explicitly states that the encoding may be referred to as \"base64url\", and Passage [5] defines the notation BASE64URL(OCTETS) as the base64url encoding.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q043",
+      "supported": true,
+      "reason": "Passage [2] provides the grammar 'scheme = ALPHA *( ALPHA / DIGIT / \"+\" / \"-\" / \".\" )', which indicates that the first character must be an ALPHA (alphabetic character).",
+      "in_human_sample": false
+    },
+    {
+      "id": "q044",
+      "supported": true,
+      "reason": "The answer correctly identifies that percent-encoding is used during URI production to distinguish data from delimiters [1] and to represent characters outside the US-ASCII range [4], both of which are explicitly stated in the provided passages.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q045",
+      "supported": true,
+      "reason": "Passage [1] explicitly states that in UTF-8, characters from the U+0000..U+10FFFF range (the UTF-16 accessible range) are encoded.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q046",
+      "supported": true,
+      "reason": "The answer accurately reflects the requirements stated in passage [2] regarding the top-level message, multipart body parts, and embedded headers.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q047",
+      "supported": false,
+      "reason": "The answer claims base64 encodes data as 'ASCII characters' and enables 'safe transmission of non-textual content,' but passage [4] only describes the bit-to-symbol conversion process and does not state that the output is ASCII or that it is for safe transmission of non-textual content.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q048",
+      "supported": true,
+      "reason": "Passage [1] explicitly states that the boundary parameter consists of 1 to 70 characters.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q049",
+      "supported": true,
+      "reason": "The answer correctly identifies that the standards tree is for types of general interest to the Internet community (Passage 1) and requires a substantive review and approval process in a recognized standards-related organization (Passage 3).",
+      "in_human_sample": false
+    },
+    {
+      "id": "q052",
+      "supported": true,
+      "reason": "The answer correctly identifies the 'exp' claim as the Expiration Time based on the description provided in passage [5].",
+      "in_human_sample": false
+    },
+    {
+      "id": "q053",
+      "supported": true,
+      "reason": "The answer directly quotes the definition provided in passage [3].",
+      "in_human_sample": true
+    },
+    {
+      "id": "q054",
+      "supported": true,
+      "reason": "Passage [1] explicitly states that a key of the same size as the hash output (256 bits for HS256) or larger MUST be used.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q055",
+      "supported": true,
+      "reason": "The answer correctly states the default send MSS of 536 for IPv4 as specified in passages [2] and [3].",
+      "in_human_sample": false
+    },
+    {
+      "id": "q056",
+      "supported": true,
+      "reason": "The answer correctly identifies the minimum effective MTU to receive as 576 bytes, which is supported by the passages stating that hosts should use EMTU_S <= 576 for non-local networks and that 576 is the recommended size for datagrams sent to non-local networks.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q058",
+      "supported": true,
+      "reason": "The answer accurately lists the three IP address blocks reserved for private internets as stated in passage [1].",
+      "in_human_sample": false
+    },
+    {
+      "id": "q059",
+      "supported": true,
+      "reason": "Passage [1] explicitly states that DHCPDISCOVER is a 'Client broadcast to locate available servers'.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q060",
+      "supported": true,
+      "reason": "The answer correctly cites passage [5] for the prohibition on sending STS over non-secure transport, passage [2] for the UA's obligation to ignore such headers, and passage [1] for the requirement that STS be sent over secure transport.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q062",
+      "supported": true,
+      "reason": "The answer correctly identifies that conforming CAs must not use VisibleString or BMPString for explicitText, which is explicitly stated in passage [1].",
+      "in_human_sample": true
+    },
+    {
+      "id": "q063",
+      "supported": true,
+      "reason": "The answer accurately reflects the constraints stated in passage [1] regarding when nameRelativeToCRLIssuer must not be used and the recommendation against its use.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q064",
+      "supported": true,
+      "reason": "The answer correctly states that the archive cutoff is calculated by subtracting the retention interval from the producedAt time, as explicitly defined in passage [1], and provides the correct example from passage [2].",
+      "in_human_sample": false
+    },
+    {
+      "id": "q065",
+      "supported": true,
+      "reason": "The answer accurately reflects the conditions for using POST (caching not important or request > 255 bytes) as stated in passage [1].",
+      "in_human_sample": false
+    },
+    {
+      "id": "q066",
+      "supported": true,
+      "reason": "Passage [1] explicitly states that each AEAD cipher MUST NOT produce an expansion of greater than 1024 bytes, which corresponds to the TLS 1.2 context described in that passage.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q067",
+      "supported": true,
+      "reason": "The answer accurately reflects the constraint in passage [3] that an extension type MUST NOT appear in the ServerHello unless it appeared in the corresponding ClientHello, and that the client MUST abort the handshake if this rule is violated.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q068",
+      "supported": false,
+      "reason": "The passages state that in 'previous versions of TLS' (relative to TLS 1.3) the verify_data was 12 octets, but they do not specify that this applied specifically to versions prior to 1.2, nor do they exclude TLS 1.2 from that description.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q069",
+      "supported": true,
+      "reason": "The answer correctly cites passages [1] and [2], which explicitly state that a server MUST NOT accept a session resumption request if the server_name extension differs from the original handshake, and must instead perform a full handshake.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q070",
+      "supported": true,
+      "reason": "Passage [2] explicitly states that SecurityParameters.mac_length is 10 bytes and only the first 10 bytes of the HMAC output are transmitted.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q071",
+      "supported": true,
+      "reason": "The passages explicitly state that labels are limited to 63 octets and total domain names are limited to 255 octets.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q072",
+      "supported": true,
+      "reason": "The passages explicitly state that a malformed patch document should result in a 400 Bad Request response [2] and that concurrent modification conflicts can be indicated with a 409 Conflict response [1].",
+      "in_human_sample": false
+    },
+    {
+      "id": "q073",
+      "supported": true,
+      "reason": "The answer correctly cites passage [1] for the 2^14 byte limit on TLSPlaintext fragments and passage [3] for the 2^14 + 256 byte limit on TLSCiphertext records.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q074",
+      "supported": true,
+      "reason": "The answer correctly cites passage [2] for the 576-octet buffer requirement and passage [1] for the prohibition on middleboxes limiting messages to 512 bytes.",
+      "in_human_sample": true
+    },
+    {
+      "id": "q075",
+      "supported": true,
+      "reason": "The answer correctly identifies the maximum flow-control window size (2^31-1) and the associated error type (FLOW_CONTROL_ERROR) as stated in passage [4].",
+      "in_human_sample": false
+    },
+    {
+      "id": "q076",
+      "supported": true,
+      "reason": "The answer correctly identifies port 853 for DNS over TLS based on passage [2] and the use of default media formatting types for DNS over HTTPS based on passage [1].",
+      "in_human_sample": true
+    },
+    {
+      "id": "q079",
+      "supported": false,
+      "reason": "The passages state that the send MSS reflects the reassembly buffer size at the remote host, but they do not state that the local host must support a minimum reassembly buffer of 536 bytes.",
+      "in_human_sample": false
+    },
+    {
+      "id": "q100",
+      "supported": false,
+      "reason": "The answer incorrectly attributes the TCP OPEN call mechanism (creating a TCB, LISTEN state) to FTP passive mode, whereas the passages describe generic TCP operations and do not link them to the specific FTP passive data connection procedure.",
+      "in_human_sample": false
+    }
+  ]
+}

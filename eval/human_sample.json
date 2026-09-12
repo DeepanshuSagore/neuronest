@@ -1,0 +1,34 @@
+{
+  "protocol": "Twenty answers labelled by hand against the same rubric the judge is given, from the sheet printed by `uv run python eval/run_faithfulness.py --sample-sheet`, and written down before the judge had been run even once. The sheet carries the question, the answer and every retrieved passage in full — the same evidence the judge sees, deliberately untruncated, because a human labelling a shortened passage is answering an easier question. The sample is drawn from the answered questions with a fixed seed so that the same twenty come up on every run: re-rolling until the agreement number looked better would be the same failure as re-labelling an evaluation question because it turned out hard.",
+  "seed": 13,
+  "verdict_meaning": "supported = every factual claim the answer makes is stated by the passages it was given, or follows directly from them. Correctness in the world is not the test, and neither is whether the answer is a good answer to the question.",
+  "labels": {
+    "q002": "supported",
+    "q005": "supported",
+    "q009": "supported",
+    "q015": "supported",
+    "q018": "supported",
+    "q020": "unsupported",
+    "q025": "supported",
+    "q031": "supported",
+    "q032": "supported",
+    "q033": "supported",
+    "q037": "supported",
+    "q038": "unsupported",
+    "q041": "supported",
+    "q042": "supported",
+    "q047": "supported",
+    "q053": "supported",
+    "q060": "supported",
+    "q062": "supported",
+    "q074": "supported",
+    "q076": "supported"
+  },
+  "notes": {
+    "q002": "Reads as a miscitation until the passages are seen in full: [2] runs on from the 409 Conflict text into the 410 Gone definition, so the cited permanence claim really is there. This is the item that made truncating the sheet untenable.",
+    "q020": "Unsupported. The claim that filename is the original parameter, may be given as a token or quoted-string, and acts as a fallback is cited to [2], which says none of those things — it only states that both parameters describe how to construct a filename. The token/quoted-string detail is in [4], which is not cited. The rest of the answer is fine.",
+    "q038": "Unsupported. The passage states only that a 512-octet payload requires a 576-octet reassembly buffer; it never says why. The answer supplies a reason — the IP header and reassembly overhead — that is correct in the world and absent from the evidence. The question asks 'why' and the corpus only records the fact, so this one invites the failure.",
+    "q047": "Supported, but the closest call in the sample. The substantive claims are in the passages, including the 24-bit-to-4-character description cited to [4]. 'Enabling safe transmission of non-textual content' is a statement of purpose rather than a fact taken from the cited passage; it was allowed because it asserts nothing checkable that the passages contradict.",
+    "q076": "Supported. The answer says DoH is identified by default media formatting types without naming application/dns-message, and [1] states exactly that much. Naming the media type would also have been supported, but not naming it is not a fault."
+  }
+}

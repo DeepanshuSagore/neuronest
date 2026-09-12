@@ -57,6 +57,14 @@ class Settings(BaseSettings):
     groq_api_key: str = ""
     groq_model: str = "openai/gpt-oss-120b"
 
+    # The model that scores faithfulness in phase 13, and deliberately not
+    # groq_model. A model grading its own answers prefers them, and the number
+    # this phase publishes is supposed to test whether the generator stayed
+    # inside its evidence — not to ask the generator whether it thinks it did.
+    # A different family is the cheapest defence against that, and the
+    # judge-versus-human agreement reported alongside is what checks it worked.
+    judge_model: str = "qwen/qwen3.8-27b"
+
     # --- chunking ---
     # Characters, not tokens — RecursiveCharacterTextSplitter counts characters
     # and pretending otherwise would make the phase 14 table lie.
