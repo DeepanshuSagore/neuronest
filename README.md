@@ -189,11 +189,15 @@ alongside the system: a faithfulness score is worth exactly as much as the judge
 ### The judge was checked against hand labels, not trusted
 
 Twenty answers were sampled across the outcome types and labelled by hand from the full passage text
-— the same text the judge sees, not a truncated preview — and those labels were committed to
-[`eval/human_sample.json`](eval/human_sample.json) **before the judge was run once**. The judge
-agreed on 19 of 20: raw agreement 0.950, Cohen's kappa **0.773**, which is substantial agreement
-rather than chance. It reads the set slightly harder than a human does — it marked 85% supported
-where the hand labels say 90%.
+— the same text the judge sees, not a truncated preview — and written to
+[`eval/human_sample.json`](eval/human_sample.json) **before the judge was run once**. That ordering is
+a property of how the work was done, not something the commit history proves: the file was checked in
+afterwards, in a single commit, and has not been edited since. Read it as a stated method rather than
+an audited one.
+
+The judge agreed on 19 of 20: raw agreement 0.950, Cohen's kappa **0.773**, which is substantial
+agreement rather than chance. It reads the set slightly harder than a human does — it marked 85%
+supported where the hand labels say 90%.
 
 The single disagreement is **q047**, on what quoted-printable and base64 do. The judge called it
 unsupported because the answer says base64 produces *"ASCII characters"* and enables *"safe
