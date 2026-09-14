@@ -1,8 +1,8 @@
 {
   "config": {
     "neuronest": "0.1.0",
-    "git_commit": "bf32532396936c756b7096e4d5c1cf55337979b7",
-    "git_dirty": true,
+    "git_commit": "b3ba092059acea06edac18f6c6a2462d75f23f7e",
+    "git_dirty": false,
     "generation_model": "openai/gpt-oss-120b",
     "judge_model": "qwen/qwen3.8-27b",
     "embedding": {
@@ -34,7 +34,7 @@
     "rubric": "You check whether an answer is supported by the passages it was given.\n\nYou are judging support and nothing else. Do not judge whether the answer is true in the world, whether it is well written, or whether it is complete.\n\nMark the answer \"unsupported\" if any of the following is true:\n- it states a fact the passages do not state and that does not follow directly from them, even when that fact is correct in the world;\n- it cites a passage number that does not contain what it is cited for;\n- it contradicts a passage.\n\nMark the answer \"supported\" when every factual claim it makes is stated by the passages or follows directly from them. Connective language, hedging and restatement of the question are not claims.\n\nReply with exactly one line of JSON and nothing else:\n{\"verdict\": \"supported\" | \"unsupported\", \"reason\": \"<one short sentence>\"}"
   },
   "run": {
-    "timestamp": "2026-09-14T23:34:58+00:00",
+    "timestamp": "2026-09-14T23:41:45+00:00",
     "answer_seconds": 0.0,
     "judge_seconds": 0.0,
     "verdicts_carried": 71,
