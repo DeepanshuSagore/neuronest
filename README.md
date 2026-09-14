@@ -7,9 +7,11 @@ the answer.
 **Live:** [nestneuroai.vercel.app](https://nestneuroai.vercel.app)
 
 > Early build. The sections below describe the target; commit history shows how far it has got.
-> Retrieval is measured — every figure in [Measured retrieval](#measured-retrieval) traces to a
-> checked-in result file. Faithfulness and refusal accuracy are not. The landing page marks
-> unmeasured figures rather than inventing them, and has not yet been filled in from this run.
+> Retrieval and generation are both measured — every figure in
+> [Measured retrieval](#measured-retrieval) and [Measured generation](#measured-generation) traces to
+> a checked-in result file carrying the configuration and digests that produced it. Latency and the
+> chunking and embedding comparisons are not measured yet; the landing page marks those cells rather
+> than inventing them.
 
 ## Quickstart
 
@@ -160,6 +162,106 @@ passwords from a different RFC entirely.
 Numbers reproduce: the index is rebuilt on every run, and four consecutive rebuilds produced
 identical metrics. Only the ordering of the retrieved tail for two *unanswerable* queries varies,
 because HNSW search is approximate; neither carries a label, so nothing above moves.
+
+## Measured generation
+
+```bash
+uv run python eval/run_faithfulness.py
+```
+
+Retrieval says whether the evidence came back. This says whether the answer stayed inside it. Every
+figure is read from
+[`eval/results/faithfulness-fixed-1000-200.json`](eval/results/faithfulness-fixed-1000-200.json),
+which carries the rubric verbatim alongside the corpus, question and answer digests.
+
+| | | |
+|---|---|---|
+| **Faithfulness** | **0.915** | 65 of 71 answers make no claim the passages do not support |
+| **Refusal accuracy** | **0.900** | 18 of 20 unanswerable questions declined |
+| **Over-refusal** | **0.125** | 10 of 80 answerable questions declined that should not have been |
+| **Judge vs. human** | **0.950 raw, κ 0.773** | over a 20-item sample labelled by hand *before* the judge ran |
+
+The generator is `openai/gpt-oss-120b`; the judge is `qwen/qwen3.8-27b`. **Different families on
+purpose** — a model grading its own output scores itself generously, and the headline number here is
+produced by the judge, so it must not be the same model. That is also why the judge is on trial
+alongside the system: a faithfulness score is worth exactly as much as the judge that produced it.
+
+### The judge was checked against hand labels, not trusted
+
+Twenty answers were sampled across the outcome types and labelled by hand from the full passage text
+— the same text the judge sees, not a truncated preview — and those labels were committed to
+[`eval/human_sample.json`](eval/human_sample.json) **before the judge was run once**. The judge
+agreed on 19 of 20: raw agreement 0.950, Cohen's kappa **0.773**, which is substantial agreement
+rather than chance. It reads the set slightly harder than a human does — it marked 85% supported
+where the hand labels say 90%.
+
+The single disagreement is **q047**, on what quoted-printable and base64 do. The judge called it
+unsupported because the answer says base64 produces *"ASCII characters"* and enables *"safe
+transmission of non-textual content"*, while the passage it was given describes only the bit-to-symbol
+conversion. That is pedantic and it is also correct: the answer stated a purpose the evidence does
+not state. Kappa is reported next to the score precisely so a reader can discount it.
+
+### The refusal split, and one failure that is not the model's
+
+| | |
+|---|---|
+| Subject named in the corpus but not answered | **12/14** |
+| Subject appears nowhere in the corpus | **6/6** |
+
+The 6/6 are easy and say little — asking about BGP or MQTT against forty documents that never mention
+them is a refusal any system makes. **The 12/14 is the real measure.** Those questions name subjects
+the corpus discusses without answering: QUIC and HTTP/3 are both named in RFC 9110, and RFC 9110
+carries a WebSocket `Upgrade` example. Retrieval returns confident-looking passages for every one of
+them — the [threshold does nothing here](#the-score-threshold-does-nothing-here-and-that-is-the-finding),
+so all twenty clear it — and the model declines anyway on twelve.
+
+Of the two failures, **one is not a refusal failure at all**: `q093` (DHCPv6) was never answered,
+because generation itself hit the provider's rate limit. It is still counted against the score, on
+the same principle the service uses at runtime — a provider outage is not the model declining, and
+the honest direction to round is against ourselves. Excluding it gives 18/19 = 0.947. **The published
+figure is the unadjusted 0.900.** The result file records `refusal_ungenerated` so the adjustment is
+visible in the data rather than only in this paragraph.
+
+The genuine failure is `q100`, on FTP passive mode. FTP is absent from the corpus, but TCP is not, so
+the model answered from RFC 9293's passive-OPEN machinery — a real answer to a different question.
+The judge caught it independently and marked it unsupported.
+
+### What the 6 unfaithful answers actually do
+
+None of them invents a fact outright. All six over-reach from real evidence: `q038` supplies a reason
+for a rule the passage only states, `q068` narrows *"previous versions of TLS"* to a specific version,
+`q079` attributes a minimum reassembly buffer the passages never give. That is the failure mode this
+metric exists to catch, and it is a quieter one than fabrication — an answer that is mostly right,
+sourced to a passage that does not quite say it.
+
+Over-refusal is the mirror image, and at **0.125** it is the weakest number on this page: ten
+answerable questions were declined. But cross-referencing them against the retrieval run is worth
+doing before blaming the model — **not one of the ten had its labelled passage inside the top 5**,
+which is the window generation actually sees. Six missed at k=10 as well. So every over-refusal here
+is the model declining from passages that did not contain the labelled evidence: correct behaviour
+stacked on top of a retrieval failure, not a generation failure of its own.
+
+It still counts against the score, unadjusted, for the same reason the recall figures are unadjusted.
+But it means **0.125 is a measurement of retrieval, reported in the generation table** — and the way
+to move it is to improve retrieval, which is what phases 14 and 15 do.
+
+### Running it costs a day of the free tier
+
+The judge model's free tier allows **200,000 tokens per day** (quoted from the provider's own refusal:
+`on tokens per day (TPD): Limit 200000`). One complete pass over 71 answers consumes most of that, so
+the free tier permits roughly **one faithfulness run per day**. Two consequences worth knowing before
+phases 14 and 15:
+
+- The harness paces itself to the limit and **carries verdicts between runs**, gated on the judge
+  model, the rubric, and the question and answer digests. A run that dies no longer re-buys the
+  verdicts it already paid for. Re-running with everything unchanged costs zero provider calls.
+- **A partial run reports a better score than a complete one**, because an unjudged answer leaves the
+  denominator rather than counting against it. A rate-limited run once reported faithfulness 1.000
+  off eleven verdicts. The harness now exits non-zero and refuses to publish if a single answer goes
+  unjudged.
+
+Retrieval sweeps stay free — the embedder is local — so the chunking and embedding comparisons can
+re-run as often as needed. Faithfulness cannot, on this tier.
 
 ## Stack
 
