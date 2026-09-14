@@ -150,6 +150,16 @@ class Answered:
     def retrieval_was_empty(self) -> bool:
         return not self.passages
 
+    @property
+    def generation_failed(self) -> bool:
+        """The provider never answered, so the model never got to decide anything.
+
+        Distinct from a refusal, and the distinction is the whole point: an outage
+        that is counted as a failure to refuse makes an unreliable provider look
+        like a hallucinating model in the refusal figures.
+        """
+        return self.answer is None and not self.refused
+
 
 @dataclass(frozen=True)
 class Verdict:
@@ -638,6 +648,7 @@ def main() -> int:
 
     declined = [item for item in unanswerable if item.refused]
     over_refused = [item for item in labelled if item.refused]
+    ungenerated = [item for item in unanswerable if item.generation_failed]
     hard = [item for item in unanswerable if named[item.question.id]]
     easy = [item for item in unanswerable if not named[item.question.id]]
 
@@ -664,6 +675,11 @@ def main() -> int:
         f"    subject absent      {sum(1 for i in easy if i.refused)}/{len(easy)}  "
         f"(the word appears nowhere)"
     )
+    if ungenerated:
+        print(
+            f"    never generated     {len(ungenerated)}/{len(unanswerable)}  "
+            f"(counted against the score, though the provider failed, not the model)"
+        )
     print(
         f"  over-refusal        {len(over_refused) / len(labelled):.3f}  "
         f"({len(over_refused)}/{len(labelled)} answerable questions declined)"
@@ -729,6 +745,8 @@ def main() -> int:
                     "refusal_accuracy": round(len(declined) / len(unanswerable), 4),
                     "refusal_subject_named": f"{sum(1 for i in hard if i.refused)}/{len(hard)}",
                     "refusal_subject_absent": f"{sum(1 for i in easy if i.refused)}/{len(easy)}",
+                    "refusal_ungenerated": len(ungenerated),
+                    "refusal_ungenerated_ids": [i.question.id for i in ungenerated],
                     "over_refusal": round(len(over_refused) / len(labelled), 4),
                     "over_refused_ids": [i.question.id for i in over_refused],
                 },
