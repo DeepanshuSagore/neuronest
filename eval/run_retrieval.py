@@ -44,7 +44,7 @@ from neuronest import __version__
 from neuronest.config import settings
 from neuronest.embed.cache import CachingEmbedder, EmbeddingCache
 from neuronest.embed.local import LocalEmbedder
-from neuronest.ingest.chunking import FixedSizeChunker
+from neuronest.ingest.chunking import Chunker, FixedSizeChunker
 from neuronest.ingest.loaders import load_directory
 from neuronest.retrieve import RetrievedChunk, Retriever
 from neuronest.store.chroma import ChromaStore, collection_name_for
@@ -111,8 +111,7 @@ class RunConfig:
     embedding_model: str
     embedding_dimensions: int
     chunker: str
-    chunk_size: int
-    chunk_overlap: int
+    chunk_params: dict[str, float]
     fingerprint: str
     matches_labelled_reference: bool
     top_k: int
@@ -135,8 +134,7 @@ class RunConfig:
             },
             "chunking": {
                 "strategy": self.chunker,
-                "chunk_size": self.chunk_size,
-                "chunk_overlap": self.chunk_overlap,
+                **self.chunk_params,
                 "fingerprint": self.fingerprint,
                 "matches_labelled_reference": self.matches_labelled_reference,
             },
@@ -271,7 +269,7 @@ def collection_for(model_name: str, fingerprint: str) -> str:
     return f"{collection_name_for(model_name)}-{fingerprint}"
 
 
-def build_index(store: ChromaStore, chunker: FixedSizeChunker, corpus: Path) -> tuple[int, int]:
+def build_index(store: ChromaStore, chunker: Chunker, corpus: Path) -> tuple[int, int]:
     report = load_directory(corpus)
     if report.errors:
         details = "; ".join(f"{error.source_path.name}: {error.message}" for error in report.errors)
@@ -302,39 +300,47 @@ def print_table(cohorts: Sequence[tuple[str, Metrics]]) -> None:
         print(f"  {name:<14}{metrics.count:>4}{scores}{metrics.mrr:>9.3f}")
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description="Score retrieval against the labelled set.")
-    parser.add_argument("--k", type=int, default=max(RANKS))
-    parser.add_argument("--chunk-size", type=int, default=None)
-    parser.add_argument("--chunk-overlap", type=int, default=None)
-    parser.add_argument("--chroma-path", type=Path, default=settings.chroma_path)
-    parser.add_argument("--out", type=Path, default=None)
-    parser.add_argument(
-        "--keep-index",
-        action="store_true",
-        help="Score whatever is already indexed instead of rebuilding it.",
-    )
-    args = parser.parse_args()
+@dataclass(frozen=True)
+class Measurement:
+    """What one configuration scored, and where the file saying so was written."""
 
-    top_k: int = args.k
-    if top_k < max(RANKS):
-        raise SystemExit(f"--k must be at least {max(RANKS)} to report Recall@{max(RANKS)}")
+    fingerprint: str
+    cohorts: tuple[tuple[str, Metrics], ...]
+    chunks: int
+    index_seconds: float
+    query_mean_ms: float
+    unanswerable_empty: int
+    out: Path
 
-    data, questions = load_questions(QUESTIONS)
-    # A bare run scores the configuration the set was labelled under; phase 14
-    # overrides these to sweep.
-    reference = data["reference_chunking"]
-    chunk_size: int = args.chunk_size or int(reference["chunk_size"])
-    chunk_overlap: int = (
-        args.chunk_overlap if args.chunk_overlap is not None else int(reference["chunk_overlap"])
-    )
 
-    chunker = FixedSizeChunker(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-    cache = EmbeddingCache(settings.embedding_cache_path / "embeddings.db")
-    embedder = CachingEmbedder(LocalEmbedder(), cache)
+def measure(
+    *,
+    embedder: CachingEmbedder,
+    chunker: Chunker,
+    chunk_params: dict[str, float],
+    data: dict[str, Any],
+    questions: Sequence[Question],
+    top_k: int,
+    chroma_path: Path,
+    out: Path | None,
+    keep_index: bool,
+    git: tuple[str | None, bool | None] | None = None,
+) -> Measurement:
+    """Index the corpus under one chunking configuration and score it.
+
+    Separated from ``main`` so the phase 14 sweep can run eight configurations
+    in one process against one loaded model and one warm cache, rather than
+    paying for both per configuration.
+
+    A sweep passes ``git`` because it has to read the tree state once, before
+    the first configuration writes anything: every result file after that one is
+    a tracked modification, so a sweep that looked the state up per
+    configuration would report every run but the first as dirty on account of
+    its own output.
+    """
     store = ChromaStore(
         embedder,
-        path=args.chroma_path,
+        path=chroma_path,
         collection_name=collection_for(embedder.model_name, chunker.fingerprint),
     )
     # Rebuilt by default rather than reused. Upserting over a collection that
@@ -342,7 +348,7 @@ def main() -> int:
     # here, one query in a hundred came back with a different rank 1 and a
     # different tail. Two fresh builds are byte-identical, so a number anyone is
     # asked to reproduce has to come from one.
-    if not args.keep_index:
+    if not keep_index:
         store.reset()
 
     started = time.perf_counter()
@@ -395,7 +401,7 @@ def main() -> int:
         f"({query_seconds / len(questions) * 1000:.0f} ms each)\n"
     )
 
-    commit, dirty = git_state()
+    commit, dirty = git if git is not None else git_state()
     config = RunConfig(
         neuronest=__version__,
         git_commit=commit,
@@ -403,10 +409,11 @@ def main() -> int:
         embedding_model=embedder.model_name,
         embedding_dimensions=embedder.dimensions,
         chunker=chunker.fingerprint.split("-", 1)[0],
-        chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap,
+        chunk_params=chunk_params,
         fingerprint=chunker.fingerprint,
-        matches_labelled_reference=chunker.fingerprint == str(reference["fingerprint"]),
+        matches_labelled_reference=(
+            chunker.fingerprint == str(data["reference_chunking"]["fingerprint"])
+        ),
         top_k=top_k,
         score_threshold=threshold,
         collection=store.collection_name,
@@ -423,11 +430,11 @@ def main() -> int:
         "embedding_cache_hit_rate": round(embedder.stats.hit_rate, 4),
     }
 
-    out: Path = args.out or RESULTS / (
+    destination = out or RESULTS / (
         f"retrieval-{embedder.model_name.split('/')[-1].lower()}-{chunker.fingerprint}.json"
     )
     write_result(
-        out,
+        destination,
         config,
         run,
         {
@@ -454,10 +461,66 @@ def main() -> int:
             ],
         },
     )
-    shown = out.relative_to(Path.cwd()) if out.is_relative_to(Path.cwd()) else out
+    shown = (
+        destination.relative_to(Path.cwd())
+        if destination.is_relative_to(Path.cwd())
+        else destination
+    )
     print(f"  written to {shown}\n")
 
-    cache.close()
+    return Measurement(
+        fingerprint=chunker.fingerprint,
+        cohorts=tuple(cohorts),
+        chunks=chunks,
+        index_seconds=index_seconds,
+        query_mean_ms=query_seconds / len(questions) * 1000,
+        unanswerable_empty=empty,
+        out=destination,
+    )
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Score retrieval against the labelled set.")
+    parser.add_argument("--k", type=int, default=max(RANKS))
+    parser.add_argument("--chunk-size", type=int, default=None)
+    parser.add_argument("--chunk-overlap", type=int, default=None)
+    parser.add_argument("--chroma-path", type=Path, default=settings.chroma_path)
+    parser.add_argument("--out", type=Path, default=None)
+    parser.add_argument(
+        "--keep-index",
+        action="store_true",
+        help="Score whatever is already indexed instead of rebuilding it.",
+    )
+    args = parser.parse_args()
+
+    top_k: int = args.k
+    if top_k < max(RANKS):
+        raise SystemExit(f"--k must be at least {max(RANKS)} to report Recall@{max(RANKS)}")
+
+    data, questions = load_questions(QUESTIONS)
+    # A bare run scores the configuration the set was labelled under; the
+    # phase 14 sweep overrides these.
+    reference = data["reference_chunking"]
+    chunk_size: int = args.chunk_size or int(reference["chunk_size"])
+    chunk_overlap: int = (
+        args.chunk_overlap if args.chunk_overlap is not None else int(reference["chunk_overlap"])
+    )
+
+    cache = EmbeddingCache(settings.embedding_cache_path / "embeddings.db")
+    try:
+        measure(
+            embedder=CachingEmbedder(LocalEmbedder(), cache),
+            chunker=FixedSizeChunker(chunk_size=chunk_size, chunk_overlap=chunk_overlap),
+            chunk_params={"chunk_size": chunk_size, "chunk_overlap": chunk_overlap},
+            data=data,
+            questions=questions,
+            top_k=top_k,
+            chroma_path=args.chroma_path,
+            out=args.out,
+            keep_index=args.keep_index,
+        )
+    finally:
+        cache.close()
     return 0
 
 
