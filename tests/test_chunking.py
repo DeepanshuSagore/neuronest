@@ -5,14 +5,17 @@ about stability here is protecting that set from silently rotting the next time
 the corpus is re-ingested.
 """
 
+from collections.abc import Sequence
 from itertools import pairwise
 from pathlib import Path
 
 import pytest
 
+from neuronest.embed.base import Vector
 from neuronest.ingest.chunking import (
     Chunker,
     FixedSizeChunker,
+    SemanticChunker,
     chunk_documents,
     chunk_id,
 )
@@ -232,4 +235,155 @@ def test_chunks_are_frozen() -> None:
 
     with pytest.raises(ValueError):
         chunk.text = "rewritten"  # type: ignore[misc]
+
+
+# --- semantic chunking ------------------------------------------------------
+
+
+class TopicEmbedder:
+    """Embeds text as the topic it mentions, so distance is exactly 0 or 1.
+
+    A real model puts a topic change somewhere near the widest gap and these
+    tests would then be asserting on where it happened to land. Here the gap is
+    the only one there is, which makes "breaks at the topic change" a claim a
+    test can actually make.
+    """
+
+    @property
+    def model_name(self) -> str:
+        return "topic-v1"
+
+    @property
+    def dimensions(self) -> int:
+        return 2
+
+    def embed(self, texts: Sequence[str]) -> list[Vector]:
+        return [
+            [1.0, 0.0] if "retrieval" in text.lower() else [0.0, 1.0] for text in texts
+        ]
+
+
+TOPIC_A = (
+    "Retrieval finds the passage. Retrieval ranks the passage. "
+    "Retrieval returns the passage. Retrieval scores the passage."
+)
+TOPIC_B = (
+    "Generation writes the answer. Generation cites the answer. "
+    "Generation refuses the answer. Generation ends the answer."
+)
+
+
+def semantic(**overrides: float) -> SemanticChunker:
+    settings: dict[str, float] = {"buffer_size": 0, "min_chunk_chars": 0, "max_chunk_chars": 10_000}
+    settings.update(overrides)
+    return SemanticChunker(
+        TopicEmbedder(),
+        breakpoint_percentile=settings.get("breakpoint_percentile", 95.0),
+        buffer_size=int(settings["buffer_size"]),
+        min_chunk_chars=int(settings["min_chunk_chars"]),
+        max_chunk_chars=int(settings["max_chunk_chars"]),
+    )
+
+
+def test_semantic_chunker_satisfies_the_protocol() -> None:
+    assert isinstance(semantic(), Chunker)
+
+
+def test_semantic_fingerprint_describes_the_configuration() -> None:
+    chunker = SemanticChunker(
+        TopicEmbedder(),
+        breakpoint_percentile=90.0,
+        buffer_size=2,
+        min_chunk_chars=100,
+        max_chunk_chars=1500,
+    )
+
+    assert chunker.fingerprint == "semantic-90-2-100-1500"
+
+
+def test_semantic_breaks_where_the_topic_changes() -> None:
+    """The whole claim of the strategy, on text with exactly one topic change."""
+    document = make_document(text=f"{TOPIC_A} {TOPIC_B}")
+
+    chunks = semantic().chunk(document)
+
+    assert [chunk.text for chunk in chunks] == [TOPIC_A, TOPIC_B]
+
+
+def test_semantic_offsets_slice_back_to_the_source_text() -> None:
+    document = make_document(text=f"{TOPIC_A} {TOPIC_B}")
+
+    for chunk in semantic().chunk(document):
+        assert document.text[chunk.char_start : chunk.char_end] == chunk.text
+
+
+def test_semantic_chunk_ids_are_stable_across_runs() -> None:
+    document = make_document(text=f"{TOPIC_A} {TOPIC_B}")
+
+    first = semantic().chunk(document)
+    second = semantic().chunk(document)
+
+    assert [chunk.chunk_id for chunk in first] == [chunk.chunk_id for chunk in second]
+
+
+def test_semantic_ids_never_collide_with_fixed_size_ids() -> None:
+    """Both strategies land in one store, and phase 6 upserts by chunk id."""
+    document = make_document(text=f"{TOPIC_A} {TOPIC_B}")
+
+    a = semantic().chunk(document)
+    b = FixedSizeChunker(chunk_size=len(TOPIC_A), chunk_overlap=0).chunk(document)
+
+    assert {chunk.chunk_id for chunk in a}.isdisjoint({chunk.chunk_id for chunk in b})
+
+
+def test_semantic_caps_a_chunk_the_embedder_could_not_read_to_the_end_of() -> None:
+    """Unbroken text has no topic change to break on, so only the cap can."""
+    document = make_document(text="word " * 500)
+
+    chunks = semantic(max_chunk_chars=1000).chunk(document)
+
+    assert len(chunks) > 1
+    assert all(chunk.char_end - chunk.char_start <= 1000 for chunk in chunks)
+    assert "".join(chunk.text for chunk in chunks) == document.text.strip()
+
+
+def test_semantic_folds_a_trailing_runt_into_the_chunk_before_it() -> None:
+    """A break just before the last sentence would otherwise leave a stub."""
+    document = make_document(text=f"{TOPIC_A} {TOPIC_A} Generation.")
+
+    unmerged = semantic(min_chunk_chars=0).chunk(document)
+    merged = semantic(min_chunk_chars=200).chunk(document)
+
+    assert [chunk.text for chunk in unmerged] == [f"{TOPIC_A} {TOPIC_A}", "Generation."]
+    assert [chunk.text for chunk in merged] == [f"{TOPIC_A} {TOPIC_A} Generation."]
+
+
+def test_semantic_short_document_becomes_one_chunk() -> None:
+    document = make_document(text="Short enough to fit whole.")
+
+    chunks = semantic().chunk(document)
+
+    assert len(chunks) == 1
+    assert (chunks[0].char_start, chunks[0].char_end) == (0, len(document.text))
+
+
+def test_semantic_empty_document_produces_no_chunks() -> None:
+    assert semantic().chunk(make_document(text="   \n\n  ")) == []
+
+
+@pytest.mark.parametrize(
+    ("percentile", "buffer_size", "minimum", "maximum"),
+    [(0.0, 1, 200, 2000), (100.0, 1, 200, 2000), (95.0, -1, 200, 2000), (95.0, 1, 2000, 2000)],
+)
+def test_semantic_invalid_configurations_are_rejected(
+    percentile: float, buffer_size: int, minimum: int, maximum: int
+) -> None:
+    with pytest.raises(ValueError):
+        SemanticChunker(
+            TopicEmbedder(),
+            breakpoint_percentile=percentile,
+            buffer_size=buffer_size,
+            min_chunk_chars=minimum,
+            max_chunk_chars=maximum,
+        )
 
