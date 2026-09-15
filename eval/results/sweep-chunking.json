@@ -1,0 +1,243 @@
+{
+  "neuronest": "0.1.0",
+  "git_commit": "29bc7d047a0fec220b1058a82e02ef170c34ec9d",
+  "git_dirty": false,
+  "timestamp": "2026-09-15T00:23:23+00:00",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "top_k": 10,
+  "reference": "fixed-1000-200",
+  "configurations": [
+    {
+      "fingerprint": "fixed-500-0",
+      "chunks": 12171,
+      "answerable": {
+        "questions": 70,
+        "recall_at_1": 0.5,
+        "recall_at_5": 0.7714,
+        "recall_at_10": 0.8286,
+        "mrr": 0.6219
+      },
+      "multi_chunk": {
+        "questions": 10,
+        "recall_at_1": 0.0,
+        "recall_at_5": 0.1,
+        "recall_at_10": 0.3,
+        "mrr": 0.0436
+      },
+      "all_labelled": {
+        "questions": 80,
+        "recall_at_1": 0.4375,
+        "recall_at_5": 0.6875,
+        "recall_at_10": 0.7625,
+        "mrr": 0.5496
+      },
+      "index_build_seconds": 13.1,
+      "query_mean_ms": 1.0,
+      "unanswerable_empty": 0,
+      "result": "eval/results/retrieval-all-minilm-l6-v2-fixed-500-0.json"
+    },
+    {
+      "fingerprint": "fixed-500-200",
+      "chunks": 13355,
+      "answerable": {
+        "questions": 70,
+        "recall_at_1": 0.4429,
+        "recall_at_5": 0.7429,
+        "recall_at_10": 0.7857,
+        "mrr": 0.5675
+      },
+      "multi_chunk": {
+        "questions": 10,
+        "recall_at_1": 0.0,
+        "recall_at_5": 0.1,
+        "recall_at_10": 0.2,
+        "mrr": 0.0325
+      },
+      "all_labelled": {
+        "questions": 80,
+        "recall_at_1": 0.3875,
+        "recall_at_5": 0.6625,
+        "recall_at_10": 0.7125,
+        "mrr": 0.5006
+      },
+      "index_build_seconds": 16.6,
+      "query_mean_ms": 1.3,
+      "unanswerable_empty": 0,
+      "result": "eval/results/retrieval-all-minilm-l6-v2-fixed-500-200.json"
+    },
+    {
+      "fingerprint": "fixed-1000-0",
+      "chunks": 5451,
+      "answerable": {
+        "questions": 70,
+        "recall_at_1": 0.4429,
+        "recall_at_5": 0.6857,
+        "recall_at_10": 0.7857,
+        "mrr": 0.5486
+      },
+      "multi_chunk": {
+        "questions": 10,
+        "recall_at_1": 0.0,
+        "recall_at_5": 0.2,
+        "recall_at_10": 0.3,
+        "mrr": 0.0644
+      },
+      "all_labelled": {
+        "questions": 80,
+        "recall_at_1": 0.3875,
+        "recall_at_5": 0.625,
+        "recall_at_10": 0.725,
+        "mrr": 0.4881
+      },
+      "index_build_seconds": 6.7,
+      "query_mean_ms": 0.9,
+      "unanswerable_empty": 0,
+      "result": "eval/results/retrieval-all-minilm-l6-v2-fixed-1000-0.json"
+    },
+    {
+      "fingerprint": "fixed-1000-200",
+      "chunks": 5810,
+      "answerable": {
+        "questions": 70,
+        "recall_at_1": 0.4286,
+        "recall_at_5": 0.7286,
+        "recall_at_10": 0.8,
+        "mrr": 0.5511
+      },
+      "multi_chunk": {
+        "questions": 10,
+        "recall_at_1": 0.0,
+        "recall_at_5": 0.2,
+        "recall_at_10": 0.4,
+        "mrr": 0.1119
+      },
+      "all_labelled": {
+        "questions": 80,
+        "recall_at_1": 0.375,
+        "recall_at_5": 0.6625,
+        "recall_at_10": 0.75,
+        "mrr": 0.4962
+      },
+      "index_build_seconds": 6.8,
+      "query_mean_ms": 1.0,
+      "unanswerable_empty": 0,
+      "result": "eval/results/retrieval-all-minilm-l6-v2-fixed-1000-200.json"
+    },
+    {
+      "fingerprint": "fixed-1500-0",
+      "chunks": 3429,
+      "answerable": {
+        "questions": 70,
+        "recall_at_1": 0.3857,
+        "recall_at_5": 0.7,
+        "recall_at_10": 0.7571,
+        "mrr": 0.5279
+      },
+      "multi_chunk": {
+        "questions": 10,
+        "recall_at_1": 0.0,
+        "recall_at_5": 0.4,
+        "recall_at_10": 0.6,
+        "mrr": 0.1544
+      },
+      "all_labelled": {
+        "questions": 80,
+        "recall_at_1": 0.3375,
+        "recall_at_5": 0.6625,
+        "recall_at_10": 0.7375,
+        "mrr": 0.4812
+      },
+      "index_build_seconds": 3.9,
+      "query_mean_ms": 0.9,
+      "unanswerable_empty": 0,
+      "result": "eval/results/retrieval-all-minilm-l6-v2-fixed-1500-0.json"
+    },
+    {
+      "fingerprint": "fixed-1500-200",
+      "chunks": 3590,
+      "answerable": {
+        "questions": 70,
+        "recall_at_1": 0.4429,
+        "recall_at_5": 0.7286,
+        "recall_at_10": 0.7857,
+        "mrr": 0.5556
+      },
+      "multi_chunk": {
+        "questions": 10,
+        "recall_at_1": 0.1,
+        "recall_at_5": 0.4,
+        "recall_at_10": 0.4,
+        "mrr": 0.2
+      },
+      "all_labelled": {
+        "questions": 80,
+        "recall_at_1": 0.4,
+        "recall_at_5": 0.6875,
+        "recall_at_10": 0.7375,
+        "mrr": 0.5112
+      },
+      "index_build_seconds": 7.3,
+      "query_mean_ms": 1.0,
+      "unanswerable_empty": 0,
+      "result": "eval/results/retrieval-all-minilm-l6-v2-fixed-1500-200.json"
+    },
+    {
+      "fingerprint": "semantic-95-1-200-1000",
+      "chunks": 5373,
+      "answerable": {
+        "questions": 70,
+        "recall_at_1": 0.3571,
+        "recall_at_5": 0.7286,
+        "recall_at_10": 0.8143,
+        "mrr": 0.5199
+      },
+      "multi_chunk": {
+        "questions": 10,
+        "recall_at_1": 0.0,
+        "recall_at_5": 0.1,
+        "recall_at_10": 0.4,
+        "mrr": 0.0669
+      },
+      "all_labelled": {
+        "questions": 80,
+        "recall_at_1": 0.3125,
+        "recall_at_5": 0.65,
+        "recall_at_10": 0.7625,
+        "mrr": 0.4633
+      },
+      "index_build_seconds": 9.7,
+      "query_mean_ms": 0.9,
+      "unanswerable_empty": 0,
+      "result": "eval/results/retrieval-all-minilm-l6-v2-semantic-95-1-200-1000.json"
+    },
+    {
+      "fingerprint": "semantic-95-1-200-2000",
+      "chunks": 3033,
+      "answerable": {
+        "questions": 70,
+        "recall_at_1": 0.3571,
+        "recall_at_5": 0.6429,
+        "recall_at_10": 0.7286,
+        "mrr": 0.4762
+      },
+      "multi_chunk": {
+        "questions": 10,
+        "recall_at_1": 0.1,
+        "recall_at_5": 0.4,
+        "recall_at_10": 0.5,
+        "mrr": 0.18
+      },
+      "all_labelled": {
+        "questions": 80,
+        "recall_at_1": 0.325,
+        "recall_at_5": 0.6125,
+        "recall_at_10": 0.7,
+        "mrr": 0.4392
+      },
+      "index_build_seconds": 6.3,
+      "query_mean_ms": 1.2,
+      "unanswerable_empty": 0,
+      "result": "eval/results/retrieval-all-minilm-l6-v2-semantic-95-1-200-2000.json"
+    }
+  ]
+}

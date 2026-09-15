@@ -1,7 +1,7 @@
 {
   "config": {
     "neuronest": "0.1.0",
-    "git_commit": "4418034b19de29c6fb7ebff553eba4bf21e8f63a",
+    "git_commit": "29bc7d047a0fec220b1058a82e02ef170c34ec9d",
     "git_dirty": false,
     "embedding": {
       "model": "sentence-transformers/all-MiniLM-L6-v2",
@@ -38,9 +38,9 @@
     }
   },
   "run": {
-    "timestamp": "2026-09-11T18:36:13+00:00",
-    "index_build_seconds": 4.7,
-    "query_mean_ms": 0.9,
+    "timestamp": "2026-09-15T00:22:52+00:00",
+    "index_build_seconds": 6.8,
+    "query_mean_ms": 1.0,
     "embedding_cache_hit_rate": 1.0
   },
   "metrics": {

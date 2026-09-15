@@ -1,0 +1,1978 @@
+{
+  "config": {
+    "neuronest": "0.1.0",
+    "git_commit": "29bc7d047a0fec220b1058a82e02ef170c34ec9d",
+    "git_dirty": false,
+    "embedding": {
+      "model": "sentence-transformers/all-MiniLM-L6-v2",
+      "dimensions": 384
+    },
+    "chunking": {
+      "strategy": "fixed",
+      "chunk_size": 500,
+      "chunk_overlap": 0,
+      "fingerprint": "fixed-500-0",
+      "matches_labelled_reference": false
+    },
+    "retrieval": {
+      "top_k": 10,
+      "score_threshold": 0.25,
+      "threshold_applied_to_metrics": false,
+      "collection": "nn-sentence-transformers-all-minilm-l6-v2-e9e2c881-fixed-500-0"
+    },
+    "corpus": {
+      "path": "eval/corpus",
+      "documents": 40,
+      "chunks": 12171,
+      "sha256": "1a2d87ea2487e4b54815ca753322c6c06aa1c8b520584cc5f5630b9e96840c4d"
+    },
+    "questions": {
+      "path": "eval/questions.json",
+      "sha256": "29a98b27213a0be3419516a8e0a7cd120b5960687469a78fe09c6bf8cf8cabf0",
+      "counts": {
+        "answerable": 70,
+        "multi_chunk": 10,
+        "unanswerable": 20,
+        "total": 100
+      }
+    }
+  },
+  "run": {
+    "timestamp": "2026-09-15T00:22:16+00:00",
+    "index_build_seconds": 13.1,
+    "query_mean_ms": 1.0,
+    "embedding_cache_hit_rate": 1.0
+  },
+  "metrics": {
+    "answerable": {
+      "questions": 70,
+      "recall_at_1": 0.5,
+      "recall_at_5": 0.7714,
+      "recall_at_10": 0.8286,
+      "mrr": 0.6219
+    },
+    "multi-chunk": {
+      "questions": 10,
+      "recall_at_1": 0.0,
+      "recall_at_5": 0.1,
+      "recall_at_10": 0.3,
+      "mrr": 0.0436
+    },
+    "all labelled": {
+      "questions": 80,
+      "recall_at_1": 0.4375,
+      "recall_at_5": 0.6875,
+      "recall_at_10": 0.7625,
+      "mrr": 0.5496
+    }
+  },
+  "threshold": {
+    "value": 0.25,
+    "labelled_above": 80,
+    "labelled_total": 80,
+    "unanswerable_empty": 0,
+    "unanswerable_total": 20
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 6,
+      "top_score": 0.69,
+      "retrieved": [
+        "3f9054029f235d46-0907-22bd7da3",
+        "3f9054029f235d46-1047-3cc729cf",
+        "641b8bddae767be2-0080-1ea1f575",
+        "3f9054029f235d46-1011-90dff2b0",
+        "3f9054029f235d46-1027-a1d27aa8",
+        "3f9054029f235d46-1026-1477f5d7",
+        "3f9054029f235d46-0904-c85543b5",
+        "3f9054029f235d46-0906-e9160545",
+        "3f9054029f235d46-0513-f2e24e80",
+        "3f9054029f235d46-0995-2bf9e024"
+      ]
+    },
+    {
+      "id": "q002",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 2,
+      "top_score": 0.7978,
+      "retrieved": [
+        "3f9054029f235d46-1030-464e0278",
+        "3f9054029f235d46-1029-72594daa",
+        "3f9054029f235d46-1032-621a7b9a",
+        "3f9054029f235d46-1019-ca9fe677",
+        "3f9054029f235d46-0936-746d2b27",
+        "3f9054029f235d46-0560-3f280267",
+        "3f9054029f235d46-0290-451d4f46",
+        "641b8bddae767be2-0076-cd5a4509",
+        "3f9054029f235d46-0938-abfc54dc",
+        "3f9054029f235d46-0996-6500e643"
+      ]
+    },
+    {
+      "id": "q003",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 2,
+      "top_score": 0.6328,
+      "retrieved": [
+        "641b8bddae767be2-0126-0609aa8e",
+        "3f9054029f235d46-1032-621a7b9a",
+        "641b8bddae767be2-0129-81cba50d",
+        "641b8bddae767be2-0125-c18715e5",
+        "00a6eaeedf8251c3-0187-7d326fb5",
+        "641b8bddae767be2-0049-e4badb03",
+        "3f9054029f235d46-0069-e39255d8",
+        "26aff4e81fc48a6f-0012-3ba33961",
+        "3f9054029f235d46-0071-f0251e3e",
+        "641b8bddae767be2-0048-45b26b0c"
+      ]
+    },
+    {
+      "id": "q004",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 1,
+      "top_score": 0.7386,
+      "retrieved": [
+        "d153254831786b97-0024-4eddb405",
+        "3f9054029f235d46-0482-4709dc69",
+        "d153254831786b97-0143-65973fd7",
+        "d153254831786b97-0141-1afa3f93",
+        "3f9054029f235d46-0125-c2708c8f",
+        "d153254831786b97-0078-e353beb7",
+        "3f9054029f235d46-0126-c16ac368",
+        "d153254831786b97-0172-fbba70ee",
+        "3f9054029f235d46-0811-3155944e",
+        "d153254831786b97-0018-5695d8ec"
+      ]
+    },
+    {
+      "id": "q005",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 1,
+      "top_score": 0.8712,
+      "retrieved": [
+        "d153254831786b97-0161-d434c3ad",
+        "d153254831786b97-0157-0d944f17",
+        "d153254831786b97-0035-6f2368e6",
+        "d153254831786b97-0146-55dd54b0",
+        "d153254831786b97-0147-1e62c6d3",
+        "d153254831786b97-0058-58f31982",
+        "d153254831786b97-0171-d695a2a3",
+        "d153254831786b97-0158-c778209d",
+        "d153254831786b97-0223-54032af9",
+        "d153254831786b97-0057-cd8c668c"
+      ]
+    },
+    {
+      "id": "q006",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 1,
+      "top_score": 0.788,
+      "retrieved": [
+        "d153254831786b97-0184-2fcfc66d",
+        "d153254831786b97-0037-67f6c391",
+        "d153254831786b97-0186-ca3bb88a",
+        "d153254831786b97-0059-ce79281c",
+        "d153254831786b97-0087-b1aa79f8",
+        "d153254831786b97-0185-2eaa5b16",
+        "d153254831786b97-0113-599496b1",
+        "d153254831786b97-0038-0b6b1242",
+        "d153254831786b97-0136-3669f5ac",
+        "d153254831786b97-0075-867ac040"
+      ]
+    },
+    {
+      "id": "q007",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 1,
+      "top_score": 0.5964,
+      "retrieved": [
+        "641b8bddae767be2-0048-45b26b0c",
+        "3f9054029f235d46-0943-36b5c1f1",
+        "641b8bddae767be2-0130-661a36c3",
+        "8b4a5bbf84433dad-0216-9ca51a72",
+        "3f9054029f235d46-0431-79c6d764",
+        "ee54c341ef60ca93-0292-415da5de",
+        "3f9054029f235d46-1158-6ca1e1a1",
+        "641b8bddae767be2-0049-e4badb03",
+        "3f9054029f235d46-0617-d33efc29",
+        "8b4a5bbf84433dad-0208-9c415278"
+      ]
+    },
+    {
+      "id": "q008",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 2,
+      "top_score": 0.7667,
+      "retrieved": [
+        "3f9054029f235d46-0595-cb30dbc4",
+        "641b8bddae767be2-0105-35f0a6f0",
+        "641b8bddae767be2-0107-c2c4d6c0",
+        "641b8bddae767be2-0110-214f684a",
+        "641b8bddae767be2-0121-746fde84",
+        "641b8bddae767be2-0116-0f92011b",
+        "641b8bddae767be2-0103-dd95b726",
+        "641b8bddae767be2-0101-fd7688da",
+        "641b8bddae767be2-0111-0605de3d",
+        "641b8bddae767be2-0108-20f233dc"
+      ]
+    },
+    {
+      "id": "q009",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 1,
+      "top_score": 0.6116,
+      "retrieved": [
+        "641b8bddae767be2-0032-c8229e25",
+        "3f9054029f235d46-0073-3b20a2d0",
+        "d47504ce429bd618-0143-9e06a8b8",
+        "3f9054029f235d46-0068-a1b1aa59",
+        "d47504ce429bd618-0033-cbb44399",
+        "641b8bddae767be2-0231-f7912a3b",
+        "113d4fa04e1c0b24-0100-2d8f37dd",
+        "fc938047bdb0c70e-0384-62ea1fc8",
+        "3f9054029f235d46-0063-3f25e91d",
+        "3f9054029f235d46-0071-f0251e3e"
+      ]
+    },
+    {
+      "id": "q010",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 3,
+      "top_score": 0.7999,
+      "retrieved": [
+        "ee54c341ef60ca93-0258-2de0fe5b",
+        "ee54c341ef60ca93-0265-7f3a0d00",
+        "ee54c341ef60ca93-0204-e4bcad8f",
+        "ee54c341ef60ca93-0129-e086e77e",
+        "ee54c341ef60ca93-0117-3fb4e20f",
+        "ee54c341ef60ca93-0270-217bfada",
+        "ee54c341ef60ca93-0120-b6988f6c",
+        "ee54c341ef60ca93-0009-ec2fcdfa",
+        "ee54c341ef60ca93-0116-765e9ba9",
+        "ee54c341ef60ca93-0271-7835500f"
+      ]
+    },
+    {
+      "id": "q011",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 1,
+      "top_score": 0.7317,
+      "retrieved": [
+        "ee54c341ef60ca93-0037-967ef29b",
+        "ee54c341ef60ca93-0462-48ff9d8e",
+        "06bc235e1f479fb4-0034-5f54428b",
+        "06bc235e1f479fb4-0035-54ea71ac",
+        "ee54c341ef60ca93-0038-d58fd1b3",
+        "06bc235e1f479fb4-0028-45ed7a74",
+        "3f9054029f235d46-0389-187ef402",
+        "d47504ce429bd618-0750-da4662aa",
+        "61ae8f26e0fe341f-0172-de8b0683",
+        "535d7547ee08a225-0050-c9379550"
+      ]
+    },
+    {
+      "id": "q012",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 1,
+      "top_score": 0.8027,
+      "retrieved": [
+        "ee54c341ef60ca93-0043-25c70081",
+        "ee54c341ef60ca93-0044-107a3b09",
+        "ee54c341ef60ca93-0265-7f3a0d00",
+        "641b8bddae767be2-0037-25f8e656",
+        "ee54c341ef60ca93-0041-96461405",
+        "ee54c341ef60ca93-0030-568d8b9d",
+        "ee54c341ef60ca93-0034-58028a98",
+        "fdd0f95d2dcc65e6-0053-400583d3",
+        "3f9054029f235d46-0044-b1a0868a",
+        "641b8bddae767be2-0188-892867a6"
+      ]
+    },
+    {
+      "id": "q013",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": null,
+      "top_score": 0.696,
+      "retrieved": [
+        "ee54c341ef60ca93-0283-bd6569db",
+        "ee54c341ef60ca93-0412-c07c211a",
+        "641b8bddae767be2-0037-25f8e656",
+        "3f9054029f235d46-0913-c837a14b",
+        "3f9054029f235d46-0908-e776e85c",
+        "b7f4744ef39cc3ea-0008-2d5a6d57",
+        "3f9054029f235d46-1059-3433ec5b",
+        "ee54c341ef60ca93-0288-e17fc364",
+        "ee54c341ef60ca93-0370-4a9dde35",
+        "ee54c341ef60ca93-0026-8a2c24de"
+      ]
+    },
+    {
+      "id": "q014",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 1,
+      "top_score": 0.806,
+      "retrieved": [
+        "ee54c341ef60ca93-0178-aab15bc0",
+        "ee54c341ef60ca93-0170-aafe127d",
+        "ee54c341ef60ca93-0053-d3b45062",
+        "ee54c341ef60ca93-0176-49b98a38",
+        "ee54c341ef60ca93-0075-71cfeebe",
+        "ee54c341ef60ca93-0167-04fcc5bd",
+        "ee54c341ef60ca93-0182-5a9ce19e",
+        "ee54c341ef60ca93-0168-6d0e5d7f",
+        "3f9054029f235d46-0394-cf492a72",
+        "ee54c341ef60ca93-0057-2f170c2c"
+      ]
+    },
+    {
+      "id": "q015",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 1,
+      "top_score": 0.9073,
+      "retrieved": [
+        "9ed1f3082fb3496d-0136-3fcaf476",
+        "9ed1f3082fb3496d-0137-99751be3",
+        "9ed1f3082fb3496d-0180-f4307dae",
+        "9ed1f3082fb3496d-0076-4a3567fb",
+        "9ed1f3082fb3496d-0022-6bd34226",
+        "9ed1f3082fb3496d-0112-1f56a34f",
+        "9ed1f3082fb3496d-0111-14785cd3",
+        "9ed1f3082fb3496d-0149-0f2853e9",
+        "9ed1f3082fb3496d-0125-b664a938",
+        "9ed1f3082fb3496d-0146-11d1af2d"
+      ]
+    },
+    {
+      "id": "q016",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 1,
+      "top_score": 0.7677,
+      "retrieved": [
+        "9ed1f3082fb3496d-0084-7c4094ad",
+        "9ed1f3082fb3496d-0086-cf9bf9ce",
+        "9ed1f3082fb3496d-0104-b25ac2c7",
+        "9ed1f3082fb3496d-0048-57457d26",
+        "9ed1f3082fb3496d-0077-4baee3aa",
+        "9ed1f3082fb3496d-0105-70072053",
+        "9ed1f3082fb3496d-0053-a5d19786",
+        "9ed1f3082fb3496d-0115-54a8b597",
+        "9ed1f3082fb3496d-0153-7e6a64b3",
+        "9ed1f3082fb3496d-0106-56633965"
+      ]
+    },
+    {
+      "id": "q017",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 1,
+      "top_score": 0.7774,
+      "retrieved": [
+        "fdd0f95d2dcc65e6-0021-08cca7b5",
+        "fdd0f95d2dcc65e6-0051-1709bda8",
+        "fdd0f95d2dcc65e6-0033-c42046a3",
+        "fdd0f95d2dcc65e6-0056-6aedc383",
+        "fdd0f95d2dcc65e6-0014-ec58651d",
+        "fdd0f95d2dcc65e6-0027-1fa560b4",
+        "fdd0f95d2dcc65e6-0031-885bee5a",
+        "fdd0f95d2dcc65e6-0052-a4c0cf35",
+        "fdd0f95d2dcc65e6-0020-a26b709e",
+        "fdd0f95d2dcc65e6-0044-8473f5b9"
+      ]
+    },
+    {
+      "id": "q018",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 1,
+      "top_score": 0.7657,
+      "retrieved": [
+        "fdd0f95d2dcc65e6-0033-c42046a3",
+        "fdd0f95d2dcc65e6-0051-1709bda8",
+        "fdd0f95d2dcc65e6-0035-de66f585",
+        "fdd0f95d2dcc65e6-0034-c40c0f38",
+        "fdd0f95d2dcc65e6-0054-93d61cc3",
+        "fdd0f95d2dcc65e6-0031-885bee5a",
+        "fdd0f95d2dcc65e6-0021-08cca7b5",
+        "fdd0f95d2dcc65e6-0052-a4c0cf35",
+        "fdd0f95d2dcc65e6-0014-ec58651d",
+        "fdd0f95d2dcc65e6-0045-b6954c6d"
+      ]
+    },
+    {
+      "id": "q019",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": null,
+      "top_score": 0.7117,
+      "retrieved": [
+        "fdd0f95d2dcc65e6-0038-c1f1a618",
+        "fdd0f95d2dcc65e6-0014-ec58651d",
+        "fdd0f95d2dcc65e6-0016-6d730661",
+        "fdd0f95d2dcc65e6-0021-08cca7b5",
+        "fdd0f95d2dcc65e6-0051-1709bda8",
+        "fdd0f95d2dcc65e6-0042-9e5860bb",
+        "fdd0f95d2dcc65e6-0035-de66f585",
+        "fdd0f95d2dcc65e6-0041-ae8c4b43",
+        "fdd0f95d2dcc65e6-0019-4709df1a",
+        "fdd0f95d2dcc65e6-0027-1fa560b4"
+      ]
+    },
+    {
+      "id": "q020",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 1,
+      "top_score": 0.7523,
+      "retrieved": [
+        "01f6fbcd04f419d7-0025-5b7b8134",
+        "01f6fbcd04f419d7-0023-185055f0",
+        "db3d38cb895ad237-0092-25e862e7",
+        "01f6fbcd04f419d7-0048-7fbc7600",
+        "01f6fbcd04f419d7-0019-38845bc3",
+        "01f6fbcd04f419d7-0024-dea9ec7a",
+        "01f6fbcd04f419d7-0020-683ce50d",
+        "01f6fbcd04f419d7-0056-c98c7a5a",
+        "01f6fbcd04f419d7-0039-2d441e8c",
+        "01f6fbcd04f419d7-0022-29c6a5ef"
+      ]
+    },
+    {
+      "id": "q021",
+      "kind": "answerable",
+      "topic": "HTTP",
+      "coverage_rank": 3,
+      "top_score": 0.6154,
+      "retrieved": [
+        "9b56892f0c82cdbe-0083-1a12ace8",
+        "9b56892f0c82cdbe-0025-e235d327",
+        "9b56892f0c82cdbe-0037-22e3a83a",
+        "05e44eba8528e2b1-0091-5f750125",
+        "9b56892f0c82cdbe-0026-642e10df",
+        "05e44eba8528e2b1-0055-c576c6f9",
+        "9b56892f0c82cdbe-0056-1edda892",
+        "9b56892f0c82cdbe-0042-c27febe7",
+        "9b56892f0c82cdbe-0057-2cf82d76",
+        "3f9054029f235d46-0269-3001f52e"
+      ]
+    },
+    {
+      "id": "q022",
+      "kind": "answerable",
+      "topic": "auth",
+      "coverage_rank": null,
+      "top_score": 0.677,
+      "retrieved": [
+        "fc938047bdb0c70e-0099-82d6545d",
+        "fc938047bdb0c70e-0100-eeeb38ee",
+        "fc938047bdb0c70e-0057-a13e951a",
+        "fc938047bdb0c70e-0101-aa52cd3b",
+        "d6212bf18f983699-0814-70d08077",
+        "fc938047bdb0c70e-0293-88110209",
+        "fc938047bdb0c70e-0027-d2f7cafe",
+        "fc938047bdb0c70e-0097-8ada51cc",
+        "fc938047bdb0c70e-0176-d72bc994",
+        "49bd4921349c9c5c-0018-909182e6"
+      ]
+    },
+    {
+      "id": "q023",
+      "kind": "answerable",
+      "topic": "auth",
+      "coverage_rank": 1,
+      "top_score": 0.7534,
+      "retrieved": [
+        "32edc8ea6147c119-0025-50a4ff93",
+        "32edc8ea6147c119-0027-09358b90",
+        "32edc8ea6147c119-0168-3d781eec",
+        "32edc8ea6147c119-0026-6568feb1",
+        "32edc8ea6147c119-0042-3c88921c",
+        "32edc8ea6147c119-0166-e6dd5d51",
+        "32edc8ea6147c119-0184-ba338011",
+        "32edc8ea6147c119-0169-39ebe55c",
+        "34c3cee32c3972ca-0437-f6a31703",
+        "34c3cee32c3972ca-0534-dcf51683"
+      ]
+    },
+    {
+      "id": "q024",
+      "kind": "answerable",
+      "topic": "auth",
+      "coverage_rank": 1,
+      "top_score": 0.7698,
+      "retrieved": [
+        "fc938047bdb0c70e-0037-889a1c8d",
+        "fc938047bdb0c70e-0078-3f688428",
+        "fc938047bdb0c70e-0043-c93a6889",
+        "fc938047bdb0c70e-0036-b7aee6b3",
+        "7b6ded9670bd4836-0166-f813bdca",
+        "be5b6931e42f2de0-0097-175ab050",
+        "fc938047bdb0c70e-0001-0039ba5b",
+        "fc938047bdb0c70e-0405-513fff6f",
+        "fc938047bdb0c70e-0403-7814fe8b",
+        "fc938047bdb0c70e-0292-f26b60d5"
+      ]
+    },
+    {
+      "id": "q025",
+      "kind": "answerable",
+      "topic": "auth",
+      "coverage_rank": 1,
+      "top_score": 0.6695,
+      "retrieved": [
+        "fc938047bdb0c70e-0161-872fb89a",
+        "fc938047bdb0c70e-0239-f79e86fb",
+        "fc938047bdb0c70e-0078-3f688428",
+        "fc938047bdb0c70e-0200-933df091",
+        "fc938047bdb0c70e-0001-0039ba5b",
+        "fc938047bdb0c70e-0389-5d825c6f",
+        "fc938047bdb0c70e-0223-68e8d1b4",
+        "be5b6931e42f2de0-0097-175ab050",
+        "fc938047bdb0c70e-0162-a3c59623",
+        "fc938047bdb0c70e-0324-b706f718"
+      ]
+    },
+    {
+      "id": "q026",
+      "kind": "answerable",
+      "topic": "auth",
+      "coverage_rank": 1,
+      "top_score": 0.7671,
+      "retrieved": [
+        "be5b6931e42f2de0-0029-52ca7d1d",
+        "3f9054029f235d46-0686-2a385360",
+        "be5b6931e42f2de0-0027-62d3cea8",
+        "be5b6931e42f2de0-0028-2e1e6390",
+        "be5b6931e42f2de0-0026-2eb4b95c",
+        "3f9054029f235d46-1119-1916daf9",
+        "3f9054029f235d46-0697-c1bcfa4c",
+        "be5b6931e42f2de0-0015-86a1469f",
+        "3f9054029f235d46-0672-0a6b5068",
+        "3f9054029f235d46-0671-5c55cf3a"
+      ]
+    },
+    {
+      "id": "q027",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": null,
+      "top_score": 0.7273,
+      "retrieved": [
+        "d6212bf18f983699-0731-63894dcc",
+        "d6212bf18f983699-0735-97aeb380",
+        "ee54c341ef60ca93-0511-74d05be7",
+        "34c3cee32c3972ca-0414-d36a5674",
+        "d6212bf18f983699-0603-2cf5655b",
+        "ee54c341ef60ca93-0413-f09d1249",
+        "d6212bf18f983699-0051-12eac77f",
+        "34c3cee32c3972ca-0301-add635ab",
+        "34c3cee32c3972ca-0553-0532175c",
+        "d6212bf18f983699-0705-38a32cd0"
+      ]
+    },
+    {
+      "id": "q028",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": 2,
+      "top_score": 0.8601,
+      "retrieved": [
+        "34c3cee32c3972ca-0107-f1006e45",
+        "d6212bf18f983699-0447-01d40bc1",
+        "5bda7f7c0b790e80-0046-f57d2ab1",
+        "5bda7f7c0b790e80-0051-15c36efd",
+        "5bda7f7c0b790e80-0111-4d5a86d7",
+        "34c3cee32c3972ca-0112-78539f9d",
+        "34c3cee32c3972ca-0116-149ff1a6",
+        "5bda7f7c0b790e80-0050-9ae566d2",
+        "d6212bf18f983699-0440-8684794e",
+        "5bda7f7c0b790e80-0112-47477b13"
+      ]
+    },
+    {
+      "id": "q029",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": 3,
+      "top_score": 0.6381,
+      "retrieved": [
+        "34c3cee32c3972ca-0216-c48790ca",
+        "34c3cee32c3972ca-0217-8c90ad54",
+        "d6212bf18f983699-0169-0f3d707d",
+        "d6212bf18f983699-0738-aaf87ded",
+        "34c3cee32c3972ca-0214-51c838c3",
+        "34c3cee32c3972ca-0194-44bb4708",
+        "d6212bf18f983699-0176-927daef1",
+        "34c3cee32c3972ca-0221-46dd6aa2",
+        "d6212bf18f983699-0297-0e9d6bd6",
+        "d6212bf18f983699-0163-263426ed"
+      ]
+    },
+    {
+      "id": "q030",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": 1,
+      "top_score": 0.7432,
+      "retrieved": [
+        "06bc235e1f479fb4-0017-f4ac802d",
+        "06bc235e1f479fb4-0034-5f54428b",
+        "06bc235e1f479fb4-0028-45ed7a74",
+        "06bc235e1f479fb4-0019-1f798dc2",
+        "06bc235e1f479fb4-0016-d47367d4",
+        "641b8bddae767be2-0249-351d7812",
+        "06bc235e1f479fb4-0031-ac485643",
+        "d47504ce429bd618-0750-da4662aa",
+        "06bc235e1f479fb4-0014-3c5de99b",
+        "ee54c341ef60ca93-0463-d9f46b8d"
+      ]
+    },
+    {
+      "id": "q031",
+      "kind": "answerable",
+      "topic": "DNS",
+      "coverage_rank": null,
+      "top_score": 0.7413,
+      "retrieved": [
+        "a0ab2e516a90669c-0031-e3af4b83",
+        "00a6eaeedf8251c3-0067-8529f181",
+        "233a6afb03b6c8e1-0016-9d566a80",
+        "b7f4744ef39cc3ea-0062-f2eb1cf6",
+        "a0ab2e516a90669c-0032-dffba9b0",
+        "8b4a5bbf84433dad-0050-8089459e",
+        "233a6afb03b6c8e1-0034-f5b8f88b",
+        "d6212bf18f983699-0519-43eacbf2",
+        "233a6afb03b6c8e1-0031-36eea695",
+        "233a6afb03b6c8e1-0033-21297e30"
+      ]
+    },
+    {
+      "id": "q032",
+      "kind": "answerable",
+      "topic": "DNS",
+      "coverage_rank": 1,
+      "top_score": 0.7476,
+      "retrieved": [
+        "00a6eaeedf8251c3-0067-8529f181",
+        "a0ab2e516a90669c-0031-e3af4b83",
+        "00a6eaeedf8251c3-0066-976f0aaf",
+        "00a6eaeedf8251c3-0081-15825593",
+        "8b4a5bbf84433dad-0050-8089459e",
+        "8b4a5bbf84433dad-0044-2e2a926a",
+        "00a6eaeedf8251c3-0163-caf22e61",
+        "535d7547ee08a225-0147-64e90da2",
+        "00a6eaeedf8251c3-0175-344ec5d3",
+        "8b4a5bbf84433dad-0011-41cc2a1d"
+      ]
+    },
+    {
+      "id": "q033",
+      "kind": "answerable",
+      "topic": "DNS",
+      "coverage_rank": null,
+      "top_score": 0.8762,
+      "retrieved": [
+        "b7f4744ef39cc3ea-0062-f2eb1cf6",
+        "233a6afb03b6c8e1-0031-36eea695",
+        "233a6afb03b6c8e1-0016-9d566a80",
+        "233a6afb03b6c8e1-0073-4a491165",
+        "233a6afb03b6c8e1-0028-ca408f64",
+        "233a6afb03b6c8e1-0062-94b8e53a",
+        "233a6afb03b6c8e1-0058-885eafcb",
+        "d47504ce429bd618-0532-0ec6f8e4",
+        "00a6eaeedf8251c3-0183-de958f99",
+        "233a6afb03b6c8e1-0065-2dae8c93"
+      ]
+    },
+    {
+      "id": "q034",
+      "kind": "answerable",
+      "topic": "DNS",
+      "coverage_rank": 4,
+      "top_score": 0.787,
+      "retrieved": [
+        "e78ae3ad02690f01-0029-d85b3da6",
+        "e78ae3ad02690f01-0031-2dcd30d9",
+        "e78ae3ad02690f01-0026-aa90d759",
+        "e78ae3ad02690f01-0025-a417d5f6",
+        "e78ae3ad02690f01-0018-236d43af",
+        "e78ae3ad02690f01-0023-3ba8be68",
+        "e78ae3ad02690f01-0045-9019c2f2",
+        "e78ae3ad02690f01-0078-e40d6cc3",
+        "e78ae3ad02690f01-0040-bb7137ae",
+        "e78ae3ad02690f01-0041-c425599e"
+      ]
+    },
+    {
+      "id": "q035",
+      "kind": "answerable",
+      "topic": "DNS",
+      "coverage_rank": 1,
+      "top_score": 0.6335,
+      "retrieved": [
+        "b7f4744ef39cc3ea-0060-bf4fd665",
+        "b7f4744ef39cc3ea-0117-2dcb94be",
+        "61ae8f26e0fe341f-0057-33eb957a",
+        "b7f4744ef39cc3ea-0036-69179176",
+        "b7f4744ef39cc3ea-0081-f80b0adc",
+        "b7f4744ef39cc3ea-0009-d667edd2",
+        "b7f4744ef39cc3ea-0089-6099d3d9",
+        "b7f4744ef39cc3ea-0012-55feef4d",
+        "b7f4744ef39cc3ea-0069-f82d6a21",
+        "294018104b0ce268-0154-68c413ef"
+      ]
+    },
+    {
+      "id": "q036",
+      "kind": "answerable",
+      "topic": "DNS",
+      "coverage_rank": 1,
+      "top_score": 0.8594,
+      "retrieved": [
+        "a0ab2e516a90669c-0114-bbb79047",
+        "8b4a5bbf84433dad-0196-a3b8d48a",
+        "a0ab2e516a90669c-0147-23ce3a8d",
+        "b7f4744ef39cc3ea-0016-389659e7",
+        "a0ab2e516a90669c-0126-cbea25c8",
+        "a0ab2e516a90669c-0148-6b8ebed7",
+        "a0ab2e516a90669c-0111-de376040",
+        "8b4a5bbf84433dad-0198-b5f507e0",
+        "8b4a5bbf84433dad-0178-a4c365f4",
+        "8b4a5bbf84433dad-0036-e8c4d1a1"
+      ]
+    },
+    {
+      "id": "q037",
+      "kind": "answerable",
+      "topic": "DNS",
+      "coverage_rank": 4,
+      "top_score": 0.7175,
+      "retrieved": [
+        "a0ab2e516a90669c-0101-40728b9f",
+        "00a6eaeedf8251c3-0073-9577910b",
+        "00a6eaeedf8251c3-0169-e7b55d23",
+        "8b4a5bbf84433dad-0075-5a05cae0",
+        "a0ab2e516a90669c-0099-894dd802",
+        "535d7547ee08a225-0029-42cad99b",
+        "8b4a5bbf84433dad-0078-f2b50a0e",
+        "535d7547ee08a225-0022-5555f462",
+        "d47504ce429bd618-0236-1e21eda0",
+        "d47504ce429bd618-0233-c0c528c3"
+      ]
+    },
+    {
+      "id": "q038",
+      "kind": "answerable",
+      "topic": "DNS",
+      "coverage_rank": 1,
+      "top_score": 0.6548,
+      "retrieved": [
+        "233a6afb03b6c8e1-0058-885eafcb",
+        "233a6afb03b6c8e1-0062-94b8e53a",
+        "233a6afb03b6c8e1-0056-ebe3f5f3",
+        "3c4b79e7f4b1dce4-0106-7eb4ff6c",
+        "233a6afb03b6c8e1-0031-36eea695",
+        "00a6eaeedf8251c3-0065-ed905e55",
+        "d47504ce429bd618-0532-0ec6f8e4",
+        "233a6afb03b6c8e1-0073-4a491165",
+        "b7f4744ef39cc3ea-0062-f2eb1cf6",
+        "ee54c341ef60ca93-0174-118c0a4b"
+      ]
+    },
+    {
+      "id": "q039",
+      "kind": "answerable",
+      "topic": "DNS",
+      "coverage_rank": 2,
+      "top_score": 0.734,
+      "retrieved": [
+        "233a6afb03b6c8e1-0065-2dae8c93",
+        "233a6afb03b6c8e1-0066-e1594789",
+        "233a6afb03b6c8e1-0073-4a491165",
+        "233a6afb03b6c8e1-0031-36eea695",
+        "b7f4744ef39cc3ea-0062-f2eb1cf6",
+        "233a6afb03b6c8e1-0016-9d566a80",
+        "233a6afb03b6c8e1-0028-ca408f64",
+        "e78ae3ad02690f01-0082-9b13a1c0",
+        "233a6afb03b6c8e1-0062-94b8e53a",
+        "233a6afb03b6c8e1-0058-885eafcb"
+      ]
+    },
+    {
+      "id": "q040",
+      "kind": "answerable",
+      "topic": "DNS",
+      "coverage_rank": 2,
+      "top_score": 0.79,
+      "retrieved": [
+        "233a6afb03b6c8e1-0020-7743d573",
+        "a0ab2e516a90669c-0095-74cd899c",
+        "233a6afb03b6c8e1-0001-ced1f45d",
+        "a0ab2e516a90669c-0019-3e15d2d5",
+        "b7f4744ef39cc3ea-0110-31ad6f3a",
+        "233a6afb03b6c8e1-0025-1235954c",
+        "a0ab2e516a90669c-0204-64897cbf",
+        "233a6afb03b6c8e1-0002-b803c236",
+        "8b4a5bbf84433dad-0161-930666fa",
+        "a0ab2e516a90669c-0158-0ff41788"
+      ]
+    },
+    {
+      "id": "q041",
+      "kind": "answerable",
+      "topic": "DNS",
+      "coverage_rank": 3,
+      "top_score": 0.587,
+      "retrieved": [
+        "641b8bddae767be2-0101-fd7688da",
+        "294018104b0ce268-0156-2420b2fd",
+        "b7f4744ef39cc3ea-0064-834e9f7e",
+        "3f9054029f235d46-0100-4ea5c0e5",
+        "3c4b79e7f4b1dce4-0107-a6e9fcc0",
+        "3c4b79e7f4b1dce4-0090-e32f9655",
+        "db3d38cb895ad237-0052-e426ea28",
+        "3f9054029f235d46-0409-e10f52a9",
+        "3c4b79e7f4b1dce4-0088-3c41a961",
+        "01f6fbcd04f419d7-0014-49ff2726"
+      ]
+    },
+    {
+      "id": "q042",
+      "kind": "answerable",
+      "topic": "encoding",
+      "coverage_rank": null,
+      "top_score": 0.7638,
+      "retrieved": [
+        "05e44eba8528e2b1-0033-813941ec",
+        "2a8b39091ca9b743-0030-15675130",
+        "26aff4e81fc48a6f-0037-2ee816b1",
+        "b7f4744ef39cc3ea-0100-efc97c3f",
+        "05e44eba8528e2b1-0106-4dcc643c",
+        "01f6fbcd04f419d7-0038-fb2c5338",
+        "05e44eba8528e2b1-0312-c5427c64",
+        "05e44eba8528e2b1-0205-a726ccc8",
+        "49bd4921349c9c5c-0053-93ecbd98",
+        "2a8b39091ca9b743-0034-c59d7ceb"
+      ]
+    },
+    {
+      "id": "q043",
+      "kind": "answerable",
+      "topic": "encoding",
+      "coverage_rank": null,
+      "top_score": 0.6888,
+      "retrieved": [
+        "535d7547ee08a225-0114-3f6bcf44",
+        "535d7547ee08a225-0034-55989f66",
+        "535d7547ee08a225-0118-c49509ba",
+        "535d7547ee08a225-0046-fe58df54",
+        "535d7547ee08a225-0091-50138a39",
+        "535d7547ee08a225-0065-8281e5c4",
+        "535d7547ee08a225-0049-4f71ce16",
+        "535d7547ee08a225-0076-4c4e264f",
+        "535d7547ee08a225-0099-23920707",
+        "535d7547ee08a225-0320-23c41473"
+      ]
+    },
+    {
+      "id": "q044",
+      "kind": "answerable",
+      "topic": "encoding",
+      "coverage_rank": 6,
+      "top_score": 0.9006,
+      "retrieved": [
+        "535d7547ee08a225-0084-5845a8f5",
+        "535d7547ee08a225-0094-018f31a2",
+        "535d7547ee08a225-0097-7081fd0b",
+        "535d7547ee08a225-0268-89e355e4",
+        "535d7547ee08a225-0295-55b4fc11",
+        "535d7547ee08a225-0079-20f51ed9",
+        "535d7547ee08a225-0290-aa8e24b6",
+        "535d7547ee08a225-0151-ded4d994",
+        "535d7547ee08a225-0090-2dbe053d",
+        "535d7547ee08a225-0109-e0a23e39"
+      ]
+    },
+    {
+      "id": "q045",
+      "kind": "answerable",
+      "topic": "encoding",
+      "coverage_rank": 2,
+      "top_score": 0.744,
+      "retrieved": [
+        "3bc553e6cf0f80c2-0013-d055cf14",
+        "3bc553e6cf0f80c2-0021-8b7252e9",
+        "3bc553e6cf0f80c2-0077-7b832029",
+        "26aff4e81fc48a6f-0060-b7cc514c",
+        "535d7547ee08a225-0312-38541b9f",
+        "3bc553e6cf0f80c2-0011-c9170b39",
+        "535d7547ee08a225-0260-b5ea8035",
+        "3bc553e6cf0f80c2-0033-da51f3a3",
+        "01f6fbcd04f419d7-0047-fb7ae971",
+        "3bc553e6cf0f80c2-0017-8fcf77eb"
+      ]
+    },
+    {
+      "id": "q046",
+      "kind": "answerable",
+      "topic": "encoding",
+      "coverage_rank": 3,
+      "top_score": 0.8658,
+      "retrieved": [
+        "3c4b79e7f4b1dce4-0050-16c5a8ec",
+        "3c4b79e7f4b1dce4-0053-40e8b58e",
+        "3c4b79e7f4b1dce4-0055-af4a0982",
+        "3c4b79e7f4b1dce4-0022-eb313598",
+        "641b8bddae767be2-0311-df3321f3",
+        "3c4b79e7f4b1dce4-0179-d8580984",
+        "3c4b79e7f4b1dce4-0048-d30957d4",
+        "3c4b79e7f4b1dce4-0189-9ec82f6b",
+        "3c4b79e7f4b1dce4-0058-4e41ef68",
+        "641b8bddae767be2-0275-8c21c40b"
+      ]
+    },
+    {
+      "id": "q047",
+      "kind": "answerable",
+      "topic": "encoding",
+      "coverage_rank": 6,
+      "top_score": 0.7516,
+      "retrieved": [
+        "3c4b79e7f4b1dce4-0124-e1fd84b3",
+        "3c4b79e7f4b1dce4-0119-81d6d224",
+        "3c4b79e7f4b1dce4-0157-57bba9d1",
+        "3c4b79e7f4b1dce4-0107-a6e9fcc0",
+        "535d7547ee08a225-0103-8e74fd2c",
+        "3c4b79e7f4b1dce4-0095-c773f55f",
+        "2a8b39091ca9b743-0030-15675130",
+        "26aff4e81fc48a6f-0025-05816f25",
+        "3c4b79e7f4b1dce4-0123-90e0cb2c",
+        "3c4b79e7f4b1dce4-0144-bdd371d1"
+      ]
+    },
+    {
+      "id": "q048",
+      "kind": "answerable",
+      "topic": "encoding",
+      "coverage_rank": 6,
+      "top_score": 0.5792,
+      "retrieved": [
+        "3f9054029f235d46-0405-ec3d3205",
+        "db3d38cb895ad237-0154-9786d044",
+        "db3d38cb895ad237-0128-8b457409",
+        "33f144791046a49f-0067-91f884dd",
+        "db3d38cb895ad237-0155-c7c23465",
+        "db3d38cb895ad237-0142-ff33a7ac",
+        "db3d38cb895ad237-0151-2be85b1f",
+        "db3d38cb895ad237-0137-6857cadd",
+        "db3d38cb895ad237-0133-1b1d5fb0",
+        "db3d38cb895ad237-0147-9b985cd7"
+      ]
+    },
+    {
+      "id": "q049",
+      "kind": "answerable",
+      "topic": "encoding",
+      "coverage_rank": null,
+      "top_score": 0.797,
+      "retrieved": [
+        "61ae8f26e0fe341f-0047-2c5b0322",
+        "61ae8f26e0fe341f-0084-d9c0b944",
+        "61ae8f26e0fe341f-0184-be9c54e7",
+        "61ae8f26e0fe341f-0007-91d2c5c0",
+        "61ae8f26e0fe341f-0092-25900f06",
+        "61ae8f26e0fe341f-0122-80d529fa",
+        "61ae8f26e0fe341f-0035-dfddc435",
+        "61ae8f26e0fe341f-0091-63820d13",
+        "61ae8f26e0fe341f-0131-40e3f20e",
+        "61ae8f26e0fe341f-0119-02202a45"
+      ]
+    },
+    {
+      "id": "q050",
+      "kind": "answerable",
+      "topic": "JSON",
+      "coverage_rank": null,
+      "top_score": 0.6766,
+      "retrieved": [
+        "89cef398235d81af-0023-2e4e0fb8",
+        "05e44eba8528e2b1-0223-27cf391d",
+        "7b6ded9670bd4836-0039-ab9b455c",
+        "89cef398235d81af-0014-6c7b956e",
+        "89cef398235d81af-0015-da1dd1f3",
+        "89cef398235d81af-0046-d2bc6d4c",
+        "89cef398235d81af-0059-0b6a2b5a",
+        "89cef398235d81af-0001-525f964c",
+        "7b6ded9670bd4836-0135-65a9deb0",
+        "05e44eba8528e2b1-0197-be627f83"
+      ]
+    },
+    {
+      "id": "q051",
+      "kind": "answerable",
+      "topic": "JSON",
+      "coverage_rank": 1,
+      "top_score": 0.6906,
+      "retrieved": [
+        "89cef398235d81af-0025-0be467e6",
+        "05e44eba8528e2b1-0223-27cf391d",
+        "7b6ded9670bd4836-0039-ab9b455c",
+        "05e44eba8528e2b1-0195-6bda6371",
+        "05e44eba8528e2b1-0224-fe3f7bc2",
+        "05e44eba8528e2b1-0197-be627f83",
+        "7b6ded9670bd4836-0040-f8ba325a",
+        "89cef398235d81af-0015-da1dd1f3",
+        "89cef398235d81af-0024-b29ec8f0",
+        "89cef398235d81af-0046-d2bc6d4c"
+      ]
+    },
+    {
+      "id": "q052",
+      "kind": "answerable",
+      "topic": "JSON",
+      "coverage_rank": 1,
+      "top_score": 0.7506,
+      "retrieved": [
+        "7b6ded9670bd4836-0055-7fde8064",
+        "7b6ded9670bd4836-0051-fb97e44e",
+        "7b6ded9670bd4836-0034-a098011a",
+        "7b6ded9670bd4836-0059-80cdf502",
+        "7b6ded9670bd4836-0073-bd3f903d",
+        "7b6ded9670bd4836-0045-87a2da8f",
+        "7b6ded9670bd4836-0048-9c61435b",
+        "7b6ded9670bd4836-0103-abc806a6",
+        "7b6ded9670bd4836-0053-4aced417",
+        "7b6ded9670bd4836-0158-1f124a62"
+      ]
+    },
+    {
+      "id": "q053",
+      "kind": "answerable",
+      "topic": "JSON",
+      "coverage_rank": 2,
+      "top_score": 0.8225,
+      "retrieved": [
+        "2a8b39091ca9b743-0035-0a5a55a2",
+        "05e44eba8528e2b1-0057-81c03c2d",
+        "05e44eba8528e2b1-0075-2db5e4aa",
+        "2a8b39091ca9b743-0066-10831c57",
+        "05e44eba8528e2b1-0081-858180d2",
+        "05e44eba8528e2b1-0058-246db735",
+        "05e44eba8528e2b1-0129-2467f549",
+        "05e44eba8528e2b1-0154-96387aea",
+        "05e44eba8528e2b1-0041-a8567ea2",
+        "05e44eba8528e2b1-0132-12f388c4"
+      ]
+    },
+    {
+      "id": "q054",
+      "kind": "answerable",
+      "topic": "JSON",
+      "coverage_rank": 1,
+      "top_score": 0.7311,
+      "retrieved": [
+        "2a8b39091ca9b743-0043-f21e58e0",
+        "2a8b39091ca9b743-0048-1cc92d9b",
+        "2a8b39091ca9b743-0167-7cfef774",
+        "2a8b39091ca9b743-0044-e9277187",
+        "7b6ded9670bd4836-0099-1939488f",
+        "2a8b39091ca9b743-0168-0192b190",
+        "5bda7f7c0b790e80-0122-7f4d08ee",
+        "05e44eba8528e2b1-0170-2ac71e69",
+        "34c3cee32c3972ca-0452-8123229b",
+        "2a8b39091ca9b743-0036-2e8d6dba"
+      ]
+    },
+    {
+      "id": "q055",
+      "kind": "answerable",
+      "topic": "transport",
+      "coverage_rank": 2,
+      "top_score": 0.7709,
+      "retrieved": [
+        "33f144791046a49f-0233-94afc737",
+        "33f144791046a49f-0228-b9b60bd8",
+        "d47504ce429bd618-0574-01c2a710",
+        "d47504ce429bd618-0569-6b349218",
+        "33f144791046a49f-0240-e0a5c7ad",
+        "33f144791046a49f-0230-5fc4ae33",
+        "d47504ce429bd618-0731-fd508e98",
+        "d47504ce429bd618-0570-66459b57",
+        "d47504ce429bd618-0732-9bda5609",
+        "33f144791046a49f-0068-fd6dfa38"
+      ]
+    },
+    {
+      "id": "q056",
+      "kind": "answerable",
+      "topic": "transport",
+      "coverage_rank": null,
+      "top_score": 0.5964,
+      "retrieved": [
+        "33f144791046a49f-0236-13997782",
+        "d47504ce429bd618-0396-b4bc85e4",
+        "d47504ce429bd618-0406-52adfde7",
+        "670d32a46fc40141-0028-5959093f",
+        "33f144791046a49f-0243-4e43e003",
+        "d47504ce429bd618-0407-6803884f",
+        "33f144791046a49f-0225-918eab45",
+        "33f144791046a49f-0000-2f6cfbf2",
+        "d47504ce429bd618-0395-0f1570c9",
+        "33f144791046a49f-0557-01163584"
+      ]
+    },
+    {
+      "id": "q057",
+      "kind": "answerable",
+      "topic": "transport",
+      "coverage_rank": null,
+      "top_score": 0.7351,
+      "retrieved": [
+        "70382eb2504ca1d2-0025-11c4709d",
+        "70382eb2504ca1d2-0001-1291aaa3",
+        "70382eb2504ca1d2-0017-139d4856",
+        "70382eb2504ca1d2-0104-1c0039db",
+        "70382eb2504ca1d2-0068-d2850d26",
+        "70382eb2504ca1d2-0010-d034a3cb",
+        "70382eb2504ca1d2-0110-ad0e2ef1",
+        "70382eb2504ca1d2-0022-5e0a1971",
+        "33f144791046a49f-0261-d9afa7d8",
+        "70382eb2504ca1d2-0011-8bd3f84b"
+      ]
+    },
+    {
+      "id": "q058",
+      "kind": "answerable",
+      "topic": "transport",
+      "coverage_rank": 1,
+      "top_score": 0.6321,
+      "retrieved": [
+        "232abe62ef8627c2-0021-77d31ef1",
+        "232abe62ef8627c2-0002-772a9fc6",
+        "232abe62ef8627c2-0037-5d9a5d7f",
+        "232abe62ef8627c2-0024-8c4716c7",
+        "d47504ce429bd618-0756-39aedafd",
+        "232abe62ef8627c2-0004-b4c126d0",
+        "232abe62ef8627c2-0029-1d7831d9",
+        "232abe62ef8627c2-0035-c35a57a7",
+        "9b56892f0c82cdbe-0052-5058c417",
+        "232abe62ef8627c2-0025-7b953d05"
+      ]
+    },
+    {
+      "id": "q059",
+      "kind": "answerable",
+      "topic": "transport",
+      "coverage_rank": 1,
+      "top_score": 0.7717,
+      "retrieved": [
+        "670d32a46fc40141-0086-91d45297",
+        "670d32a46fc40141-0261-c1f7e2f2",
+        "670d32a46fc40141-0084-a875569d",
+        "670d32a46fc40141-0149-5b1ffa51",
+        "670d32a46fc40141-0099-a8b53f01",
+        "670d32a46fc40141-0167-2abb0679",
+        "670d32a46fc40141-0259-1368bcb8",
+        "670d32a46fc40141-0203-43586bcc",
+        "670d32a46fc40141-0178-01e04004",
+        "670d32a46fc40141-0096-431085ac"
+      ]
+    },
+    {
+      "id": "q060",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": 5,
+      "top_score": 0.8571,
+      "retrieved": [
+        "be7384fd8164e0d3-0102-a0cae5d5",
+        "be7384fd8164e0d3-0100-4833d7ca",
+        "be7384fd8164e0d3-0112-fad17dfc",
+        "be7384fd8164e0d3-0101-fcb6f956",
+        "be7384fd8164e0d3-0108-9cc697b6",
+        "be7384fd8164e0d3-0172-0956eb70",
+        "be7384fd8164e0d3-0115-edf14c39",
+        "be7384fd8164e0d3-0103-5ef24bb7",
+        "be7384fd8164e0d3-0135-122be604",
+        "be7384fd8164e0d3-0114-2eee8e4f"
+      ]
+    },
+    {
+      "id": "q061",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": 1,
+      "top_score": 0.6947,
+      "retrieved": [
+        "be7384fd8164e0d3-0132-ce5b9cd1",
+        "be7384fd8164e0d3-0085-2ec1f134",
+        "be7384fd8164e0d3-0204-3521e23d",
+        "be7384fd8164e0d3-0197-e85c0194",
+        "be7384fd8164e0d3-0203-fb46cd15",
+        "be7384fd8164e0d3-0202-217664c1",
+        "be7384fd8164e0d3-0177-2bcf2b27",
+        "be7384fd8164e0d3-0201-ac1d69bb",
+        "be7384fd8164e0d3-0101-fcb6f956",
+        "be7384fd8164e0d3-0019-9ec086a2"
+      ]
+    },
+    {
+      "id": "q062",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": 1,
+      "top_score": 0.6586,
+      "retrieved": [
+        "113d4fa04e1c0b24-0228-6c124fcb",
+        "113d4fa04e1c0b24-0799-9f7998e4",
+        "db3d38cb895ad237-0048-57798c05",
+        "113d4fa04e1c0b24-0137-395b9afd",
+        "113d4fa04e1c0b24-0231-fd73497b",
+        "61ae8f26e0fe341f-0059-6e643c8d",
+        "7b6ded9670bd4836-0060-68a83647",
+        "535d7547ee08a225-0183-65055c1a",
+        "3f9054029f235d46-0058-1a292843",
+        "113d4fa04e1c0b24-0843-c2a2df10"
+      ]
+    },
+    {
+      "id": "q063",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": 1,
+      "top_score": 0.8424,
+      "retrieved": [
+        "113d4fa04e1c0b24-0320-548ee67f",
+        "113d4fa04e1c0b24-0318-d14471c0",
+        "113d4fa04e1c0b24-0325-3b332617",
+        "113d4fa04e1c0b24-0816-23d241be",
+        "113d4fa04e1c0b24-0312-d0b2f1f1",
+        "113d4fa04e1c0b24-0445-4189aeaa",
+        "113d4fa04e1c0b24-0319-a3ee80ff",
+        "113d4fa04e1c0b24-0822-0959efd9",
+        "113d4fa04e1c0b24-0450-877e703e",
+        "113d4fa04e1c0b24-0310-50ae0f0b"
+      ]
+    },
+    {
+      "id": "q064",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": 1,
+      "top_score": 0.7617,
+      "retrieved": [
+        "294018104b0ce268-0108-ae2314f7",
+        "294018104b0ce268-0110-73d9a94d",
+        "294018104b0ce268-0109-102a799a",
+        "294018104b0ce268-0047-ef8215aa",
+        "294018104b0ce268-0139-0b1796d8",
+        "294018104b0ce268-0111-50748bfb",
+        "294018104b0ce268-0157-bcc12658",
+        "294018104b0ce268-0102-192bf4f9",
+        "294018104b0ce268-0049-3574ea12",
+        "294018104b0ce268-0155-4fba3a34"
+      ]
+    },
+    {
+      "id": "q065",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": 1,
+      "top_score": 0.7505,
+      "retrieved": [
+        "294018104b0ce268-0153-7ef73b58",
+        "294018104b0ce268-0156-2420b2fd",
+        "294018104b0ce268-0126-91522505",
+        "294018104b0ce268-0030-4f21426c",
+        "294018104b0ce268-0018-56011299",
+        "294018104b0ce268-0044-815d81ab",
+        "294018104b0ce268-0133-980cfd38",
+        "294018104b0ce268-0157-bcc12658",
+        "5bda7f7c0b790e80-0126-00d57eb3",
+        "294018104b0ce268-0155-4fba3a34"
+      ]
+    },
+    {
+      "id": "q066",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": 2,
+      "top_score": 0.6957,
+      "retrieved": [
+        "d6212bf18f983699-0466-76d7976d",
+        "34c3cee32c3972ca-0137-c7f4f690",
+        "d6212bf18f983699-0462-c55244e6",
+        "d6212bf18f983699-0469-c7828d80",
+        "d6212bf18f983699-0463-53695415",
+        "34c3cee32c3972ca-0133-bd180eed",
+        "d6212bf18f983699-0839-508cdc35",
+        "d6212bf18f983699-0461-414ff2e7",
+        "d6212bf18f983699-0458-cf4b1ed2",
+        "34c3cee32c3972ca-0270-f628ebf4"
+      ]
+    },
+    {
+      "id": "q067",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": 1,
+      "top_score": 0.8158,
+      "retrieved": [
+        "34c3cee32c3972ca-0250-5509d6df",
+        "34c3cee32c3972ca-0251-dd385564",
+        "34c3cee32c3972ca-0252-f9a2e18b",
+        "34c3cee32c3972ca-0242-d15a4ae6",
+        "d6212bf18f983699-0201-18d2d732",
+        "d6212bf18f983699-0189-6f1fc98d",
+        "34c3cee32c3972ca-0248-a3822f47",
+        "d6212bf18f983699-0190-e4b9f8e3",
+        "34c3cee32c3972ca-0238-30ad4b6c",
+        "d6212bf18f983699-0184-1d1118dc"
+      ]
+    },
+    {
+      "id": "q068",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": 1,
+      "top_score": 0.6406,
+      "retrieved": [
+        "34c3cee32c3972ca-0361-da738d67",
+        "ee54c341ef60ca93-0512-7f2ddc78",
+        "d6212bf18f983699-0760-d19fd521",
+        "34c3cee32c3972ca-0403-f84a8d73",
+        "d6212bf18f983699-0746-18f78525",
+        "d6212bf18f983699-0643-1d37b0dc",
+        "d6212bf18f983699-0222-c6f4c6c3",
+        "d6212bf18f983699-0239-fa6c7cd4",
+        "d6212bf18f983699-0156-16277f55",
+        "d6212bf18f983699-0771-585a421d"
+      ]
+    },
+    {
+      "id": "q069",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": 2,
+      "top_score": 0.7746,
+      "retrieved": [
+        "5bda7f7c0b790e80-0137-af860869",
+        "5bda7f7c0b790e80-0044-d2d4a715",
+        "5bda7f7c0b790e80-0043-1cca0297",
+        "5bda7f7c0b790e80-0024-322f15e6",
+        "5bda7f7c0b790e80-0037-5e2d0aa8",
+        "34c3cee32c3972ca-0244-444c93da",
+        "34c3cee32c3972ca-0515-9bffea29",
+        "34c3cee32c3972ca-0205-856c432f",
+        "34c3cee32c3972ca-0245-ce61284b",
+        "5bda7f7c0b790e80-0110-5bdf98af"
+      ]
+    },
+    {
+      "id": "q070",
+      "kind": "answerable",
+      "topic": "TLS",
+      "coverage_rank": 1,
+      "top_score": 0.7507,
+      "retrieved": [
+        "5bda7f7c0b790e80-0080-e3a00364",
+        "5bda7f7c0b790e80-0078-5c2d12ac",
+        "5bda7f7c0b790e80-0124-56d42891",
+        "5bda7f7c0b790e80-0122-7f4d08ee",
+        "d6212bf18f983699-0398-cd92bc29",
+        "3f9054029f235d46-0864-2cd66997",
+        "7b6ded9670bd4836-0043-ea58feed",
+        "5bda7f7c0b790e80-0082-3f2f4534",
+        "34c3cee32c3972ca-0452-8123229b",
+        "3f9054029f235d46-0865-098b4714"
+      ]
+    },
+    {
+      "id": "q071",
+      "kind": "multi_chunk",
+      "topic": "DNS",
+      "coverage_rank": null,
+      "top_score": 0.7814,
+      "retrieved": [
+        "a0ab2e516a90669c-0031-e3af4b83",
+        "00a6eaeedf8251c3-0067-8529f181",
+        "00a6eaeedf8251c3-0081-15825593",
+        "00a6eaeedf8251c3-0066-976f0aaf",
+        "8b4a5bbf84433dad-0050-8089459e",
+        "233a6afb03b6c8e1-0016-9d566a80",
+        "535d7547ee08a225-0147-64e90da2",
+        "a0ab2e516a90669c-0032-dffba9b0",
+        "8b4a5bbf84433dad-0044-2e2a926a",
+        "a0ab2e516a90669c-0033-68176994"
+      ]
+    },
+    {
+      "id": "q072",
+      "kind": "multi_chunk",
+      "topic": "HTTP",
+      "coverage_rank": null,
+      "top_score": 0.7282,
+      "retrieved": [
+        "fdd0f95d2dcc65e6-0051-1709bda8",
+        "fdd0f95d2dcc65e6-0033-c42046a3",
+        "fdd0f95d2dcc65e6-0021-08cca7b5",
+        "fdd0f95d2dcc65e6-0035-de66f585",
+        "fdd0f95d2dcc65e6-0014-ec58651d",
+        "fdd0f95d2dcc65e6-0042-9e5860bb",
+        "fdd0f95d2dcc65e6-0031-885bee5a",
+        "fdd0f95d2dcc65e6-0034-c40c0f38",
+        "fdd0f95d2dcc65e6-0027-1fa560b4",
+        "fdd0f95d2dcc65e6-0056-6aedc383"
+      ]
+    },
+    {
+      "id": "q073",
+      "kind": "multi_chunk",
+      "topic": "TLS",
+      "coverage_rank": 8,
+      "top_score": 0.8225,
+      "retrieved": [
+        "34c3cee32c3972ca-0107-f1006e45",
+        "d6212bf18f983699-0447-01d40bc1",
+        "5bda7f7c0b790e80-0051-15c36efd",
+        "5bda7f7c0b790e80-0046-f57d2ab1",
+        "34c3cee32c3972ca-0116-149ff1a6",
+        "d6212bf18f983699-0476-bfcea65a",
+        "34c3cee32c3972ca-0112-78539f9d",
+        "d6212bf18f983699-0458-cf4b1ed2",
+        "d6212bf18f983699-0440-8684794e",
+        "5bda7f7c0b790e80-0111-4d5a86d7"
+      ]
+    },
+    {
+      "id": "q074",
+      "kind": "multi_chunk",
+      "topic": "DNS",
+      "coverage_rank": 5,
+      "top_score": 0.7961,
+      "retrieved": [
+        "233a6afb03b6c8e1-0065-2dae8c93",
+        "233a6afb03b6c8e1-0031-36eea695",
+        "233a6afb03b6c8e1-0073-4a491165",
+        "233a6afb03b6c8e1-0066-e1594789",
+        "233a6afb03b6c8e1-0058-885eafcb",
+        "233a6afb03b6c8e1-0062-94b8e53a",
+        "b7f4744ef39cc3ea-0062-f2eb1cf6",
+        "233a6afb03b6c8e1-0016-9d566a80",
+        "233a6afb03b6c8e1-0028-ca408f64",
+        "233a6afb03b6c8e1-0061-a090e0a7"
+      ]
+    },
+    {
+      "id": "q075",
+      "kind": "multi_chunk",
+      "topic": "HTTP",
+      "coverage_rank": null,
+      "top_score": 0.7541,
+      "retrieved": [
+        "ee54c341ef60ca93-0258-2de0fe5b",
+        "ee54c341ef60ca93-0117-3fb4e20f",
+        "ee54c341ef60ca93-0265-7f3a0d00",
+        "ee54c341ef60ca93-0116-765e9ba9",
+        "ee54c341ef60ca93-0263-d0518c7f",
+        "ee54c341ef60ca93-0129-e086e77e",
+        "ee54c341ef60ca93-0009-ec2fcdfa",
+        "ee54c341ef60ca93-0127-08e2598d",
+        "ee54c341ef60ca93-0434-25049d01",
+        "ee54c341ef60ca93-0283-bd6569db"
+      ]
+    },
+    {
+      "id": "q076",
+      "kind": "multi_chunk",
+      "topic": "DNS",
+      "coverage_rank": null,
+      "top_score": 0.6072,
+      "retrieved": [
+        "b7f4744ef39cc3ea-0012-55feef4d",
+        "e78ae3ad02690f01-0019-451f1b55",
+        "b7f4744ef39cc3ea-0081-f80b0adc",
+        "b7f4744ef39cc3ea-0089-6099d3d9",
+        "e78ae3ad02690f01-0029-d85b3da6",
+        "b7f4744ef39cc3ea-0001-9384fbe9",
+        "e78ae3ad02690f01-0078-e40d6cc3",
+        "a0ab2e516a90669c-0294-1eba888a",
+        "b7f4744ef39cc3ea-0094-4712800c",
+        "3f9054029f235d46-0178-7c67710b"
+      ]
+    },
+    {
+      "id": "q077",
+      "kind": "multi_chunk",
+      "topic": "auth",
+      "coverage_rank": null,
+      "top_score": 0.7127,
+      "retrieved": [
+        "fc938047bdb0c70e-0037-889a1c8d",
+        "fc938047bdb0c70e-0078-3f688428",
+        "fc938047bdb0c70e-0043-c93a6889",
+        "fc938047bdb0c70e-0001-0039ba5b",
+        "fc938047bdb0c70e-0036-b7aee6b3",
+        "fc938047bdb0c70e-0292-f26b60d5",
+        "fc938047bdb0c70e-0031-0dbc9303",
+        "be5b6931e42f2de0-0097-175ab050",
+        "fc938047bdb0c70e-0389-5d825c6f",
+        "be5b6931e42f2de0-0012-06a6a4ea"
+      ]
+    },
+    {
+      "id": "q078",
+      "kind": "multi_chunk",
+      "topic": "HTTP",
+      "coverage_rank": 9,
+      "top_score": 0.5838,
+      "retrieved": [
+        "3f9054029f235d46-1030-464e0278",
+        "3f9054029f235d46-1032-621a7b9a",
+        "3f9054029f235d46-0904-c85543b5",
+        "3f9054029f235d46-0907-22bd7da3",
+        "3f9054029f235d46-1019-ca9fe677",
+        "3f9054029f235d46-0910-f400635e",
+        "3f9054029f235d46-1048-41253994",
+        "3f9054029f235d46-1077-3bd8d114",
+        "3f9054029f235d46-1029-72594daa",
+        "3f9054029f235d46-0939-ad842cd4"
+      ]
+    },
+    {
+      "id": "q079",
+      "kind": "multi_chunk",
+      "topic": "transport",
+      "coverage_rank": null,
+      "top_score": 0.7113,
+      "retrieved": [
+        "d47504ce429bd618-0569-6b349218",
+        "33f144791046a49f-0233-94afc737",
+        "33f144791046a49f-0228-b9b60bd8",
+        "d47504ce429bd618-0389-d090a613",
+        "d47504ce429bd618-0570-66459b57",
+        "33f144791046a49f-0229-16b33dea",
+        "d47504ce429bd618-0574-01c2a710",
+        "33f144791046a49f-0240-e0a5c7ad",
+        "33f144791046a49f-0230-5fc4ae33",
+        "d47504ce429bd618-0568-4039a8f4"
+      ]
+    },
+    {
+      "id": "q080",
+      "kind": "multi_chunk",
+      "topic": "TLS",
+      "coverage_rank": null,
+      "top_score": 0.7593,
+      "retrieved": [
+        "be7384fd8164e0d3-0100-4833d7ca",
+        "be7384fd8164e0d3-0112-fad17dfc",
+        "be7384fd8164e0d3-0102-a0cae5d5",
+        "be7384fd8164e0d3-0108-9cc697b6",
+        "be7384fd8164e0d3-0115-edf14c39",
+        "be7384fd8164e0d3-0101-fcb6f956",
+        "be7384fd8164e0d3-0172-0956eb70",
+        "be7384fd8164e0d3-0114-2eee8e4f",
+        "be7384fd8164e0d3-0135-122be604",
+        "be7384fd8164e0d3-0197-e85c0194"
+      ]
+    },
+    {
+      "id": "q081",
+      "kind": "unanswerable",
+      "topic": "QUIC",
+      "coverage_rank": null,
+      "top_score": 0.4586,
+      "retrieved": [
+        "d6212bf18f983699-0765-66ab3da7",
+        "ee54c341ef60ca93-0400-fcf0d736",
+        "3f9054029f235d46-0077-a0927c52",
+        "33f144791046a49f-0196-d19c7b2c",
+        "670d32a46fc40141-0108-01b4bd9f",
+        "3f9054029f235d46-0381-7740cdb8",
+        "b7f4744ef39cc3ea-0073-ff3ad1dc",
+        "3f9054029f235d46-0345-bb644e1e",
+        "ee54c341ef60ca93-0395-207ea1fc",
+        "3f9054029f235d46-0917-51e10c46"
+      ]
+    },
+    {
+      "id": "q082",
+      "kind": "unanswerable",
+      "topic": "HTTP/3",
+      "coverage_rank": null,
+      "top_score": 0.6946,
+      "retrieved": [
+        "3f9054029f235d46-1284-46fef857",
+        "ee54c341ef60ca93-0451-5412333a",
+        "b7f4744ef39cc3ea-0104-b2ba379c",
+        "ee54c341ef60ca93-0467-e98f4470",
+        "ee54c341ef60ca93-0448-2fa155c3",
+        "d153254831786b97-0047-ea5cb885",
+        "be7384fd8164e0d3-0071-0fa206b8",
+        "ee54c341ef60ca93-0059-46146786",
+        "ee54c341ef60ca93-0314-d6015e61",
+        "641b8bddae767be2-0257-2b962807"
+      ]
+    },
+    {
+      "id": "q083",
+      "kind": "unanswerable",
+      "topic": "WebSocket",
+      "coverage_rank": null,
+      "top_score": 0.5304,
+      "retrieved": [
+        "ee54c341ef60ca93-0048-f54e6d91",
+        "ee54c341ef60ca93-0050-b9205420",
+        "ee54c341ef60ca93-0434-25049d01",
+        "ee54c341ef60ca93-0047-0be2fa2d",
+        "ee54c341ef60ca93-0365-ad7036e7",
+        "ee54c341ef60ca93-0261-d140132a",
+        "ee54c341ef60ca93-0246-6fba7102",
+        "ee54c341ef60ca93-0433-567fe987",
+        "ee54c341ef60ca93-0023-9e2095ed",
+        "ee54c341ef60ca93-0027-1d597ff5"
+      ]
+    },
+    {
+      "id": "q084",
+      "kind": "unanswerable",
+      "topic": "IPv6",
+      "coverage_rank": null,
+      "top_score": 0.4955,
+      "retrieved": [
+        "670d32a46fc40141-0183-a7584f0a",
+        "535d7547ee08a225-0139-b785d242",
+        "9b56892f0c82cdbe-0052-5058c417",
+        "535d7547ee08a225-0342-8d13f8e1",
+        "535d7547ee08a225-0138-f1d6c776",
+        "d47504ce429bd618-0299-2f3f8a34",
+        "33f144791046a49f-0051-72648d4f",
+        "670d32a46fc40141-0019-102b2a5a",
+        "113d4fa04e1c0b24-0289-544e0648",
+        "33f144791046a49f-0049-2e51ba35"
+      ]
+    },
+    {
+      "id": "q085",
+      "kind": "unanswerable",
+      "topic": "IPv6",
+      "coverage_rank": null,
+      "top_score": 0.5726,
+      "retrieved": [
+        "535d7547ee08a225-0309-505fa87f",
+        "233a6afb03b6c8e1-0083-8d859005",
+        "535d7547ee08a225-0342-8d13f8e1",
+        "535d7547ee08a225-0138-f1d6c776",
+        "535d7547ee08a225-0139-b785d242",
+        "a0ab2e516a90669c-0291-e5f175e1",
+        "9b56892f0c82cdbe-0052-5058c417",
+        "535d7547ee08a225-0319-9ed9b018",
+        "535d7547ee08a225-0340-92589b5a",
+        "113d4fa04e1c0b24-0716-49bde911"
+      ]
+    },
+    {
+      "id": "q086",
+      "kind": "unanswerable",
+      "topic": "BGP",
+      "coverage_rank": null,
+      "top_score": 0.5407,
+      "retrieved": [
+        "ee54c341ef60ca93-0329-49f77714",
+        "535d7547ee08a225-0155-250ec3c0",
+        "db3d38cb895ad237-0239-47c848d5",
+        "535d7547ee08a225-0112-e9f73915",
+        "3f9054029f235d46-0133-de59ae3f",
+        "a0ab2e516a90669c-0193-6aeeb735",
+        "a0ab2e516a90669c-0090-77cb4d74",
+        "113d4fa04e1c0b24-0841-9466f608",
+        "535d7547ee08a225-0161-f03a791d",
+        "113d4fa04e1c0b24-0161-e5733e96"
+      ]
+    },
+    {
+      "id": "q087",
+      "kind": "unanswerable",
+      "topic": "OSPF",
+      "coverage_rank": null,
+      "top_score": 0.3964,
+      "retrieved": [
+        "3f9054029f235d46-0575-ecf6a23e",
+        "ee54c341ef60ca93-0238-fbfc41d1",
+        "ee54c341ef60ca93-0075-71cfeebe",
+        "d47504ce429bd618-0262-2bfa8562",
+        "ee54c341ef60ca93-0242-b920ff7e",
+        "ee54c341ef60ca93-0231-18769bce",
+        "70382eb2504ca1d2-0032-25b11cff",
+        "ee54c341ef60ca93-0233-bccf2a79",
+        "ee54c341ef60ca93-0086-ea31975e",
+        "ee54c341ef60ca93-0093-47580387"
+      ]
+    },
+    {
+      "id": "q088",
+      "kind": "unanswerable",
+      "topic": "CoAP",
+      "coverage_rank": null,
+      "top_score": 0.4585,
+      "retrieved": [
+        "d47504ce429bd618-0547-4846707b",
+        "535d7547ee08a225-0153-804e85ac",
+        "d47504ce429bd618-0546-4d1f43b5",
+        "d47504ce429bd618-0396-b4bc85e4",
+        "33f144791046a49f-0001-d8ef2dba",
+        "33f144791046a49f-0058-fd670b05",
+        "d47504ce429bd618-0543-6d597407",
+        "d47504ce429bd618-0721-a16c1076",
+        "33f144791046a49f-0612-5c105da5",
+        "33f144791046a49f-0540-09b2fc7c"
+      ]
+    },
+    {
+      "id": "q089",
+      "kind": "unanswerable",
+      "topic": "MQTT",
+      "coverage_rank": null,
+      "top_score": 0.4686,
+      "retrieved": [
+        "3f9054029f235d46-0729-21f5203a",
+        "e78ae3ad02690f01-0036-953686e4",
+        "3f9054029f235d46-0060-e6b8f786",
+        "641b8bddae767be2-0157-3c85e6f1",
+        "b7f4744ef39cc3ea-0044-8fc7a1db",
+        "33f144791046a49f-0230-5fc4ae33",
+        "33f144791046a49f-0234-3dad0be1",
+        "a0ab2e516a90669c-0074-99ef6da5",
+        "3bc553e6cf0f80c2-0079-8c9967d3",
+        "d47504ce429bd618-0033-cbb44399"
+      ]
+    },
+    {
+      "id": "q090",
+      "kind": "unanswerable",
+      "topic": "gRPC",
+      "coverage_rank": null,
+      "top_score": 0.68,
+      "retrieved": [
+        "3f9054029f235d46-0263-cfe1e8b7",
+        "ee54c341ef60ca93-0020-bdb73596",
+        "ee54c341ef60ca93-0136-73facc88",
+        "ee54c341ef60ca93-0284-d730eb2e",
+        "ee54c341ef60ca93-0050-b9205420",
+        "3f9054029f235d46-0262-5b485663",
+        "ee54c341ef60ca93-0027-1d597ff5",
+        "ee54c341ef60ca93-0288-e17fc364",
+        "ee54c341ef60ca93-0033-059af073",
+        "ee54c341ef60ca93-0122-9910285e"
+      ]
+    },
+    {
+      "id": "q091",
+      "kind": "unanswerable",
+      "topic": "WebRTC",
+      "coverage_rank": null,
+      "top_score": 0.3685,
+      "retrieved": [
+        "be7384fd8164e0d3-0252-da410726",
+        "2a8b39091ca9b743-0000-7ce4ee9a",
+        "2a8b39091ca9b743-0364-e5f165cb",
+        "2a8b39091ca9b743-0261-9715ce88",
+        "2a8b39091ca9b743-0208-04fd9a4c",
+        "8b4a5bbf84433dad-0176-0a7a131c",
+        "2a8b39091ca9b743-0001-f34359eb",
+        "641b8bddae767be2-0258-a7dfb79f",
+        "3f9054029f235d46-1357-a7d4079b",
+        "be7384fd8164e0d3-0266-28b4e978"
+      ]
+    },
+    {
+      "id": "q092",
+      "kind": "unanswerable",
+      "topic": "SCTP",
+      "coverage_rank": null,
+      "top_score": 0.5868,
+      "retrieved": [
+        "d6212bf18f983699-0035-d8b28a0e",
+        "33f144791046a49f-0159-55878ee5",
+        "33f144791046a49f-0171-32c5f936",
+        "d6212bf18f983699-0128-5422d6cf",
+        "d6212bf18f983699-0252-24cac967",
+        "d6212bf18f983699-0787-e65a868f",
+        "5bda7f7c0b790e80-0026-8ae170d6",
+        "33f144791046a49f-0133-dfdce7c4",
+        "d6212bf18f983699-0124-52956064",
+        "ee54c341ef60ca93-0036-4bffef18"
+      ]
+    },
+    {
+      "id": "q093",
+      "kind": "unanswerable",
+      "topic": "DHCPv6",
+      "coverage_rank": null,
+      "top_score": 0.5267,
+      "retrieved": [
+        "9b56892f0c82cdbe-0052-5058c417",
+        "535d7547ee08a225-0309-505fa87f",
+        "535d7547ee08a225-0138-f1d6c776",
+        "a0ab2e516a90669c-0190-ba269b68",
+        "9b56892f0c82cdbe-0089-8774b95e",
+        "d47504ce429bd618-0188-1dfbf90a",
+        "670d32a46fc40141-0148-db3b2456",
+        "113d4fa04e1c0b24-0716-49bde911",
+        "113d4fa04e1c0b24-0289-544e0648",
+        "535d7547ee08a225-0342-8d13f8e1"
+      ]
+    },
+    {
+      "id": "q094",
+      "kind": "unanswerable",
+      "topic": "ICMPv6",
+      "coverage_rank": null,
+      "top_score": 0.5857,
+      "retrieved": [
+        "33f144791046a49f-0384-bc59749f",
+        "670d32a46fc40141-0025-5f01367a",
+        "33f144791046a49f-0692-48d90157",
+        "d47504ce429bd618-0285-19563c0f",
+        "33f144791046a49f-0249-9d93d6d8",
+        "d47504ce429bd618-0199-6ba16d76",
+        "33f144791046a49f-0566-e8b793dd",
+        "d47504ce429bd618-0258-23207d6a",
+        "d47504ce429bd618-0472-5357819a",
+        "9b56892f0c82cdbe-0089-8774b95e"
+      ]
+    },
+    {
+      "id": "q095",
+      "kind": "unanswerable",
+      "topic": "mDNS",
+      "coverage_rank": null,
+      "top_score": 0.7474,
+      "retrieved": [
+        "a0ab2e516a90669c-0045-7d08f84b",
+        "a0ab2e516a90669c-0046-89dd7db5",
+        "a0ab2e516a90669c-0032-dffba9b0",
+        "a0ab2e516a90669c-0278-923b2f41",
+        "33f144791046a49f-0660-5ad8ab84",
+        "d47504ce429bd618-0203-0577db1e",
+        "a0ab2e516a90669c-0284-0821c015",
+        "d47504ce429bd618-0213-1271ba81",
+        "d47504ce429bd618-0189-a33f4bf9",
+        "d47504ce429bd618-0461-28da56a7"
+      ]
+    },
+    {
+      "id": "q096",
+      "kind": "unanswerable",
+      "topic": "IMAP",
+      "coverage_rank": null,
+      "top_score": 0.5087,
+      "retrieved": [
+        "d47504ce429bd618-0564-8c8c50c3",
+        "33f144791046a49f-0275-581057fc",
+        "d47504ce429bd618-0686-bdcd0b62",
+        "33f144791046a49f-0274-7cfddb30",
+        "d47504ce429bd618-0742-985e04bf",
+        "33f144791046a49f-0684-576bdd2a",
+        "641b8bddae767be2-0194-1411bb9c",
+        "33f144791046a49f-0326-17d5bcf5",
+        "33f144791046a49f-0282-4e2d8337",
+        "34c3cee32c3972ca-0216-c48790ca"
+      ]
+    },
+    {
+      "id": "q097",
+      "kind": "unanswerable",
+      "topic": "SSH",
+      "coverage_rank": null,
+      "top_score": 0.5903,
+      "retrieved": [
+        "34c3cee32c3972ca-0498-a58842da",
+        "34c3cee32c3972ca-0504-4251fe76",
+        "34c3cee32c3972ca-0500-3555e4b9",
+        "34c3cee32c3972ca-0499-37d012ed",
+        "d6212bf18f983699-0064-79e9f974",
+        "d6212bf18f983699-0137-309ba134",
+        "d6212bf18f983699-0061-81b6bdbc",
+        "e78ae3ad02690f01-0060-6255a57b",
+        "3f9054029f235d46-0189-2992f970",
+        "34c3cee32c3972ca-0502-cfab3fee"
+      ]
+    },
+    {
+      "id": "q098",
+      "kind": "unanswerable",
+      "topic": "NTP",
+      "coverage_rank": null,
+      "top_score": 0.5057,
+      "retrieved": [
+        "7b6ded9670bd4836-0030-49c5b463",
+        "00a6eaeedf8251c3-0250-1646de9c",
+        "33f144791046a49f-0124-55da29e3",
+        "34c3cee32c3972ca-0224-ad622ad2",
+        "7b6ded9670bd4836-0029-2204ffc0",
+        "3f9054029f235d46-0245-0d82d844",
+        "d47504ce429bd618-0297-07e93b63",
+        "7b6ded9670bd4836-0140-e2d69a8a",
+        "113d4fa04e1c0b24-0152-dabb07ac",
+        "7b6ded9670bd4836-0056-5402b9c2"
+      ]
+    },
+    {
+      "id": "q099",
+      "kind": "unanswerable",
+      "topic": "TLS",
+      "coverage_rank": null,
+      "top_score": 0.6022,
+      "retrieved": [
+        "34c3cee32c3972ca-0430-3b94c51b",
+        "34c3cee32c3972ca-0002-92cf9cf2",
+        "34c3cee32c3972ca-0492-2f315c4e",
+        "34c3cee32c3972ca-0489-020d00dd",
+        "d6212bf18f983699-0481-4f3ef4f1",
+        "d6212bf18f983699-0001-b64dfb33",
+        "34c3cee32c3972ca-0196-465c42f7",
+        "34c3cee32c3972ca-0367-3f40de43",
+        "d6212bf18f983699-0140-4fefac09",
+        "34c3cee32c3972ca-0187-d229f832"
+      ]
+    },
+    {
+      "id": "q100",
+      "kind": "unanswerable",
+      "topic": "FTP",
+      "coverage_rank": null,
+      "top_score": 0.5538,
+      "retrieved": [
+        "33f144791046a49f-0326-17d5bcf5",
+        "33f144791046a49f-0091-f52f1137",
+        "db3d38cb895ad237-0231-05b2ebfe",
+        "db3d38cb895ad237-0233-b7325a09",
+        "d47504ce429bd618-0556-c56bff2c",
+        "33f144791046a49f-0332-fd225d13",
+        "db3d38cb895ad237-0235-0cc559c8",
+        "33f144791046a49f-0282-4e2d8337",
+        "d47504ce429bd618-0721-a16c1076",
+        "33f144791046a49f-0328-36bdbd6f"
+      ]
+    }
+  ]
+}
