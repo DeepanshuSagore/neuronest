@@ -267,6 +267,89 @@ phases 14 and 15:
 Retrieval sweeps stay free — the embedder is local — so the chunking and embedding comparisons can
 re-run as often as needed. Faithfulness cannot, on this tier.
 
+## The chunking experiment
+
+```bash
+uv run python eval/sweep_chunking.py
+```
+
+Chunking is the parameter people set by feel — 1000 characters, 200 of overlap, because those are the
+numbers in the tutorial. Eight configurations, scored against the same 100 labelled questions, from
+[`eval/results/sweep-chunking.json`](eval/results/sweep-chunking.json) and the per-configuration files
+it names. Recall columns are the 70 answerable questions; the last two columns are the 10 two-passage
+questions and the warm index build.
+
+| Configuration | Chunks | R@1 | R@5 | R@10 | MRR | R@5, two-passage | Build |
+|---|---|---|---|---|---|---|---|
+| **`fixed-500-0`** | 12,171 | **0.500** | **0.771** | **0.829** | **0.622** | 0.100 | 13.1 s |
+| `fixed-500-200` | 13,355 | 0.443 | 0.743 | 0.786 | 0.568 | 0.100 | 16.6 s |
+| `fixed-1000-0` | 5,451 | 0.443 | 0.686 | 0.786 | 0.549 | 0.200 | 6.7 s |
+| `fixed-1000-200` *(reference)* | 5,810 | 0.429 | 0.729 | 0.800 | 0.551 | 0.200 | 6.8 s |
+| `fixed-1500-0` | 3,429 | 0.386 | 0.700 | 0.757 | 0.528 | **0.400** | 3.9 s |
+| `fixed-1500-200` | 3,590 | 0.443 | 0.729 | 0.786 | 0.556 | **0.400** | 7.3 s |
+| `semantic-95-1-200-1000` | 5,373 | 0.357 | 0.729 | 0.814 | 0.520 | 0.100 | 9.7 s |
+| `semantic-95-1-200-2000` | 3,033 | 0.357 | 0.643 | 0.729 | 0.476 | **0.400** | 6.3 s |
+
+**Recommendation: fixed 500/0.** It wins every one of the four columns on the answerable set, and it
+wins them while handing back *less* text: its chunks average **359 characters** against **801** at
+chunk size 1000, because the recursive splitter stops at a paragraph boundary rather than filling the
+window. Five passages at rank 5 is under half the prose the reference returns, and it contains more of
+the answers. The cost is 2.1× the chunks and 6.3 s more to index.
+
+### Semantic chunking lost, and the second cap is why that is credible
+
+Semantic chunking is the interesting-sounding option and it does not win a single column. The
+temptation is to explain that away as a size effect — semantic chunks come out larger, and large
+chunks did badly — which is exactly why the sweep runs it at two caps.
+
+`semantic-95-1-200-1000` produces **5,373** chunks against `fixed-1000-0`'s **5,451**: the same corpus
+cut into almost exactly as many pieces, so granularity is controlled for. At that matched granularity
+semantic still loses, 0.357 against 0.443 at Recall@1 and 0.520 against 0.549 on MRR. Cutting where
+the subject changes is not paying for itself here; cutting *more often* is what helped.
+
+Why it should lose on this corpus is not mysterious in hindsight. RFCs are already segmented by hand —
+numbered sections, short indented paragraphs, one idea each — so the recursive splitter is breaking at
+boundaries an author placed deliberately, and the embedding-distance heuristic is re-deriving them
+worse. A corpus of unstructured prose might reverse this; this one is not that corpus, and reporting
+the result it actually produced is the point.
+
+### Two smaller findings, one of which is a warning
+
+**Overlap does close to nothing.** Adding 200 characters of overlap at chunk size 1000 grows the index
+by 6.6% (5,451 → 5,810 chunks) and moves Recall@5 by 0.043; at size 500 it moves it by **−0.028**, and
+at 1500 by +0.029. The sign is not stable. The cause is visible in the chunk counts: the recursive
+splitter prefers paragraph boundaries, RFC paragraphs are short, and overlap only engages when the
+splitter is forced to cut mid-paragraph — which on this corpus is rare.
+
+**The two-passage cohort wants the opposite of everything above.** Its Recall@5 goes the other way,
+0.100 at size 500 against 0.400 at size 1500, because a question whose answer needs two spans is
+likelier to get both when a chunk is large enough to swallow them. That is 1 question against 4, out
+of 10 — too few to tune on, but enough to say that "smaller is better" is a statement about the
+70-question cohort and not a law.
+
+### The noise floor, measured rather than assumed
+
+The whole sweep was run twice. **Six of eight configurations reproduced exactly**; two moved, by at
+most **0.014** — one question out of seventy. Chroma's HNSW index is approximate and its graph build
+is not deterministic, so a difference smaller than about one question is not a difference.
+
+That matters for reading the table honestly. The winner's Recall@5 margin over the runner-up is 0.028,
+two questions — exactly twice the observed movement, but not a landslide. Its Recall@1 margin is
+0.057, four questions, and its MRR margin is 0.054. Those are what the recommendation rests on, not
+the Recall@5 column.
+
+Build times are from a fully warm embedding cache — 100% hit rate on all eight runs — so they measure
+indexing and not embedding. Cold, `fixed-500-0` takes 60.0 s instead of 13.1 s.
+
+### Why the default is still 1000/200
+
+The shipped default has not changed, and that is deliberate rather than an oversight. Every generation
+figure in this README was measured at `fixed-1000-200`, and the judge's free tier allows roughly one
+faithfulness run per day. Phase 15 changes the embedding model next, which moves retrieval again.
+Switching chunking now would mean re-measuring generation twice, a day apart, to describe a
+configuration that is about to change underneath it. The default moves once, after the embedding
+comparison, and the generation numbers get re-run against it then.
+
 ## Stack
 
 **Service** — Python 3.12 · FastAPI · pydantic v2 · LangChain · ChromaDB · sentence-transformers ·
